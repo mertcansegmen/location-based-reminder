@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">LocationBasedReminder</string>
+    <string name="title_reminders">Reminders</string>
+    <string name="title_notes">Notes</string>
+    <string name="title_settings">Settings</string>
+</resources>
