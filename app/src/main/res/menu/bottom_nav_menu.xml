@@ -12,6 +12,11 @@
         android:title="@string/title_notes" />
 
     <item
+        android:id="@+id/navigation_places"
+        android:icon="@drawable/ic_places"
+        android:title="@string/title_places" />
+
+    <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/title_settings" />
