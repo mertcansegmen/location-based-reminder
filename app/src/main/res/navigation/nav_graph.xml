@@ -7,31 +7,31 @@
 
     <fragment
         android:id="@+id/navigation_reminders"
-        android:name="com.mertcansegmen.locationbasedreminder.RemindersFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.view.RemindersFragment"
         android:label="@string/title_reminders"
         tools:layout="@layout/fragment_reminders" />
 
     <fragment
         android:id="@+id/navigation_notes"
-        android:name="com.mertcansegmen.locationbasedreminder.NotesFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.view.NotesFragment"
         android:label="@string/title_notes"
         tools:layout="@layout/fragment_notes" />
 
     <fragment
         android:id="@+id/navigation_places"
-        android:name="com.mertcansegmen.locationbasedreminder.PlacesFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.view.PlacesFragment"
         android:label="@string/title_places"
         tools:layout="@layout/fragment_places" />
 
     <fragment
         android:id="@+id/navigation_place_groups"
-        android:name="com.mertcansegmen.locationbasedreminder.PlaceGroupsFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.view.PlaceGroupsFragment"
         android:label="@string/title_place_groups"
         tools:layout="@layout/fragment_place_groups" />
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.mertcansegmen.locationbasedreminder.SettingsFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.view.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

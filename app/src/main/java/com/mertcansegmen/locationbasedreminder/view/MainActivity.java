@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder;
+package com.mertcansegmen.locationbasedreminder.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -9,6 +9,7 @@ import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mertcansegmen.locationbasedreminder.R;
 
 public class MainActivity extends AppCompatActivity {
 

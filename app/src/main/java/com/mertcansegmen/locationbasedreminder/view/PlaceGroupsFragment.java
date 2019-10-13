@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder;
+package com.mertcansegmen.locationbasedreminder.view;
 
 
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.mertcansegmen.locationbasedreminder.R;
 
 public class PlaceGroupsFragment extends Fragment {
 
