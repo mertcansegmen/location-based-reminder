@@ -26,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void configureBottomNavigation() {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_reminders, R.id.navigation_notes, R.id.navigation_settings, R.id.navigation_places)
+                R.id.navigation_reminders, R.id.navigation_notes, R.id.navigation_places,
+                R.id.navigation_place_groups, R.id.navigation_settings)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

@@ -6,4 +6,8 @@
     <string name="add_note">Add Note</string>
     <string name="add_todo">Add TODO</string>
     <string name="title_places">Places</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_place_groups">Place Groups</string>
 </resources>

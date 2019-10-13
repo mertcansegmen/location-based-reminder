@@ -18,13 +18,20 @@
         tools:layout="@layout/fragment_notes" />
 
     <fragment
+        android:id="@+id/navigation_places"
+        android:name="com.mertcansegmen.locationbasedreminder.PlacesFragment"
+        android:label="@string/title_places"
+        tools:layout="@layout/fragment_places" />
+
+    <fragment
+        android:id="@+id/navigation_place_groups"
+        android:name="com.mertcansegmen.locationbasedreminder.PlaceGroupsFragment"
+        android:label="@string/title_place_groups"
+        tools:layout="@layout/fragment_place_groups" />
+
+    <fragment
         android:id="@+id/navigation_settings"
         android:name="com.mertcansegmen.locationbasedreminder.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
-    <fragment
-        android:id="@+id/navigation_places"
-        android:name="com.mertcansegmen.locationbasedreminder.PlacesFragment"
-        android:label="fragment_places"
-        tools:layout="@layout/fragment_places" />
 </navigation>
