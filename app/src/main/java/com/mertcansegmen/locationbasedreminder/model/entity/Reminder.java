@@ -3,6 +3,9 @@ package com.mertcansegmen.locationbasedreminder.model.entity;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.mertcansegmen.locationbasedreminder.util.TimestampConverter;
 
 import java.util.Date;
 
@@ -27,6 +30,7 @@ public class Reminder {
     private int range;
 
     @ColumnInfo(name = "created_at")
+    @TypeConverters({TimestampConverter.class})
     private Date createdAt;
 
     @ColumnInfo(name = "is_active")
