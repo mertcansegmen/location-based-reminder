@@ -12,7 +12,7 @@ public class TimestampConverter {
     private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
     @TypeConverter
-    public static Date fromTimestamp(String date) {
+    public static Date stringToDate(String date) {
         if (date != null) {
             try {
                 return df.parse(date);
@@ -23,5 +23,13 @@ public class TimestampConverter {
         } else {
             return null;
         }
+    }
+
+    @TypeConverter
+    public static String dateToString(Date date) {
+        if(date != null) {
+            return df.format(date);
+        }
+        return null;
     }
 }
