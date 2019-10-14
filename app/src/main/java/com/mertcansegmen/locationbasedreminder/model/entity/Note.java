@@ -21,10 +21,6 @@ public class Note {
     @TypeConverters({TimestampConverter.class})
     private Date createdAt;
 
-    public Note(String text) {
-        this.text = text;
-    }
-
     public Note(String text, Date createdAt) {
         this.text = text;
         this.createdAt = createdAt;
