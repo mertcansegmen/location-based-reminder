@@ -2,6 +2,7 @@ package com.mertcansegmen.locationbasedreminder.model.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -9,7 +10,29 @@ import com.mertcansegmen.locationbasedreminder.util.TimestampConverter;
 
 import java.util.Date;
 
-@Entity(tableName = "reminder")
+@Entity(tableName = "reminder", foreignKeys = {
+        @ForeignKey(
+                entity = Note.class,
+                parentColumns = "id",
+                childColumns = "note_id",
+                onDelete = ForeignKey.CASCADE
+        ),
+        @ForeignKey(
+                entity = Place.class,
+                parentColumns = "id",
+                childColumns = "place_id"
+        ),
+        @ForeignKey(
+                entity = PlaceGroup.class,
+                parentColumns = "id",
+                childColumns = "place_group_id"
+        ),
+        @ForeignKey(
+                entity = ReminderType.class,
+                parentColumns = "id",
+                childColumns = "reminder_type_id"
+        )
+})
 public class Reminder {
 
     @PrimaryKey(autoGenerate = true)

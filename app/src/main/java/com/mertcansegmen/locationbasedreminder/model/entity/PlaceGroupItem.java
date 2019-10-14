@@ -2,9 +2,21 @@ package com.mertcansegmen.locationbasedreminder.model.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "place_group_item")
+@Entity(tableName = "place_group_item", foreignKeys = {
+        @ForeignKey(
+                entity = PlaceGroup.class,
+                parentColumns = "id",
+                childColumns = "place_group_id"
+        ),
+        @ForeignKey(
+                entity = Place.class,
+                parentColumns = "id",
+                childColumns = "place_id"
+        )
+})
 public class PlaceGroupItem {
 
     @PrimaryKey(autoGenerate = true)
