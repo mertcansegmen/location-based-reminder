@@ -26,11 +26,6 @@ import java.util.Date;
                 entity = PlaceGroup.class,
                 parentColumns = "id",
                 childColumns = "place_group_id"
-        ),
-        @ForeignKey(
-                entity = ReminderType.class,
-                parentColumns = "id",
-                childColumns = "reminder_type_id"
         )
 })
 public class Reminder {
@@ -47,9 +42,6 @@ public class Reminder {
     @ColumnInfo(name = "place_group_id")
     private int placeGroupId;
 
-    @ColumnInfo(name = "reminder_type_id")
-    private int reminderTypeId;
-
     private int range;
 
     @ColumnInfo(name = "created_at")
@@ -59,11 +51,10 @@ public class Reminder {
     @ColumnInfo(name = "is_active")
     private boolean isActive;
 
-    public Reminder(int noteId, int placeId, int placeGroupId, int reminderTypeId, int range, Date createdAt, boolean isActive) {
+    public Reminder(int noteId, int placeId, int placeGroupId, int range, Date createdAt, boolean isActive) {
         this.noteId = noteId;
         this.placeId = placeId;
         this.placeGroupId = placeGroupId;
-        this.reminderTypeId = reminderTypeId;
         this.range = range;
         this.createdAt = createdAt;
         this.isActive = isActive;
@@ -99,14 +90,6 @@ public class Reminder {
 
     public void setPlaceGroupId(int placeGroupId) {
         this.placeGroupId = placeGroupId;
-    }
-
-    public int getReminderTypeId() {
-        return reminderTypeId;
-    }
-
-    public void setReminderTypeId(int reminderTypeId) {
-        this.reminderTypeId = reminderTypeId;
     }
 
     public int getRange() {
