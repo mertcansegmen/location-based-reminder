@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import com.mertcansegmen.locationbasedreminder.util.TimestampConverter;
+import com.mertcansegmen.locationbasedreminder.util.DateConverter;
 
 import java.util.Date;
 
@@ -18,7 +18,7 @@ public class Note {
     private String text;
 
     @ColumnInfo(name = "created_at")
-    @TypeConverters({TimestampConverter.class})
+    @TypeConverters({DateConverter.class})
     private Date createdAt;
 
     public Note(String text, Date createdAt) {
