@@ -1,6 +1,7 @@
 package com.mertcansegmen.locationbasedreminder.view.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -14,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -51,6 +53,14 @@ public class AddEditNoteFragment extends Fragment {
         viewModel.insert(note);
     }
 
+    private void closeKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.add_edit_note_menu, menu);
@@ -62,6 +72,7 @@ public class AddEditNoteFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.save_note:
                 saveNote();
+                closeKeyboard();
                 requireActivity().onBackPressed();
                 return true;
             default:
