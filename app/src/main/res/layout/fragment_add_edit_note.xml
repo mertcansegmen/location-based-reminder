@@ -9,6 +9,7 @@
         android:id="@+id/txt_note"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:hint="@string/note"
         android:gravity="top"
         android:padding="16dp"
         android:background="@null"/>

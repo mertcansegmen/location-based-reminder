@@ -54,9 +54,9 @@ public class AddEditNoteFragment extends Fragment {
     }
 
     private void closeKeyboard() {
-        View view = getActivity().getCurrentFocus();
+        View view = requireActivity().getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager)requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
