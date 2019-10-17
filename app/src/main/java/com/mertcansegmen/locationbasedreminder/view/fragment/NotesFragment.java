@@ -49,6 +49,7 @@ public class NotesFragment extends Fragment {
         viewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(@Nullable List<Note> notes) {
+                scrollRecyclerViewToTop();
                 noteAdapter.submitList(notes);
             }
         });
@@ -82,5 +83,12 @@ public class NotesFragment extends Fragment {
                 navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment);
             }
         });
+    }
+
+    // Temporary fix
+    private void scrollRecyclerViewToTop() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView
+                .getLayoutManager();
+        layoutManager.smoothScrollToPosition(recyclerView, null, 0);
     }
 }
