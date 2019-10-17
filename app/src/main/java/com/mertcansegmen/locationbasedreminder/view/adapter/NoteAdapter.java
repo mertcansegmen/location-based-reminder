@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder.view;
+package com.mertcansegmen.locationbasedreminder.view.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

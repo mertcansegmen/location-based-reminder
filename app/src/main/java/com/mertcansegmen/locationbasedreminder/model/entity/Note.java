@@ -1,5 +1,8 @@
 package com.mertcansegmen.locationbasedreminder.model.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -10,7 +13,7 @@ import com.mertcansegmen.locationbasedreminder.util.DateConverter;
 import java.util.Date;
 
 @Entity(tableName = "note")
-public class Note {
+public class Note implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -21,9 +24,26 @@ public class Note {
     @TypeConverters({DateConverter.class})
     private Date createdAt;
 
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
+
     public Note(String text, Date createdAt) {
         this.text = text;
         this.createdAt = createdAt;
+    }
+
+    protected Note(Parcel in) {
+        id = in.readInt();
+        text = in.readString();
     }
 
     public int getİd() {
@@ -48,5 +68,16 @@ public class Note {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(text);
     }
 }

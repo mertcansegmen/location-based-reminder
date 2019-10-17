@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.PlaceGroupsFragment">
+    tools:context=".view.fragment.PlaceGroupsFragment">
 
     <TextView
         android:layout_width="match_parent"
@@ -19,7 +19,6 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:tint="@color/colorWhite"
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

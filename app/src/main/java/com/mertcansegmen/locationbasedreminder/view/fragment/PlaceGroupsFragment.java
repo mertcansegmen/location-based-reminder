@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder.view;
+package com.mertcansegmen.locationbasedreminder.view.fragment;
 
 
 import android.os.Bundle;

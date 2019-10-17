@@ -3,35 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/navigation_reminders">
+    app:startDestination="@id/remindersFragment">
 
     <fragment
-        android:id="@+id/navigation_reminders"
-        android:name="com.mertcansegmen.locationbasedreminder.view.RemindersFragment"
+        android:id="@+id/remindersFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.view.fragment.RemindersFragment"
         android:label="@string/title_reminders"
         tools:layout="@layout/fragment_reminders" />
 
     <fragment
-        android:id="@+id/navigation_notes"
-        android:name="com.mertcansegmen.locationbasedreminder.view.NotesFragment"
+        android:id="@+id/notesFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.view.fragment.NotesFragment"
         android:label="@string/title_notes"
-        tools:layout="@layout/fragment_notes" />
+        tools:layout="@layout/fragment_notes" >
+        <action
+            android:id="@+id/action_notesFragment_to_addEditNoteFragment"
+            app:destination="@id/addEditNoteFragment" />
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_places"
-        android:name="com.mertcansegmen.locationbasedreminder.view.PlacesFragment"
+        android:id="@+id/placesFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.view.fragment.PlacesFragment"
         android:label="@string/title_places"
         tools:layout="@layout/fragment_places" />
 
     <fragment
-        android:id="@+id/navigation_place_groups"
-        android:name="com.mertcansegmen.locationbasedreminder.view.PlaceGroupsFragment"
+        android:id="@+id/placeGroupsFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.view.fragment.PlaceGroupsFragment"
         android:label="@string/title_place_groups"
         tools:layout="@layout/fragment_place_groups" />
 
     <fragment
-        android:id="@+id/navigation_settings"
-        android:name="com.mertcansegmen.locationbasedreminder.view.SettingsFragment"
+        android:id="@+id/settingsFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.view.fragment.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/addEditNoteFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.view.fragment.AddEditNoteFragment"
+        android:label="@string/new_note"
+        tools:layout="@layout/fragment_add_edit_note" >
+        <argument
+            android:name="note"
+            app:argType="com.mertcansegmen.locationbasedreminder.model.entity.Note"/>
+    </fragment>
 </navigation>

@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:tint="@color/colorWhite"
         app:srcCompat="@drawable/ic_add_reminder"
         android:clickable="true"
         android:focusable="true"
