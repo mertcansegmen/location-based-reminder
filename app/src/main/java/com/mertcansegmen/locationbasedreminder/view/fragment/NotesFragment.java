@@ -1,5 +1,6 @@
 package com.mertcansegmen.locationbasedreminder.view.fragment;
 
+import android.database.DataSetObservable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,10 +47,41 @@ public class NotesFragment extends Fragment {
         final NoteAdapter noteAdapter = new NoteAdapter();
         recyclerView.setAdapter(noteAdapter);
 
+        noteAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                recyclerView.scrollToPosition(0);
+            }
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                recyclerView.scrollToPosition(0);
+            }
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
+                recyclerView.scrollToPosition(0);
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                recyclerView.scrollToPosition(0);
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                recyclerView.scrollToPosition(0);
+            }
+
+            @Override
+            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+                recyclerView.scrollToPosition(0);
+            }
+        });
+
         viewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(@Nullable List<Note> notes) {
-                scrollRecyclerViewToTop();
                 noteAdapter.submitList(notes);
             }
         });
@@ -83,12 +115,5 @@ public class NotesFragment extends Fragment {
                 navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment);
             }
         });
-    }
-
-    // Temporary fix
-    private void scrollRecyclerViewToTop() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView
-                .getLayoutManager();
-        layoutManager.smoothScrollToPosition(recyclerView, null, 0);
     }
 }
