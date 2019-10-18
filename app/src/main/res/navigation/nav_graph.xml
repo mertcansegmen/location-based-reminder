@@ -45,6 +45,6 @@
         tools:layout="@layout/fragment_add_edit_note" >
         <argument
             android:name="note"
-            app:argType="com.mertcansegmen.locationbasedreminder.model.entity.Note"/>
+            app:argType="com.mertcansegmen.locationbasedreminder.model.Note"/>
     </fragment>
 </navigation>

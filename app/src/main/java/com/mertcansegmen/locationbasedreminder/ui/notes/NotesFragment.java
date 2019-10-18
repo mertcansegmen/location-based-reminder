@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
+import com.mertcansegmen.locationbasedreminder.ui.addeditnote.AddEditNoteFragment;
 
 import java.util.List;
 
@@ -43,6 +44,22 @@ public class NotesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         final NoteAdapter noteAdapter = new NoteAdapter();
         recyclerView.setAdapter(noteAdapter);
+
+        viewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
+            @Override
+            public void onChanged(@Nullable List<Note> notes) {
+                noteAdapter.submitList(notes);
+            }
+        });
+
+        noteAdapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(Note note) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(AddEditNoteFragment.EXTRA_NOTE, note);
+                navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment, bundle);
+            }
+        });
 
         noteAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -73,13 +90,6 @@ public class NotesFragment extends Fragment {
             @Override
             public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
                 recyclerView.scrollToPosition(0);
-            }
-        });
-
-        viewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(@Nullable List<Note> notes) {
-                noteAdapter.submitList(notes);
             }
         });
 

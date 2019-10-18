@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -20,12 +21,17 @@ import android.widget.Toast;
 
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
+import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 
 import java.util.Date;
 
 public class AddEditNoteFragment extends Fragment {
 
+    public static final String EXTRA_NOTE ="com.mertcansegmen.locationbasedreminder.EXTRA_NOTE";
+
     private EditText noteEditText;
+
+    private Note currentNote;
 
     private AddEditNoteFragmentViewModel viewModel;
 
@@ -33,12 +39,22 @@ public class AddEditNoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_add_edit_note, container, false);
         setHasOptionsMenu(true);
-
         noteEditText = v.findViewById(R.id.txt_note);
 
         viewModel = ViewModelProviders.of(this).get(AddEditNoteFragmentViewModel.class);
 
         return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        currentNote = getArguments().getParcelable(EXTRA_NOTE);
+        if(currentNote != null) {
+            ((MainActivity)requireActivity()).getSupportActionBar().setTitle("Edit Note");
+            noteEditText.setText(currentNote.getText());
+        }
     }
 
     private void saveNote() {
@@ -47,8 +63,13 @@ public class AddEditNoteFragment extends Fragment {
             Toast.makeText(getContext(), "Empty note deleted", Toast.LENGTH_SHORT).show();
             return;
         }
-        Note note = new Note(text, new Date());
-        viewModel.insert(note);
+        if(currentNote != null) {
+            currentNote.setText(text);
+            viewModel.update(currentNote);
+        } else {
+            Note newNote = new Note(text, new Date());
+            viewModel.insert(newNote);
+        }
     }
 
     private void closeKeyboard() {
