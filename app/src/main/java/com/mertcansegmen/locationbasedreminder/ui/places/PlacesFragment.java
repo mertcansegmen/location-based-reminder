@@ -1,6 +1,7 @@
 package com.mertcansegmen.locationbasedreminder.ui.places;
 
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,16 +9,62 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
+import com.mertcansegmen.locationbasedreminder.model.Place;
+
+import java.util.List;
 
 public class PlacesFragment extends Fragment {
 
+    private FloatingActionButton addPlaceButton;
+    private ChipGroup chipGroup;
+
+    private PlacesFragmentViewModel viewModel;
+
+    private NavController navController;
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_places, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_places, container, false);
 
-        return v;
+        chipGroup = view.findViewById(R.id.chip_group);
+        chipGroup.setChipSpacingVertical(30);
+        viewModel = ViewModelProviders.of(this).get(PlacesFragmentViewModel.class);
+
+        viewModel.getAllPlaces().observe(this, new Observer<List<Place>>() {
+            @Override
+            public void onChanged(List<Place> places) {
+                for(Place place : places) {
+                    Chip chip = new Chip(view.getContext());
+                    chip.setText(place.getName());
+                    chip.setChipIcon(getResources().getDrawable(R.drawable.ic_places));
+                    chipGroup.addView(chip);
+                }
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        addPlaceButton = view.findViewById(R.id.btn_add_place);
+
+        addPlaceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //navController.navigate();
+            }
+        });
     }
 }
