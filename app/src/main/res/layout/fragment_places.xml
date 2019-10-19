@@ -6,10 +6,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="places" />
+        android:padding="10dp">
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home"
+                app:chipIcon="@drawable/ic_places" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="School"
+                app:chipIcon="@drawable/ic_places" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Walmart"
+                app:chipIcon="@drawable/ic_places" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home"
+                app:chipIcon="@drawable/ic_places" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Train Station"
+                app:chipIcon="@drawable/ic_places" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="School"
+                app:chipIcon="@drawable/ic_places" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Walmart"
+                app:chipIcon="@drawable/ic_places" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bus Station"
+                app:chipIcon="@drawable/ic_places" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton2"

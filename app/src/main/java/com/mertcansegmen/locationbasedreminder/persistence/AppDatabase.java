@@ -30,13 +30,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract NoteDao noteDao();
 
-    public abstract AlarmAttributeDao alarmAttributeDao();
-
     public abstract PlaceDao placeDao();
 
     public abstract PlaceGroupDao placeGroupDao();
-
-    public abstract PlaceGroupItemDao placeGroupItemDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if(instance == null) {
