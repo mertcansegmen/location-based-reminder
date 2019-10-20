@@ -37,13 +37,13 @@ public class AddEditNoteFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_add_edit_note, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_edit_note, container, false);
         setHasOptionsMenu(true);
-        noteEditText = v.findViewById(R.id.txt_note);
+        noteEditText = view.findViewById(R.id.txt_note);
 
         viewModel = ViewModelProviders.of(this).get(AddEditNoteFragmentViewModel.class);
 
-        return v;
+        return view;
     }
 
     @Override

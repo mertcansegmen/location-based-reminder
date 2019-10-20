@@ -5,6 +5,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
+import com.mertcansegmen.locationbasedreminder.util.PlaceChip;
 
 import java.util.List;
 
@@ -42,11 +44,18 @@ public class PlacesFragment extends Fragment {
         viewModel.getAllPlaces().observe(this, new Observer<List<Place>>() {
             @Override
             public void onChanged(List<Place> places) {
-                for(Place place : places) {
-                    Chip chip = new Chip(view.getContext());
+                for(final Place place : places) {
+                    PlaceChip chip = new PlaceChip(view.getContext());
+                    chip.setPlace(place);
                     chip.setText(place.getName());
                     chip.setChipIcon(getResources().getDrawable(R.drawable.ic_places));
                     chipGroup.addView(chip);
+                    chip.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getContext(), place + " ", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
