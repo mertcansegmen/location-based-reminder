@@ -22,14 +22,22 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
 
     <fragment
         android:id="@+id/placesFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.places.PlacesFragment"
         android:label="@string/title_places"
-        tools:layout="@layout/fragment_places" />
+        tools:layout="@layout/fragment_places" >
+        <action
+            android:id="@+id/action_placesFragment_to_addEditPlaceFragment"
+            app:destination="@id/addEditPlaceFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
 
     <fragment
         android:id="@+id/placeGroupsFragment"
@@ -51,4 +59,9 @@
             android:name="note"
             app:argType="com.mertcansegmen.locationbasedreminder.model.Note"/>
     </fragment>
+    <fragment
+        android:id="@+id/addEditPlaceFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.ui.addeditplace.AddEditPlaceFragment"
+        android:label="@string/new_place"
+        tools:layout="@layout/fragment_add_edit_place" />
 </navigation>

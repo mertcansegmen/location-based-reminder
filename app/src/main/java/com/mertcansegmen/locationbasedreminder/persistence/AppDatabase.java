@@ -64,9 +64,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            noteDao.insert(new Note("Öğrenci işlerine uğra", new Date()));
-            noteDao.insert(new Note("Kitabı kütüphaneye iade et", new Date()));
-            noteDao.insert(new Note("Algoritma ödevini yap", new Date()));
+            noteDao.insert(new Note("Feed the dog", new Date()));
+            noteDao.insert(new Note("Return book to library", new Date()));
+            noteDao.insert(new Note("Reply to Angela", new Date()));
             placeDao.insert(new Place("Home", 37.12583, 26.48934));
             placeDao.insert(new Place("School", 37.13583, 26.45934));
             placeDao.insert(new Place("Walmart", 37.11583, 26.41934));

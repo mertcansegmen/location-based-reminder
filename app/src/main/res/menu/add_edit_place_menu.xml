@@ -2,10 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/save_note"
+        android:id="@+id/save_place"
         android:icon="@drawable/ic_save"
         android:iconTint="@color/colorWhite"
-        android:title="@string/save"
+        android:title="Save"
         app:showAsAction="ifRoom"/>
-
 </menu>

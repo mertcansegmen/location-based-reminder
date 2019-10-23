@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -68,11 +69,12 @@ public class PlacesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         addPlaceButton = view.findViewById(R.id.btn_add_place);
+        navController = Navigation.findNavController(view);
 
         addPlaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //navController.navigate();
+                navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment);
             }
         });
     }
