@@ -1,6 +1,7 @@
 package com.mertcansegmen.locationbasedreminder.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "place")
@@ -14,6 +15,12 @@ public class Place {
     private double latitude;
 
     private double longitude;
+
+    @Ignore
+    public Place(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
     public Place(String name, double latitude, double longitude) {
         this.name = name;

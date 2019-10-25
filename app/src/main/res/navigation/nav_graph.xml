@@ -50,6 +50,7 @@
         android:name="com.mertcansegmen.locationbasedreminder.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+
     <fragment
         android:id="@+id/addEditNoteFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.addeditnote.AddEditNoteFragment"
@@ -59,9 +60,12 @@
             android:name="note"
             app:argType="com.mertcansegmen.locationbasedreminder.model.Note"/>
     </fragment>
+
     <fragment
         android:id="@+id/addEditPlaceFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.addeditplace.AddEditPlaceFragment"
         android:label="@string/new_place"
-        tools:layout="@layout/fragment_add_edit_place" />
+        tools:layout="@layout/fragment_add_edit_place" >
+    </fragment>
+
 </navigation>

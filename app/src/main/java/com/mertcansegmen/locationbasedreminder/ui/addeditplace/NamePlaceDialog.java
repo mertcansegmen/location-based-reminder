@@ -5,23 +5,26 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mertcansegmen.locationbasedreminder.R;
+import com.mertcansegmen.locationbasedreminder.model.Place;
 
 public class NamePlaceDialog extends DialogFragment {
 
-    MaterialButton okButton;
-    MaterialButton cancelButton;
-    TextInputLayout placeNameLayout;
-    TextInputEditText placeNameEditText;
+    private MaterialButton okButton;
+    private MaterialButton cancelButton;
+    private TextInputLayout placeNameLayout;
+    private TextInputEditText placeNameEditText;
+
+    private NamePlaceDialogViewModel viewModel;
 
     @Nullable
     @Override
@@ -37,21 +40,25 @@ public class NamePlaceDialog extends DialogFragment {
         placeNameEditText = view.findViewById(R.id.edittext_place_name);
         placeNameLayout = view.findViewById(R.id.edittext_layout_place_name);
 
-        //Bundle bundle = getArguments();
+        viewModel = ViewModelProviders.of(this).get(NamePlaceDialogViewModel.class);
 
-        //Place place = bundle.getParcelable("place");
+        final Bundle bundle = getArguments();
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // add place name to database
+                String placeName = placeNameEditText.getText().toString();
+                double lat = bundle.getDouble("lat");
+                double lng = bundle.getDouble("lng");
+                Place place = new Place(placeName, lat, lng);
+                viewModel.insert(place);
+                dismiss();
             }
         });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // delete place object from database
                 dismiss();
             }
         });

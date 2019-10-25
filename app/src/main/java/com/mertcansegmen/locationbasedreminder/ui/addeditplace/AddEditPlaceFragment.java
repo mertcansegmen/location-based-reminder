@@ -5,11 +5,14 @@ import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +26,11 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.mertcansegmen.locationbasedreminder.R;
+import com.mertcansegmen.locationbasedreminder.model.Place;
+
+import java.util.List;
 
 public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback {
 
@@ -47,6 +54,11 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         }
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -107,26 +119,22 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_place:
-                savePlace();
-                //requireActivity().onBackPressed();
+                openNamePlaceDialog();
+                requireActivity().onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void savePlace() {
-//        NamePlaceDialog dialog = new NamePlaceDialog();
-//        dialog.setCancelable(false);
-//        dialog.show;
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
-        DialogFragment dialogFragment = new NamePlaceDialog();
-        dialogFragment.show(ft, "dialog");
-        Toast.makeText(getContext(), googleMap.getCameraPosition().target + " ", Toast.LENGTH_SHORT).show();
+    private void openNamePlaceDialog() {
+        LatLng latLng = googleMap.getCameraPosition().target;
+        Bundle bundle = new Bundle();
+        bundle.putDouble("lat", latLng.latitude);
+        bundle.putDouble("lng", latLng.longitude);
+        DialogFragment dialog = new NamePlaceDialog();
+        dialog.setCancelable(false);
+        dialog.setArguments(bundle);
+        dialog.show(requireActivity().getSupportFragmentManager(), "Name Place");
     }
 }

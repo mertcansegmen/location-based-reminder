@@ -45,6 +45,7 @@ public class PlacesFragment extends Fragment {
         viewModel.getAllPlaces().observe(this, new Observer<List<Place>>() {
             @Override
             public void onChanged(List<Place> places) {
+                chipGroup.removeAllViews();
                 for(final Place place : places) {
                     PlaceChip chip = new PlaceChip(view.getContext());
                     chip.setPlace(place);
