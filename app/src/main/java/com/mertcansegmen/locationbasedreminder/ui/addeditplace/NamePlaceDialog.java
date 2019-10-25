@@ -19,6 +19,8 @@ import com.mertcansegmen.locationbasedreminder.model.Place;
 
 public class NamePlaceDialog extends DialogFragment {
 
+    public static final String EXTRA_PLACE = "com.mertcansegmen.locationbasedreminder.EXTRA_PLACE";
+
     private MaterialButton okButton;
     private MaterialButton cancelButton;
     private TextInputLayout placeNameLayout;
@@ -28,7 +30,7 @@ public class NamePlaceDialog extends DialogFragment {
 
     @Nullable
     @Override
-    public Dialog onCreateDialog(@NonNull Bundle savedInstanceState) {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_name_place, null);
@@ -42,16 +44,21 @@ public class NamePlaceDialog extends DialogFragment {
 
         viewModel = ViewModelProviders.of(this).get(NamePlaceDialogViewModel.class);
 
-        final Bundle bundle = getArguments();
+        Bundle bundle = getArguments();
+        final Place place = bundle.getParcelable(EXTRA_PLACE);
+
+        if(!isNewPlace(place)) {
+            placeNameEditText.setText(place.getName());
+        }
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String placeName = placeNameEditText.getText().toString();
-                double lat = bundle.getDouble("lat");
-                double lng = bundle.getDouble("lng");
-                Place place = new Place(placeName, lat, lng);
-                viewModel.insert(place);
+                if(isNewPlace(place)) {
+                    insertNewPlace(place);
+                } else {
+                    updatePlace(place);
+                }
                 dismiss();
             }
         });
@@ -64,5 +71,21 @@ public class NamePlaceDialog extends DialogFragment {
         });
 
         return dialog.create();
+    }
+
+    private void insertNewPlace(Place place) {
+        String placeName = placeNameEditText.getText().toString();
+        place.setName(placeName);
+        viewModel.insert(place);
+    }
+
+    private void updatePlace(Place place) {
+        String placeName = placeNameEditText.getText().toString();
+        place.setName(placeName);
+        viewModel.update(place);
+    }
+
+    private boolean isNewPlace(Place place) {
+        return place.getİd() == null;
     }
 }

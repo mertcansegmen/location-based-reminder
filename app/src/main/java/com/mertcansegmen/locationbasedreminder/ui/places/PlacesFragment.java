@@ -20,6 +20,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
+import com.mertcansegmen.locationbasedreminder.ui.addeditplace.AddEditPlaceFragment;
 import com.mertcansegmen.locationbasedreminder.util.PlaceChip;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class PlacesFragment extends Fragment {
                     chip.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(getContext(), place + " ", Toast.LENGTH_SHORT).show();
+                            navigateForEdit(place);
                         }
                     });
                 }
@@ -78,5 +79,11 @@ public class PlacesFragment extends Fragment {
                 navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment);
             }
         });
+    }
+
+    private void navigateForEdit(Place place) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AddEditPlaceFragment.EXTRA_PLACE, place);
+        navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment, bundle);
     }
 }

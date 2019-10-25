@@ -2,16 +2,14 @@ package com.mertcansegmen.locationbasedreminder.ui.addeditplace;
 
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,17 +25,22 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
-
-import java.util.List;
+import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 
 public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback {
 
+    public static final String EXTRA_PLACE ="com.mertcansegmen.locationbasedreminder.EXTRA_PLACE";
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+
+    private Place currentPlace;
 
     private MapView mapView;
     private GoogleMap googleMap;
+
+    private AddEditPlaceFragmentViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +48,8 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         setHasOptionsMenu(true);
 
         mapView = view.findViewById(R.id.map_view);
+
+        viewModel = ViewModelProviders.of(this).get(AddEditPlaceFragmentViewModel.class);
 
         if(isGoogleServicesAvailable()) {
             Toast.makeText(requireContext(), "Nice", Toast.LENGTH_SHORT).show();
@@ -59,6 +64,11 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if(getArguments() != null) {
+            currentPlace = getArguments().getParcelable(EXTRA_PLACE);
+            ((MainActivity)requireActivity()).getSupportActionBar().setTitle(currentPlace.getName());
+        }
     }
 
     @Override
@@ -111,7 +121,11 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.add_edit_place_menu, menu);
+        if(currentPlace != null) {
+            inflater.inflate(R.menu.edit_place_menu, menu);
+        } else {
+            inflater.inflate(R.menu.add_place_menu, menu);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -119,19 +133,46 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_place:
-                openNamePlaceDialog();
+            case R.id.edit_place:
+                configurePlaceLatLng();
+                showNamePlaceDialog();
                 requireActivity().onBackPressed();
+                return true;
+            case R.id.delete_place:
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setMessage("Are you sure you want to delete this place?")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deletePlace();
+                                requireActivity().onBackPressed();
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void openNamePlaceDialog() {
+    private void deletePlace() {
+        viewModel.delete(currentPlace);
+    }
+
+    private void configurePlaceLatLng() {
+        if(currentPlace == null) {
+            currentPlace = new Place();
+        }
         LatLng latLng = googleMap.getCameraPosition().target;
+        currentPlace.setLatitude(latLng.latitude);
+        currentPlace.setLongitude(latLng.longitude);
+    }
+
+    private void showNamePlaceDialog() {
         Bundle bundle = new Bundle();
-        bundle.putDouble("lat", latLng.latitude);
-        bundle.putDouble("lng", latLng.longitude);
+        bundle.putParcelable(NamePlaceDialog.EXTRA_PLACE, currentPlace);
+
         DialogFragment dialog = new NamePlaceDialog();
         dialog.setCancelable(false);
         dialog.setArguments(bundle);

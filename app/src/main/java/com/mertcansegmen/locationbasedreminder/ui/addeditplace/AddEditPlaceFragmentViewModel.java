@@ -8,20 +8,16 @@ import androidx.lifecycle.AndroidViewModel;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.repository.PlaceRepository;
 
-public class NamePlaceDialogViewModel extends AndroidViewModel {
+public class AddEditPlaceFragmentViewModel extends AndroidViewModel {
 
     private PlaceRepository repository;
 
-    public NamePlaceDialogViewModel(@NonNull Application application) {
+    public AddEditPlaceFragmentViewModel(@NonNull Application application) {
         super(application);
         repository = new PlaceRepository(application);
     }
 
-    public void insert(Place place) {
-        repository.insert(place);
-    }
-
-    public void update(Place place) {
-        repository.update(place);
+    public void delete(Place place) {
+        repository.delete(place);
     }
 }

@@ -21,7 +21,7 @@ import java.util.Date;
 @Database(entities = {
         Reminder.class, Note.class, AlarmAttribute.class,
         Place.class, PlaceGroup.class, PlaceGroupItem.class
-}, version = 1)
+}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
