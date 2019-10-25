@@ -12,4 +12,6 @@
     <string name="note">Note</string>
     <string name="new_place">New Place</string>
     <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>

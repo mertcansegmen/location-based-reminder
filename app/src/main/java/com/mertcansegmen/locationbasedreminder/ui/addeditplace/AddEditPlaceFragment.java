@@ -5,8 +5,11 @@ import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -105,7 +108,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         switch (item.getItemId()) {
             case R.id.save_place:
                 savePlace();
-                requireActivity().onBackPressed();
+                //requireActivity().onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -113,6 +116,17 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     }
 
     private void savePlace() {
+//        NamePlaceDialog dialog = new NamePlaceDialog();
+//        dialog.setCancelable(false);
+//        dialog.show;
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        DialogFragment dialogFragment = new NamePlaceDialog();
+        dialogFragment.show(ft, "dialog");
         Toast.makeText(getContext(), googleMap.getCameraPosition().target + " ", Toast.LENGTH_SHORT).show();
     }
 }
