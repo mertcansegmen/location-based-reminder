@@ -119,8 +119,10 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        if(currentPlace != null)
-        goToLocation(currentPlace);
+        googleMap.setMyLocationEnabled(true);
+        if(currentPlace != null){
+            goToLocation(currentPlace);
+        }
     }
 
     private void goToLocation(Place place) {
