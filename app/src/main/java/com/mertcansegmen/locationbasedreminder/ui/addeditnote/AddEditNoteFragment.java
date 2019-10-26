@@ -73,7 +73,7 @@ public class AddEditNoteFragment extends Fragment {
     }
 
     private boolean isNewNote(Note note) {
-        return currentNote == null;
+        return note == null;
     }
 
     private void closeKeyboard() {
@@ -86,7 +86,11 @@ public class AddEditNoteFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.add_edit_note_menu, menu);
+        if(isNewNote(currentNote)) {
+            inflater.inflate(R.menu.add_note_menu, menu);
+        } else {
+            inflater.inflate(R.menu.edit_note_menu, menu);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -98,6 +102,10 @@ public class AddEditNoteFragment extends Fragment {
                 closeKeyboard();
                 requireActivity().onBackPressed();
                 return true;
+            case R.id.delete_note:
+                viewModel.delete(currentNote);
+                closeKeyboard();
+                requireActivity().onBackPressed();
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -5,6 +5,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.ui.addeditplace.AddEditPlaceFragment;
+import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.util.PlaceChip;
 
 import java.util.List;
@@ -39,9 +43,12 @@ public class PlacesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_places, container, false);
 
+        addPlaceButton = view.findViewById(R.id.btn_add_place);
         chipGroup = view.findViewById(R.id.chip_group);
-        chipGroup.setChipSpacingVertical(30);
+
         viewModel = ViewModelProviders.of(this).get(PlacesFragmentViewModel.class);
+
+        Animator.animateFloatingActionButton(addPlaceButton);
 
         viewModel.getAllPlaces().observe(this, new Observer<List<Place>>() {
             @Override
@@ -70,7 +77,6 @@ public class PlacesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        addPlaceButton = view.findViewById(R.id.btn_add_place);
         navController = Navigation.findNavController(view);
 
         addPlaceButton.setOnClickListener(new View.OnClickListener() {

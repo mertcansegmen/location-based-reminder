@@ -4,6 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.ScaleAnimation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.ui.addeditnote.AddEditNoteFragment;
+import com.mertcansegmen.locationbasedreminder.util.Animator;
 
 import java.util.List;
 
@@ -35,15 +43,18 @@ public class NotesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_notes, container, false);
+        View view = inflater.inflate(R.layout.fragment_notes, container, false);
 
-        recyclerView = v.findViewById(R.id.recycler_view);
+        addNoteButton = view.findViewById(R.id.btn_add_note);
+        recyclerView = view.findViewById(R.id.recycler_view);
         viewModel = ViewModelProviders.of(this).get(NotesFragmentViewModel.class);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         final NoteAdapter noteAdapter = new NoteAdapter();
         recyclerView.setAdapter(noteAdapter);
+
+        Animator.animateFloatingActionButton(addNoteButton);
 
         viewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
             @Override
@@ -106,14 +117,13 @@ public class NotesFragment extends Fragment {
             }
         }).attachToRecyclerView(recyclerView);
 
-        return v;
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        addNoteButton = view.findViewById(R.id.btn_add_note);
         navController = Navigation.findNavController(view);
 
         addNoteButton.setOnClickListener(new View.OnClickListener() {
