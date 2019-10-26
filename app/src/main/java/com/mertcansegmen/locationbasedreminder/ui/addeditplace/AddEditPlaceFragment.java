@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,6 +36,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     public static final String PLACE_BUNDLE_KEY ="com.mertcansegmen.locationbasedreminder.EXTRA_PLACE";
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private static final float DEFAULT_ZOOM = 15;
 
     private Place currentPlace;
 
@@ -116,6 +119,14 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
+        if(currentPlace != null)
+        goToLocation(currentPlace);
+    }
+
+    private void goToLocation(Place place) {
+        LatLng ll = new LatLng(place.getLatitude(), place.getLongitude());
+        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, DEFAULT_ZOOM);
+        googleMap.moveCamera(update);
     }
 
     @Override
