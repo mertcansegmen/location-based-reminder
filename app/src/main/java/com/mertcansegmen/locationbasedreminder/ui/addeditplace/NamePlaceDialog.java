@@ -34,8 +34,7 @@ public class NamePlaceDialog extends DialogFragment {
         AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_name_place, null);
-
-        dialog.setView(view).setTitle("Name this place");
+        dialog.setView(view).setTitle(getString(R.string.name_this_place));
 
         okButton = view.findViewById(R.id.btn_ok);
         cancelButton = view.findViewById(R.id.btn_cancel);
@@ -74,13 +73,13 @@ public class NamePlaceDialog extends DialogFragment {
     }
 
     private void insertNewPlace(Place place) {
-        String placeName = placeNameEditText.getText().toString();
+        String placeName = placeNameEditText.getText().toString().trim();
         place.setName(placeName);
         viewModel.insert(place);
     }
 
     private void updatePlace(Place place) {
-        String placeName = placeNameEditText.getText().toString();
+        String placeName = placeNameEditText.getText().toString().trim();
         place.setName(placeName);
         viewModel.update(place);
     }

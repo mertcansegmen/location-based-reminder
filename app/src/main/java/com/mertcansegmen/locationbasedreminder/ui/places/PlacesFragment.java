@@ -83,7 +83,7 @@ public class PlacesFragment extends Fragment {
 
     private void navigateForEdit(Place place) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(AddEditPlaceFragment.EXTRA_PLACE, place);
+        bundle.putParcelable(AddEditPlaceFragment.PLACE_BUNDLE_KEY, place);
         navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment, bundle);
     }
 }

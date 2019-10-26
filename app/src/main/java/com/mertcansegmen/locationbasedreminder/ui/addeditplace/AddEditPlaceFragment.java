@@ -32,7 +32,7 @@ import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 
 public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback {
 
-    public static final String EXTRA_PLACE ="com.mertcansegmen.locationbasedreminder.EXTRA_PLACE";
+    public static final String PLACE_BUNDLE_KEY ="com.mertcansegmen.locationbasedreminder.EXTRA_PLACE";
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
     private Place currentPlace;
@@ -52,10 +52,9 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         viewModel = ViewModelProviders.of(this).get(AddEditPlaceFragmentViewModel.class);
 
         if(isGoogleServicesAvailable()) {
-            Toast.makeText(requireContext(), "Nice", Toast.LENGTH_SHORT).show();
             initMap(savedInstanceState);
         } else {
-            Toast.makeText(requireContext(), "Rip", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getString(R.string.google_Services_not_available), Toast.LENGTH_SHORT).show();
         }
 
         return view;
@@ -66,7 +65,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         super.onViewCreated(view, savedInstanceState);
 
         if(getArguments() != null) {
-            currentPlace = getArguments().getParcelable(EXTRA_PLACE);
+            currentPlace = getArguments().getParcelable(PLACE_BUNDLE_KEY);
             ((MainActivity)requireActivity()).getSupportActionBar().setTitle(currentPlace.getName());
         }
     }
@@ -109,7 +108,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
             Dialog dialog = api.getErrorDialog(requireActivity(), isAvailable, 0);
             dialog.show();
         } else {
-            Toast.makeText(requireContext(), "Can not connect to play services", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getString(R.string.cannot_connect_play_services), Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -140,15 +139,15 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
                 return true;
             case R.id.delete_place:
                 new MaterialAlertDialogBuilder(requireContext())
-                        .setMessage("Are you sure you want to delete this place?")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setMessage(getString(R.string.delete_place_message))
+                        .setPositiveButton(getText(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 deletePlace();
                                 requireActivity().onBackPressed();
                             }
                         })
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton(getString(R.string.cancel), null)
                         .show();
                 return true;
             default:

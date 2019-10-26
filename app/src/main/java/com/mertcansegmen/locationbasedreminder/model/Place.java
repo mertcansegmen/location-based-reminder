@@ -35,18 +35,6 @@ public class Place implements Parcelable {
         longitude = in.readDouble();
     }
 
-    public static final Creator<Place> CREATOR = new Creator<Place>() {
-        @Override
-        public Place createFromParcel(Parcel in) {
-            return new Place(in);
-        }
-
-        @Override
-        public Place[] newArray(int size) {
-            return new Place[size];
-        }
-    };
-
     public Integer getİd() {
         return id;
     }
@@ -79,15 +67,17 @@ public class Place implements Parcelable {
         this.longitude = longitude;
     }
 
-    @Override
-    public String toString() {
-        return "Place{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
-    }
+    public static final Creator<Place> CREATOR = new Creator<Place>() {
+        @Override
+        public Place createFromParcel(Parcel in) {
+            return new Place(in);
+        }
+
+        @Override
+        public Place[] newArray(int size) {
+            return new Place[size];
+        }
+    };
 
     @Override
     public int describeContents() {

@@ -56,7 +56,7 @@ public class NotesFragment extends Fragment {
             @Override
             public void onItemClicked(Note note) {
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(AddEditNoteFragment.EXTRA_NOTE, note);
+                bundle.putParcelable(AddEditNoteFragment.NOTE_BUNDLE_KEY, note);
                 navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment, bundle);
             }
         });

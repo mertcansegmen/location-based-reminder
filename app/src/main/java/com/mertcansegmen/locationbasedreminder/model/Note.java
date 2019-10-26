@@ -24,18 +24,6 @@ public class Note implements Parcelable {
     @TypeConverters({DateConverter.class})
     private Date createdAt;
 
-    public static final Creator<Note> CREATOR = new Creator<Note>() {
-        @Override
-        public Note createFromParcel(Parcel in) {
-            return new Note(in);
-        }
-
-        @Override
-        public Note[] newArray(int size) {
-            return new Note[size];
-        }
-    };
-
     public Note(String text, Date createdAt) {
         this.text = text;
         this.createdAt = createdAt;
@@ -69,6 +57,18 @@ public class Note implements Parcelable {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
 
     @Override
     public int describeContents() {

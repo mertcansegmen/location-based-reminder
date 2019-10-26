@@ -16,4 +16,8 @@
     <string name="ok">OK</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="name_this_place">Name This Place</string>
+    <string name="cannot_connect_play_services">Can not connect to play services</string>
+    <string name="delete_place_message">Are you sure you want to delete this place?</string>
+    <string name="google_Services_not_available">Google services are not available</string>
 </resources>

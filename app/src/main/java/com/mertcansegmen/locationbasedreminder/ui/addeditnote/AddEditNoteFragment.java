@@ -1,6 +1,5 @@
 package com.mertcansegmen.locationbasedreminder.ui.addeditnote;
 
-
 import android.content.Context;
 import android.os.Bundle;
 
@@ -27,7 +26,7 @@ import java.util.Date;
 
 public class AddEditNoteFragment extends Fragment {
 
-    public static final String EXTRA_NOTE ="com.mertcansegmen.locationbasedreminder.EXTRA_NOTE";
+    public static final String NOTE_BUNDLE_KEY ="com.mertcansegmen.locationbasedreminder.EXTRA_NOTE";
 
     private EditText noteEditText;
 
@@ -51,8 +50,8 @@ public class AddEditNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        currentNote = getArguments().getParcelable(EXTRA_NOTE);
-        if(currentNote != null) {
+        currentNote = getArguments().getParcelable(NOTE_BUNDLE_KEY);
+        if(!isNewNote(currentNote)) {
             ((MainActivity)requireActivity()).getSupportActionBar().setTitle("Edit Note");
             noteEditText.setText(currentNote.getText());
         }
@@ -64,13 +63,17 @@ public class AddEditNoteFragment extends Fragment {
             Toast.makeText(getContext(), "Empty note deleted", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(currentNote != null) {
-            currentNote.setText(text);
-            viewModel.update(currentNote);
-        } else {
+        if(isNewNote(currentNote)) {
             Note newNote = new Note(text, new Date());
             viewModel.insert(newNote);
+        } else {
+            currentNote.setText(text);
+            viewModel.update(currentNote);
         }
+    }
+
+    private boolean isNewNote(Note note) {
+        return currentNote == null;
     }
 
     private void closeKeyboard() {
