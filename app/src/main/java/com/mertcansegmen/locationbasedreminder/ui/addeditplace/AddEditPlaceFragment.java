@@ -5,7 +5,6 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -131,9 +130,11 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
         if(currentPlace != null){
             goToLocation(currentPlace.getLatitude(), currentPlace.getLongitude());
+            radius = currentPlace.getRadius();
+        } else {
+            radius = DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS);
         }
 
-        radius = DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS);
         radiusSeekBar.setProgress(radius);
         radiusTextView.setText(getString(R.string.radius_text, radius));
         drawCircle(radius);
@@ -165,8 +166,8 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         CircleOptions options = new CircleOptions()
                 .center(googleMap.getCameraPosition().target)
                 .radius(radius)
-                .fillColor(0x330000FF)
-                .strokeColor(0x770000FF)
+                .fillColor(getResources().getColor(R.color.colorRadiusFill))
+                .strokeColor(getResources().getColor(R.color.colorStroke))
                 .strokeWidth(2);
         radiusCircle = googleMap.addCircle(options);
     }
@@ -209,7 +210,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         switch (item.getItemId()) {
             case R.id.save_place:
             case R.id.edit_place:
-                configurePlaceLatLng();
+                configurePlaceLatLngRad();
                 showNamePlaceDialog();
                 requireActivity().onBackPressed();
                 return true;
@@ -235,13 +236,14 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         viewModel.delete(currentPlace);
     }
 
-    private void configurePlaceLatLng() {
+    private void configurePlaceLatLngRad() {
         if(currentPlace == null) {
             currentPlace = new Place();
         }
         LatLng latLng = googleMap.getCameraPosition().target;
         currentPlace.setLatitude(latLng.latitude);
         currentPlace.setLongitude(latLng.longitude);
+        currentPlace.setRadius(radius);
     }
 
     private void showNamePlaceDialog() {

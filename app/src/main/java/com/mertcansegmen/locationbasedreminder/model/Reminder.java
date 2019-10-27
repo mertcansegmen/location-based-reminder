@@ -42,8 +42,6 @@ public class Reminder {
     @ColumnInfo(name = "place_group_id")
     private int placeGroupId;
 
-    private int range;
-
     @ColumnInfo(name = "created_at")
     @TypeConverters({DateConverter.class})
     private Date createdAt;
@@ -51,11 +49,10 @@ public class Reminder {
     @ColumnInfo(name = "is_active")
     private boolean isActive;
 
-    public Reminder(int noteId, int placeId, int placeGroupId, int range, Date createdAt, boolean isActive) {
+    public Reminder(int noteId, int placeId, int placeGroupId, Date createdAt, boolean isActive) {
         this.noteId = noteId;
         this.placeId = placeId;
         this.placeGroupId = placeGroupId;
-        this.range = range;
         this.createdAt = createdAt;
         this.isActive = isActive;
     }
@@ -90,14 +87,6 @@ public class Reminder {
 
     public void setPlaceGroupId(int placeGroupId) {
         this.placeGroupId = placeGroupId;
-    }
-
-    public int getRange() {
-        return range;
-    }
-
-    public void setRange(int range) {
-        this.range = range;
     }
 
     public Date getCreatedAt() {

@@ -19,13 +19,16 @@ public class Place implements Parcelable {
 
     private double longitude;
 
+    private int radius;
+
     @Ignore
     public Place() {}
 
-    public Place(String name, double latitude, double longitude) {
+    public Place(String name, double latitude, double longitude, int radius) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.radius = radius;
     }
 
     protected Place(Parcel in) {
@@ -65,6 +68,14 @@ public class Place implements Parcelable {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
     }
 
     public static final Creator<Place> CREATOR = new Creator<Place>() {

@@ -21,7 +21,7 @@ import java.util.Date;
 @Database(entities = {
         Reminder.class, Note.class, AlarmAttribute.class,
         Place.class, PlaceGroup.class, PlaceGroupItem.class
-}, version = 2)
+}, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
@@ -67,13 +67,13 @@ public abstract class AppDatabase extends RoomDatabase {
             noteDao.insert(new Note("Feed the dog", new Date()));
             noteDao.insert(new Note("Return book to library", new Date()));
             noteDao.insert(new Note("Reply to Angela", new Date()));
-            placeDao.insert(new Place("Home", 42.421935, -71.065640));
-            placeDao.insert(new Place("School", 42.360037, -71.087794));
-            placeDao.insert(new Place("Walmart", 41.373641, -72.919015));
-            placeDao.insert(new Place("Train Station", 41.297474, -72.926468));
-            placeDao.insert(new Place("Bus Station", 41.180304, -73.187537));
-            placeDao.insert(new Place("Jesica's Home", 41.190783, -73.139186));
-            placeDao.insert(new Place("Grocery Store", 41.221928, -73.074861));
+            placeDao.insert(new Place("Home", 42.421935, -71.065640, 100));
+            placeDao.insert(new Place("School", 42.360037, -71.087794, 300));
+            placeDao.insert(new Place("Walmart", 41.373641, -72.919015, 300));
+            placeDao.insert(new Place("Train Station", 41.297474, -72.926468, 100));
+            placeDao.insert(new Place("Bus Station", 41.180304, -73.187537, 50));
+            placeDao.insert(new Place("Jesica's Home", 41.190783, -73.139186, 40));
+            placeDao.insert(new Place("Grocery Store", 41.221928, -73.074861, 100));
             return null;
         }
     }
