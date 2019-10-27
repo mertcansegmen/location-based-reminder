@@ -38,6 +38,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
@@ -62,6 +63,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     private TextView radiusTextView;
     private AppCompatSeekBar radiusSeekBar;
     private Circle radiusCircle;
+    private int radius;
 
     private AddEditPlaceFragmentViewModel viewModel;
 
@@ -131,12 +133,22 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
             goToLocation(currentPlace.getLatitude(), currentPlace.getLongitude());
         }
 
-        radiusSeekBar.setProgress(DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS));
-        radiusTextView.setText(getString(R.string.radius_text, DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS)));
+        radius = DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS);
+        radiusSeekBar.setProgress(radius);
+        radiusTextView.setText(getString(R.string.radius_text, radius));
+        drawCircle(radius);
+        this.googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                drawCircle(radius);
+            }
+        });
         radiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                radiusTextView.setText(getString(R.string.radius_text, progress));
+                radius = progress;
+                radiusTextView.setText(getString(R.string.radius_text, radius));
+                drawCircle(radius);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -144,6 +156,24 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
 
+    }
+
+    private void drawCircle(int radius) {
+        if(radiusCircle != null) {
+            removeCircle();
+        }
+        CircleOptions options = new CircleOptions()
+                .center(googleMap.getCameraPosition().target)
+                .radius(radius)
+                .fillColor(0x330000FF)
+                .strokeColor(0x770000FF)
+                .strokeWidth(2);
+        radiusCircle = googleMap.addCircle(options);
+    }
+
+    private void removeCircle() {
+        radiusCircle.remove();
+        radiusCircle = null;
     }
 
     private void goToLocation(double lat, double lng) {
