@@ -22,4 +22,5 @@
     <string name="google_Services_not_available">Google services are not available</string>
     <string name="location_permission_message">You need to grant location permission to use Location Based Reminder</string>
     <string name="grant_location_permission">Please grant location permissions</string>
+    <string name="radius_text">%dm</string>
 </resources>

@@ -67,13 +67,13 @@ public abstract class AppDatabase extends RoomDatabase {
             noteDao.insert(new Note("Feed the dog", new Date()));
             noteDao.insert(new Note("Return book to library", new Date()));
             noteDao.insert(new Note("Reply to Angela", new Date()));
-            placeDao.insert(new Place("Home", 37.12583, 26.48934));
-            placeDao.insert(new Place("School", 37.13583, 26.45934));
-            placeDao.insert(new Place("Walmart", 37.11583, 26.41934));
-            placeDao.insert(new Place("Metro Station", 37.19583, 26.14934));
-            placeDao.insert(new Place("Bus Station", 37.12583, 26.46934));
-            placeDao.insert(new Place("Buy More", 37.15583, 26.42934));
-            placeDao.insert(new Place("Down Town", 37.16583, 26.39934));
+            placeDao.insert(new Place("Home", 42.421935, -71.065640));
+            placeDao.insert(new Place("School", 42.360037, -71.087794));
+            placeDao.insert(new Place("Walmart", 41.373641, -72.919015));
+            placeDao.insert(new Place("Train Station", 41.297474, -72.926468));
+            placeDao.insert(new Place("Bus Station", 41.180304, -73.187537));
+            placeDao.insert(new Place("Jesica's Home", 41.190783, -73.139186));
+            placeDao.insert(new Place("Grocery Store", 41.221928, -73.074861));
             return null;
         }
     }

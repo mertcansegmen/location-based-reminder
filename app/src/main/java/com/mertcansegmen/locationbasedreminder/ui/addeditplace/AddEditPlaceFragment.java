@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -24,21 +26,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
@@ -46,6 +46,8 @@ import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 
 public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
+    private static final String PREF_KEY_RADIUS = "com.mertcansegmen.locationbasedreminder.PREF_KEY_RADIUS";
+    private static final int DEFAULT_RADIUS = 100;
     public static final String PLACE_BUNDLE_KEY = "com.mertcansegmen.locationbasedreminder.EXTRA_PLACE";
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final float DEFAULT_ZOOM = 15F;
@@ -54,8 +56,10 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     private MapView mapView;
     private GoogleMap googleMap;
-    private FusedLocationProviderClient fusedLocationClient;
     private LocationManager locationManager;
+
+    private TextView radiusTextView;
+    private AppCompatSeekBar radiusSeekBar;
     private Circle radiusCircle;
 
     private AddEditPlaceFragmentViewModel viewModel;
@@ -66,9 +70,10 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         setHasOptionsMenu(true);
 
         mapView = view.findViewById(R.id.map_view);
+        radiusSeekBar = view.findViewById(R.id.seekbar_radius);
+        radiusTextView = view.findViewById(R.id.txt_radius);
 
         viewModel = ViewModelProviders.of(this).get(AddEditPlaceFragmentViewModel.class);
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         if(isGoogleServicesAvailable()) {
             initMap(savedInstanceState);
@@ -118,10 +123,26 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         googleMap.setMyLocationEnabled(true);
+
         configureLocationListener();
+
         if(currentPlace != null){
             goToLocation(currentPlace.getLatitude(), currentPlace.getLongitude());
         }
+
+        radiusSeekBar.setProgress(DEFAULT_RADIUS);
+        radiusTextView.setText(getString(R.string.radius_text, DEFAULT_RADIUS));
+        radiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                radiusTextView.setText(getString(R.string.radius_text, progress));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) { }
+        });
+
     }
 
     private void goToLocation(double lat, double lng) {
