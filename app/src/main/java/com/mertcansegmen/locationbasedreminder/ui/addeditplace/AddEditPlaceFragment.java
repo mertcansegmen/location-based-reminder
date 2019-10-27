@@ -43,6 +43,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
+import com.mertcansegmen.locationbasedreminder.util.DevicePrefs;
 
 public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
@@ -130,8 +131,8 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
             goToLocation(currentPlace.getLatitude(), currentPlace.getLongitude());
         }
 
-        radiusSeekBar.setProgress(DEFAULT_RADIUS);
-        radiusTextView.setText(getString(R.string.radius_text, DEFAULT_RADIUS));
+        radiusSeekBar.setProgress(DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS));
+        radiusTextView.setText(getString(R.string.radius_text, DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS)));
         radiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
