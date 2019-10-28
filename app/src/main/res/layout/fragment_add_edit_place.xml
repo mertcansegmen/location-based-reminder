@@ -36,7 +36,7 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginBottom="18dp"
-        android:src="@drawable/ic_places"
+        android:src="@drawable/ic_icon"
         app:layout_constraintBottom_toBottomOf="@+id/map_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/map_view"
