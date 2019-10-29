@@ -49,7 +49,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     private static final String PREF_KEY_RADIUS = "com.mertcansegmen.locationbasedreminder.PREF_KEY_RADIUS";
     private static final int DEFAULT_RADIUS = 100;
-    public static final String PLACE_BUNDLE_KEY = "com.mertcansegmen.locationbasedreminder.EXTRA_PLACE";
+    public static final String BUNDLE_KEY_PLACE = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_PLACE";
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final float DEFAULT_ZOOM = 15F;
 
@@ -91,7 +91,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         super.onViewCreated(view, savedInstanceState);
 
         if(getArguments() != null) {
-            currentPlace = getArguments().getParcelable(PLACE_BUNDLE_KEY);
+            currentPlace = getArguments().getParcelable(BUNDLE_KEY_PLACE);
             ((MainActivity)requireActivity()).getSupportActionBar().setTitle(currentPlace.getName());
         }
     }
@@ -248,7 +248,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     private void showNamePlaceDialog() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(NamePlaceDialog.EXTRA_PLACE, currentPlace);
+        bundle.putParcelable(NamePlaceDialog.BUNDLE_KEY_PLACE, currentPlace);
 
         DialogFragment dialog = new NamePlaceDialog();
         dialog.setCancelable(false);

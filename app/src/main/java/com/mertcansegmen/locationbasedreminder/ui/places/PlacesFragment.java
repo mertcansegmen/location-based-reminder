@@ -1,14 +1,9 @@
 package com.mertcansegmen.locationbasedreminder.ui.places;
 
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +13,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
@@ -89,7 +83,7 @@ public class PlacesFragment extends Fragment {
 
     private void navigateForEdit(Place place) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(AddEditPlaceFragment.PLACE_BUNDLE_KEY, place);
+        bundle.putParcelable(AddEditPlaceFragment.BUNDLE_KEY_PLACE, place);
         navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment, bundle);
     }
 }

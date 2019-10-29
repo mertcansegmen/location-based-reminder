@@ -23,4 +23,6 @@
     <string name="location_permission_message">You need to grant location permission to use Location Based Reminder</string>
     <string name="grant_location_permission">Please grant location permissions</string>
     <string name="radius_text">%dm</string>
+    <string name="add_reminder">Add Reminder</string>
+    <string name="error_empty_place_name">Place name can not be empty</string>
 </resources>

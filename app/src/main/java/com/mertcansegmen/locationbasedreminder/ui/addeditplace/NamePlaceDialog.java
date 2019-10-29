@@ -3,10 +3,11 @@ package com.mertcansegmen.locationbasedreminder.ui.addeditplace;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -19,7 +20,7 @@ import com.mertcansegmen.locationbasedreminder.model.Place;
 
 public class NamePlaceDialog extends DialogFragment {
 
-    public static final String EXTRA_PLACE = "com.mertcansegmen.locationbasedreminder.EXTRA_PLACE";
+    public static final String BUNDLE_KEY_PLACE = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_PLACE";
 
     private MaterialButton okButton;
     private MaterialButton cancelButton;
@@ -44,7 +45,7 @@ public class NamePlaceDialog extends DialogFragment {
         viewModel = ViewModelProviders.of(this).get(NamePlaceDialogViewModel.class);
 
         Bundle bundle = getArguments();
-        final Place place = bundle.getParcelable(EXTRA_PLACE);
+        final Place place = bundle.getParcelable(BUNDLE_KEY_PLACE);
 
         if(!isNewPlace(place)) {
             placeNameEditText.setText(place.getName());
@@ -53,10 +54,19 @@ public class NamePlaceDialog extends DialogFragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String placeName = placeNameEditText.getText().toString().trim();
+                place.setName(placeName);
+
+                // Show error if place name field is empty
+                if(placeName.isEmpty()) {
+                    placeNameLayout.setError(getString(R.string.error_empty_place_name));
+                    return;
+                }
+
                 if(isNewPlace(place)) {
-                    insertNewPlace(place);
+                    viewModel.insert(place);
                 } else {
-                    updatePlace(place);
+                    viewModel.update(place);
                 }
                 dismiss();
             }
@@ -69,19 +79,20 @@ public class NamePlaceDialog extends DialogFragment {
             }
         });
 
+        placeNameEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                placeNameLayout.setErrorEnabled(false);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         return dialog.create();
-    }
-
-    private void insertNewPlace(Place place) {
-        String placeName = placeNameEditText.getText().toString().trim();
-        place.setName(placeName);
-        viewModel.insert(place);
-    }
-
-    private void updatePlace(Place place) {
-        String placeName = placeNameEditText.getText().toString().trim();
-        place.setName(placeName);
-        viewModel.update(place);
     }
 
     private boolean isNewPlace(Place place) {

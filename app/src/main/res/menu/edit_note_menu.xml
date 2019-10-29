@@ -9,6 +9,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/add_reminder"
+        android:icon="@drawable/ic_add_reminder"
+        android:title="@string/add_reminder"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/save_note"
         android:icon="@drawable/ic_save"
         android:title="@string/save"
