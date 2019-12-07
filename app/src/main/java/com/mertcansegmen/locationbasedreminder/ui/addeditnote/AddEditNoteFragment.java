@@ -50,10 +50,12 @@ public class AddEditNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        currentNote = getArguments().getParcelable(NOTE_BUNDLE_KEY);
-        if(!isNewNote(currentNote)) {
-            ((MainActivity)requireActivity()).getSupportActionBar().setTitle("Edit Note");
-            noteEditText.setText(currentNote.getText());
+        if(getArguments() != null) {
+            currentNote = getArguments().getParcelable(NOTE_BUNDLE_KEY);
+            if (!isNewNote(currentNote)) {
+                ((MainActivity) requireActivity()).getSupportActionBar().setTitle("Edit Note");
+                noteEditText.setText(currentNote.getText());
+            }
         }
     }
 

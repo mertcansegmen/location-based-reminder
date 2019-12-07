@@ -26,9 +26,11 @@ android {
 ext {
     nav_version = "2.1.0"
     lifecycle_version = "2.1.0"
-    room_version = "2.2.0"
+    room_version = "2.2.2"
     paging_version = "2.1.0"
     material_version = "1.1.0-beta01"
+    maps_version = "17.0.0"
+    location_version = "17.0.0"
 }
 
 dependencies {
@@ -58,8 +60,9 @@ dependencies {
     // Paging
     implementation "androidx.paging:paging-runtime:$paging_version"
 
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    // Maps
+    implementation "com.google.android.gms:play-services-maps:$maps_version"
 
-    implementation 'com.shawnlin:number-picker:2.4.8'
+    // Location
+    implementation "com.google.android.gms:play-services-location:$location_version"
 }
