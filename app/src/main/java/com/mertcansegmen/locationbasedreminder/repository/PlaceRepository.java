@@ -10,6 +10,8 @@ import com.mertcansegmen.locationbasedreminder.persistence.AppDatabase;
 import com.mertcansegmen.locationbasedreminder.persistence.PlaceDao;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class PlaceRepository {
 
@@ -23,63 +25,36 @@ public class PlaceRepository {
     }
 
     public void insert(Place place) {
-        new PlaceRepository.InsertPlaceAsyncTask(placeDao).execute(place);
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                placeDao.insert(place);
+            }
+        });
     }
 
     public void update(Place place) {
-        new PlaceRepository.UpdatePlaceAsyncTask(placeDao).execute(place);
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                placeDao.update(place);
+            }
+        });
     }
 
     public void delete(Place place) {
-        new PlaceRepository.DeletePlaceAsyncTask(placeDao).execute(place);
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                placeDao.delete(place);
+            }
+        });
     }
 
     public LiveData<List<Place>> getAllPlaces() {
         return allPlaces;
-    }
-
-    private static class InsertPlaceAsyncTask extends AsyncTask<Place, Void, Void> {
-
-        private PlaceDao placeDao;
-
-        InsertPlaceAsyncTask(PlaceDao placeDao) {
-            this.placeDao = placeDao;
-        }
-
-        @Override
-        protected Void doInBackground(Place... places) {
-            placeDao.insert(places[0]);
-            return null;
-        }
-    }
-
-    private static class UpdatePlaceAsyncTask extends AsyncTask<Place, Void, Void> {
-
-        private PlaceDao placeDao;
-
-        UpdatePlaceAsyncTask(PlaceDao placeDao) {
-            this.placeDao = placeDao;
-        }
-
-        @Override
-        protected Void doInBackground(Place... places) {
-            placeDao.update(places[0]);
-            return null;
-        }
-    }
-
-    private static class DeletePlaceAsyncTask extends AsyncTask<Place, Void, Void> {
-
-        private PlaceDao placeDao;
-
-        DeletePlaceAsyncTask(PlaceDao placeDao) {
-            this.placeDao = placeDao;
-        }
-
-        @Override
-        protected Void doInBackground(Place... places) {
-            placeDao.delete(places[0]);
-            return null;
-        }
     }
 }

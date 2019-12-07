@@ -10,6 +10,8 @@ import com.mertcansegmen.locationbasedreminder.persistence.NoteDao;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class NoteRepository {
 
@@ -23,63 +25,36 @@ public class NoteRepository {
     }
 
     public void insert(Note note) {
-        new InsertNoteAsyncTask(noteDao).execute(note);
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                noteDao.insert(note);
+            }
+        });
     }
 
     public void update(Note note) {
-        new UpdateNoteAsyncTask(noteDao).execute(note);
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                noteDao.update(note);
+            }
+        });
     }
 
     public void delete(Note note) {
-        new DeleteNoteAsyncTask(noteDao).execute(note);
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                noteDao.delete(note);
+            }
+        });
     }
 
     public LiveData<List<Note>> getAllNotes() {
         return allNotes;
-    }
-
-    private static class InsertNoteAsyncTask extends AsyncTask<Note, Void, Void> {
-
-        private NoteDao noteDao;
-
-        InsertNoteAsyncTask(NoteDao noteDao) {
-            this.noteDao = noteDao;
-        }
-
-        @Override
-        protected Void doInBackground(Note... notes) {
-            noteDao.insert(notes[0]);
-            return null;
-        }
-    }
-
-    private static class UpdateNoteAsyncTask extends AsyncTask<Note, Void, Void> {
-
-        private NoteDao noteDao;
-
-        UpdateNoteAsyncTask(NoteDao noteDao) {
-            this.noteDao = noteDao;
-        }
-
-        @Override
-        protected Void doInBackground(Note... notes) {
-            noteDao.update(notes[0]);
-            return null;
-        }
-    }
-
-    private static class DeleteNoteAsyncTask extends AsyncTask<Note, Void, Void> {
-
-        private NoteDao noteDao;
-
-        DeleteNoteAsyncTask(NoteDao noteDao) {
-            this.noteDao = noteDao;
-        }
-
-        @Override
-        protected Void doInBackground(Note... notes) {
-            noteDao.delete(notes[0]);
-            return null;
-        }
     }
 }

@@ -209,7 +209,6 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_place:
-            case R.id.edit_place:
                 configurePlaceLatLngRad();
                 showNamePlaceDialog();
                 requireActivity().onBackPressed();
