@@ -22,10 +22,10 @@ public class PlaceGroupItem {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "place_id")
+    @ColumnInfo(name = "place_id", index = true)
     private int placeId;
 
-    @ColumnInfo(name = "place_group_id")
+    @ColumnInfo(name = "place_group_id", index = true)
     private int placeGroupId;
 
     public PlaceGroupItem(int placeId, int placeGroupId) {
