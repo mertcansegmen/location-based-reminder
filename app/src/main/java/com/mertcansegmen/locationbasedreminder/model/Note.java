@@ -3,7 +3,6 @@ package com.mertcansegmen.locationbasedreminder.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -12,42 +11,36 @@ import com.mertcansegmen.locationbasedreminder.util.DateConverter;
 
 import java.util.Date;
 
-@Entity(tableName = "note")
+@Entity
 public class Note implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long noteId;
 
-    private String text;
+    private String body;
 
-    @ColumnInfo(name = "created_at")
     @TypeConverters({DateConverter.class})
     private Date createdAt;
 
-    public Note(String text, Date createdAt) {
-        this.text = text;
+    public Note(String body, Date createdAt) {
+        this.body = body;
         this.createdAt = createdAt;
     }
 
-    protected Note(Parcel in) {
-        id = in.readInt();
-        text = in.readString();
+    public long getNoteId() {
+        return noteId;
     }
 
-    public int getİd() {
-        return id;
+    public void setNoteId(long noteId) {
+        this.noteId = noteId;
     }
 
-    public void setİd(int id) {
-        this.id = id;
+    public String getBody() {
+        return body;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public void setBody(String body) {
+        this.body = body;
     }
 
     public Date getCreatedAt() {
@@ -56,6 +49,11 @@ public class Note implements Parcelable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    protected Note(Parcel in) {
+        noteId = in.readLong();
+        body = in.readString();
     }
 
     public static final Creator<Note> CREATOR = new Creator<Note>() {
@@ -77,7 +75,16 @@ public class Note implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(text);
+        dest.writeLong(noteId);
+        dest.writeString(body);
+    }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "noteId=" + noteId +
+                ", body='" + body + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

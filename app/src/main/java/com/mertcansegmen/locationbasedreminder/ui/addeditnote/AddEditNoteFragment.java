@@ -54,7 +54,7 @@ public class AddEditNoteFragment extends Fragment {
             currentNote = getArguments().getParcelable(NOTE_BUNDLE_KEY);
             if (!isNewNote(currentNote)) {
                 ((MainActivity) requireActivity()).getSupportActionBar().setTitle("Edit Note");
-                noteEditText.setText(currentNote.getText());
+                noteEditText.setText(currentNote.getBody());
             }
         }
     }
@@ -62,14 +62,16 @@ public class AddEditNoteFragment extends Fragment {
     private void saveNote() {
         String text = noteEditText.getText().toString().trim();
         if(text.isEmpty()) {
-            Toast.makeText(getContext(), "Empty note deleted", Toast.LENGTH_SHORT).show();
+            if(isNewNote(currentNote)) {
+                Toast.makeText(getContext(), "Empty note deleted", Toast.LENGTH_SHORT).show();
+            }
             return;
         }
         if(isNewNote(currentNote)) {
             Note newNote = new Note(text, new Date());
             viewModel.insert(newNote);
         } else {
-            currentNote.setText(text);
+            currentNote.setBody(text);
             viewModel.update(currentNote);
         }
     }

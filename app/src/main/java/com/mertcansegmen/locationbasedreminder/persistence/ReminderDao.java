@@ -23,10 +23,10 @@ public interface ReminderDao {
     @Delete
     void delete(Reminder reminder);
 
-    @Query("DELETE FROM reminder")
+    @Query("DELETE FROM Reminder")
     void deleteAllReminders();
 
-    @Query("SELECT * FROM reminder")
+    @Query("SELECT * FROM Reminder")
     LiveData<List<Reminder>> getAllReminders();
 
 }

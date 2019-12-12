@@ -23,9 +23,9 @@ public interface PlaceGroupDao {
     @Delete
     void delete(PlaceGroup placeGroup);
 
-    @Query("DELETE FROM place_group")
+    @Query("DELETE FROM PlaceGroup")
     void deleteAllPlaceGroups();
 
-    @Query("SELECT * FROM place_group")
+    @Query("SELECT * FROM PlaceGroup")
     LiveData<List<PlaceGroup>> getAllPlaceGroups();
 }

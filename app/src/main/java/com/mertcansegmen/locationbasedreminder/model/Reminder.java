@@ -10,43 +10,41 @@ import com.mertcansegmen.locationbasedreminder.util.DateConverter;
 
 import java.util.Date;
 
-@Entity(tableName = "reminder", foreignKeys = {
+@Entity(foreignKeys = {
         @ForeignKey(
                 entity = Note.class,
-                parentColumns = "id",
-                childColumns = "note_id",
+                parentColumns = "noteId",
+                childColumns = "noteId",
                 onDelete = ForeignKey.CASCADE
         ),
         @ForeignKey(
                 entity = Place.class,
-                parentColumns = "id",
-                childColumns = "place_id"
+                parentColumns = "placeId",
+                childColumns = "placeId"
         ),
         @ForeignKey(
                 entity = PlaceGroup.class,
-                parentColumns = "id",
-                childColumns = "place_group_id"
+                parentColumns = "placeGroupId",
+                childColumns = "placeGroupId"
         )
 })
 public class Reminder {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long reminderId;
 
-    @ColumnInfo(name = "note_id", index = true)
+    @ColumnInfo(index = true)
     private int noteId;
 
-    @ColumnInfo(name = "place_id", index = true)
+    @ColumnInfo(index = true)
     private int placeId;
 
-    @ColumnInfo(name = "place_group_id", index = true)
+    @ColumnInfo(index = true)
     private int placeGroupId;
 
-    @ColumnInfo(name = "created_at")
     @TypeConverters({DateConverter.class})
     private Date createdAt;
 
-    @ColumnInfo(name = "is_active")
     private boolean isActive;
 
     public Reminder(int noteId, int placeId, int placeGroupId, Date createdAt, boolean isActive) {
@@ -57,12 +55,12 @@ public class Reminder {
         this.isActive = isActive;
     }
 
-    public int getİd() {
-        return id;
+    public long getReminderId() {
+        return reminderId;
     }
 
-    public void setİd(int id) {
-        this.id = id;
+    public void setReminderId(long reminderId) {
+        this.reminderId = reminderId;
     }
 
     public int getNoteId() {
@@ -103,5 +101,17 @@ public class Reminder {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Reminder{" +
+                "reminderId=" + reminderId +
+                ", noteId=" + noteId +
+                ", placeId=" + placeId +
+                ", placeGroupId=" + placeGroupId +
+                ", createdAt=" + createdAt +
+                ", isActive=" + isActive +
+                '}';
     }
 }

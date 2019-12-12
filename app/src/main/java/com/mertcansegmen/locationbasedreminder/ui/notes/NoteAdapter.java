@@ -20,12 +20,12 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
     private static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK = new DiffUtil.ItemCallback<Note>() {
         @Override
         public boolean areItemsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-            return oldItem.getİd() == newItem.getİd();
+            return oldItem.getNoteId() == newItem.getNoteId();
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-            return oldItem.getText().equals(newItem.getText());
+            return oldItem.getBody().equals(newItem.getBody());
         }
     };
 
@@ -44,7 +44,7 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note currentNote = getItem(position);
-        holder.noteTextView.setText(currentNote.getText());
+        holder.noteTextView.setText(currentNote.getBody());
     }
 
     public Note getNoteAt(int position) {

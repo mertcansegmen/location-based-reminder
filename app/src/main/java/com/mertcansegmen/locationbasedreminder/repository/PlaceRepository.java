@@ -1,7 +1,6 @@
 package com.mertcansegmen.locationbasedreminder.repository;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
@@ -26,32 +25,17 @@ public class PlaceRepository {
 
     public void insert(Place place) {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                placeDao.insert(place);
-            }
-        });
+        executor.execute(() -> placeDao.insert(place));
     }
 
     public void update(Place place) {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                placeDao.update(place);
-            }
-        });
+        executor.execute(() -> placeDao.update(place));
     }
 
     public void delete(Place place) {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                placeDao.delete(place);
-            }
-        });
+        executor.execute(() -> placeDao.delete(place));
     }
 
     public LiveData<List<Place>> getAllPlaces() {

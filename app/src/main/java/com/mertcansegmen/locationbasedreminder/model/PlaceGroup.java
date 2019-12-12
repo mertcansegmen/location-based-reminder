@@ -3,11 +3,11 @@ package com.mertcansegmen.locationbasedreminder.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "place_group")
+@Entity
 public class PlaceGroup {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long placeGroupId;
 
     private String name;
 
@@ -15,12 +15,12 @@ public class PlaceGroup {
         this.name = name;
     }
 
-    public int getİd() {
-        return id;
+    public long getPlaceGroupId() {
+        return placeGroupId;
     }
 
-    public void setİd(int id) {
-        this.id = id;
+    public void setPlaceGroupId(long placeGroupId) {
+        this.placeGroupId = placeGroupId;
     }
 
     public String getName() {
@@ -29,5 +29,13 @@ public class PlaceGroup {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "PlaceGroup{" +
+                "placeGroupId=" + placeGroupId +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

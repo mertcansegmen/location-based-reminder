@@ -96,6 +96,6 @@ public class NamePlaceDialog extends DialogFragment {
     }
 
     private boolean isNewPlace(Place place) {
-        return place.getİd() == null;
+        return place.getPlaceId() == null;
     }
 }
