@@ -67,6 +67,17 @@ public abstract class AppDatabase extends RoomDatabase {
                 placeDao.insert(new Place("Zara", 41.180304, -73.187537, 50));
                 placeDao.insert(new Place("Mango", 41.190783, -73.139186, 40));
                 placeDao.insert(new Place("Pull&Bear", 41.221928, -73.074861, 100));
+
+                placeGroupDao.insert(new PlaceGroup("Grocery Stores"));
+                placeGroupDao.insert(new PlaceGroup("Clothing Stores"));
+
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(1, 1));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(2, 1));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(3, 1));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(4, 2));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(5, 2));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(6, 2));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(7, 2));
             });
         }
     };
