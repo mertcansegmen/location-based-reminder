@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -53,6 +54,7 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
             PlaceChip chip = new PlaceChip(holder.placeGroupTextView.getContext());
             chip.setPlace(place);
             chip.setText(place.getName());
+            chip.setTextSize(Dimension.SP, 12);
             chip.setChipIcon(holder.placeGroupTextView.getContext().getResources().getDrawable(R.drawable.ic_places));
             holder.chipGroup.addView(chip);
         }

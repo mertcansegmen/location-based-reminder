@@ -22,7 +22,7 @@ import java.util.concurrent.Executors;
 @Database(entities = {
         Reminder.class, Note.class, AlarmAttribute.class,
         Place.class, PlaceGroup.class, PlaceGroupPlaceCrossRef.class
-}, version = 10)
+}, version = 11)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;

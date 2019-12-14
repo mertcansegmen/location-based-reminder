@@ -1,8 +1,9 @@
 package com.mertcansegmen.locationbasedreminder.model;
 
 import androidx.room.Entity;
+import androidx.room.Index;
 
-@Entity(primaryKeys = {"placeId", "placeGroupId"})
+@Entity(primaryKeys = {"placeId", "placeGroupId"}, indices = @Index("placeGroupId"))
 public class PlaceGroupPlaceCrossRef {
 
     private long placeId;

@@ -34,6 +34,7 @@ import java.util.List;
 public class NotesFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    private NoteAdapter adapter;
     private FloatingActionButton addNoteButton;
 
     private NotesFragmentViewModel viewModel;
@@ -47,23 +48,24 @@ public class NotesFragment extends Fragment {
 
         addNoteButton = view.findViewById(R.id.btn_add_note);
         recyclerView = view.findViewById(R.id.recycler_view);
+
         viewModel = ViewModelProviders.of(this).get(NotesFragmentViewModel.class);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
-        final NoteAdapter noteAdapter = new NoteAdapter();
-        recyclerView.setAdapter(noteAdapter);
+        adapter = new NoteAdapter();
+        recyclerView.setAdapter(adapter);
 
         Animator.animateFloatingActionButton(addNoteButton);
 
         viewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(@Nullable List<Note> notes) {
-                noteAdapter.submitList(notes);
+                adapter.submitList(notes);
             }
         });
 
-        noteAdapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(Note note) {
                 Bundle bundle = new Bundle();
@@ -72,7 +74,7 @@ public class NotesFragment extends Fragment {
             }
         });
 
-        noteAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
                 recyclerView.scrollToPosition(0);
@@ -113,7 +115,7 @@ public class NotesFragment extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                viewModel.delete(noteAdapter.getNoteAt(viewHolder.getAdapterPosition()));
+                viewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
             }
         }).attachToRecyclerView(recyclerView);
 
