@@ -1,6 +1,5 @@
 package com.mertcansegmen.locationbasedreminder.ui.addeditplace;
 
-
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
@@ -62,7 +61,6 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     private TextView radiusTextView;
     private AppCompatSeekBar radiusSeekBar;
     private Circle radiusCircle;
-    private int radius;
 
     private AddEditPlaceFragmentViewModel viewModel;
 
@@ -128,35 +126,43 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
         configureLocationListener();
 
-        if(currentPlace != null){
-            goToLocation(currentPlace.getLatitude(), currentPlace.getLongitude());
-            radius = currentPlace.getRadius();
+        if(!isFirstMapStart()) {
+            // Map restarted due to screen rotation, language change etc..
+            goToLocation(viewModel.getLastKnownScreenLocation().latitude,
+                    viewModel.getLastKnownScreenLocation().longitude, viewModel.getLastKnownZoom());
         } else {
-            radius = DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS);
+            // Map started for the first time
+            if(isNewPlace(currentPlace)) {
+                viewModel.setRadius(DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS));
+            } else {
+                viewModel.setRadius(currentPlace.getRadius());
+                goToLocation(currentPlace.getLatitude(), currentPlace.getLongitude(), DEFAULT_ZOOM);
+            }
         }
 
-        radiusSeekBar.setProgress(radius);
-        radiusTextView.setText(getString(R.string.radius_text, radius));
-        drawCircle(radius);
+        radiusSeekBar.setProgress(viewModel.getRadius());
+        radiusTextView.setText(getString(R.string.radius_text, viewModel.getRadius()));
+        drawCircle(viewModel.getRadius());
         this.googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
-                drawCircle(radius);
+                drawCircle(viewModel.getRadius());
+                viewModel.setLastKnownScreenLocation(googleMap.getCameraPosition().target);
+                viewModel.setLastKnownZoom(googleMap.getCameraPosition().zoom);
             }
         });
         radiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                radius = progress;
-                radiusTextView.setText(getString(R.string.radius_text, radius));
-                drawCircle(radius);
+                viewModel.setRadius(progress);
+                radiusTextView.setText(getString(R.string.radius_text, viewModel.getRadius()));
+                drawCircle(viewModel.getRadius());
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
-
     }
 
     private void drawCircle(int radius) {
@@ -177,9 +183,16 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         radiusCircle = null;
     }
 
-    private void goToLocation(double lat, double lng) {
+    /**
+     * @return true if map started for the first time, false otherwise
+     */
+    private boolean isFirstMapStart() {
+        return viewModel.getLastKnownScreenLocation() == null && viewModel.getLastKnownZoom() == null;
+    }
+
+    private void goToLocation(double lat, double lng, float zoom) {
         LatLng latLng = new LatLng(lat, lng);
-        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM);
+        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
         googleMap.moveCamera(update);
     }
 
@@ -219,7 +232,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
                         .setPositiveButton(getText(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                deletePlace();
+                                viewModel.delete(currentPlace);
                                 requireActivity().onBackPressed();
                             }
                         })
@@ -231,18 +244,18 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         }
     }
 
-    private void deletePlace() {
-        viewModel.delete(currentPlace);
-    }
-
     private void configurePlaceLatLngRad() {
-        if(currentPlace == null) {
+        if(isNewPlace(currentPlace)) {
             currentPlace = new Place();
         }
         LatLng latLng = googleMap.getCameraPosition().target;
         currentPlace.setLatitude(latLng.latitude);
         currentPlace.setLongitude(latLng.longitude);
-        currentPlace.setRadius(radius);
+        currentPlace.setRadius(viewModel.getRadius());
+    }
+
+    private boolean isNewPlace(Place place) {
+        return place == null;
     }
 
     private void showNamePlaceDialog() {
@@ -257,7 +270,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-        if(location != null && currentPlace == null) {
+        if(location != null && isFirstMapStart() && isNewPlace(currentPlace)) {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM);
             googleMap.animateCamera(cameraUpdate);

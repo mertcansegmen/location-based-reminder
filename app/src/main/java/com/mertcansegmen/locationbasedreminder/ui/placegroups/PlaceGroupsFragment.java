@@ -22,7 +22,7 @@ import java.util.List;
 
 public class PlaceGroupsFragment extends Fragment {
 
-    FloatingActionButton addPlaceGroupButton;
+    private FloatingActionButton addPlaceGroupButton;
 
     private PlaceGroupsFragmentViewModel viewModel;
 
