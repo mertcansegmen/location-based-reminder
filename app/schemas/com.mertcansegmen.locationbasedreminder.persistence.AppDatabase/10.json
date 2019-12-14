@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "072ea588f3739e48cc9f113df2afd786",
+    "identityHash": "cdf99745d6ebe46a50670eb2fcc6d2ad",
     "entities": [
       {
         "tableName": "Reminder",
@@ -283,14 +283,23 @@
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_PlaceGroupPlaceCrossRef_placeGroupId",
+            "unique": false,
+            "columnNames": [
+              "placeGroupId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_PlaceGroupPlaceCrossRef_placeGroupId` ON `${TABLE_NAME}` (`placeGroupId`)"
+          }
+        ],
         "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '072ea588f3739e48cc9f113df2afd786')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cdf99745d6ebe46a50670eb2fcc6d2ad')"
     ]
   }
 }
