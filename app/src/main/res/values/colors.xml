@@ -14,4 +14,24 @@
     <!-- Map Radius Colors -->
     <color name="colorRadiusFill">#5090caf9</color>
     <color name="colorStroke">#771565c0</color>
+
+    <!-- Chip Colors -->
+    <color name="colorChipRed">#ef9a9a</color>
+    <color name="colorChipPink">#f48fb1</color>
+    <color name="colorChipPurple">#ce93d8</color>
+    <color name="colorChipDeepPurple">#b39ddb</color>
+    <color name="colorChipIndigo">#9fa8da</color>
+    <color name="colorChipBlue">#90caf9</color>
+    <color name="colorChipLightBlue">#81d4fa</color>
+    <color name="colorChipCyan">#81d4fa</color>
+    <color name="colorChipTeal">#80cbc4</color>
+    <color name="colorChipGreen">#a5d6a7</color>
+    <color name="colorChipLightGreen">#c5e1a5</color>
+    <color name="colorChipLime">#e6ee9c</color>
+    <color name="colorChipYellow">#fff59d</color>
+    <color name="colorChipAmber">#ffe082</color>
+    <color name="colorChipOrange">#ffcc80</color>
+    <color name="colorChipDeepOrange">#ffab91</color>
+    <color name="colorChipBrown">#bcaaa4</color>
+    <color name="colorChipBlueGray">#b0bec5</color>
 </resources>

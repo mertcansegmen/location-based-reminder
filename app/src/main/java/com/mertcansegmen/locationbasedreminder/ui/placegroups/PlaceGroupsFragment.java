@@ -97,7 +97,7 @@ public class PlaceGroupsFragment extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                viewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
+                //viewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
             }
         }).attachToRecyclerView(recyclerView);
 
