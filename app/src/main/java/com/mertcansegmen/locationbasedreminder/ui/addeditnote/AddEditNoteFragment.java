@@ -22,8 +22,6 @@ import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 
-import java.util.Date;
-
 public class AddEditNoteFragment extends Fragment {
 
     public static final String NOTE_BUNDLE_KEY ="com.mertcansegmen.locationbasedreminder.EXTRA_NOTE";
@@ -68,7 +66,7 @@ public class AddEditNoteFragment extends Fragment {
             return;
         }
         if(isNewNote(currentNote)) {
-            Note newNote = new Note(text, new Date());
+            Note newNote = new Note(text);
             viewModel.insert(newNote);
         } else {
             currentNote.setBody(text);

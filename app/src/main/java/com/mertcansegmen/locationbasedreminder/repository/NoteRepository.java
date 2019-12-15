@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 import com.mertcansegmen.locationbasedreminder.persistence.AppDatabase;
 import com.mertcansegmen.locationbasedreminder.persistence.NoteDao;
 import com.mertcansegmen.locationbasedreminder.model.Note;
-import com.mertcansegmen.locationbasedreminder.persistence.PlaceGroupDao;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -17,18 +16,16 @@ public class NoteRepository {
 
     private NoteDao noteDao;
     private LiveData<List<Note>> allNotes;
-    PlaceGroupDao placeGroupDao;
 
     public NoteRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
         noteDao = database.noteDao();
-        placeGroupDao = database.placeGroupDao();
         allNotes = noteDao.getAllNotes();
     }
 
     public void insert(Note note) {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> noteDao.insert(note));
+        executor.execute(() -> noteDao.insert(note.getBody()));
     }
 
     public void update(Note note) {

@@ -1,5 +1,6 @@
 package com.mertcansegmen.locationbasedreminder.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -10,6 +11,9 @@ public class PlaceGroup {
     private long placeGroupId;
 
     private String name;
+
+    @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
+    private String createdAt;
 
     public PlaceGroup(String name) {
         this.name = name;
@@ -29,6 +33,14 @@ public class PlaceGroup {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

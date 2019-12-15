@@ -14,8 +14,8 @@ import java.util.List;
 @Dao
 public interface NoteDao {
 
-    @Insert
-    void insert(Note note);
+    @Query("INSERT INTO Note (body) VALUES(:body)")
+    void insert(String body);
 
     @Update
     void update(Note note);

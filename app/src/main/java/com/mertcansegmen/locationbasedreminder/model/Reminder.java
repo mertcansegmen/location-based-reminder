@@ -4,11 +4,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import com.mertcansegmen.locationbasedreminder.util.DateConverter;
-
-import java.util.Date;
 
 @Entity(foreignKeys = {
         @ForeignKey(
@@ -42,16 +37,15 @@ public class Reminder {
     @ColumnInfo(index = true)
     private int placeGroupId;
 
-    @TypeConverters({DateConverter.class})
-    private Date createdAt;
+//    @TypeConverters({DateConverter.class})
+//    private Date createdAt;
 
     private boolean isActive;
 
-    public Reminder(int noteId, int placeId, int placeGroupId, Date createdAt, boolean isActive) {
+    public Reminder(int noteId, int placeId, int placeGroupId, boolean isActive) {
         this.noteId = noteId;
         this.placeId = placeId;
         this.placeGroupId = placeGroupId;
-        this.createdAt = createdAt;
         this.isActive = isActive;
     }
 
@@ -87,13 +81,13 @@ public class Reminder {
         this.placeGroupId = placeGroupId;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
+//    public Date getCreatedAt() {
+//        return createdAt;
+//    }
+//
+//    public void setCreatedAt(Date createdAt) {
+//        this.createdAt = createdAt;
+//    }
 
     public boolean isActive() {
         return isActive;
@@ -110,7 +104,6 @@ public class Reminder {
                 ", noteId=" + noteId +
                 ", placeId=" + placeId +
                 ", placeGroupId=" + placeGroupId +
-                ", createdAt=" + createdAt +
                 ", isActive=" + isActive +
                 '}';
     }

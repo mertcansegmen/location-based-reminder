@@ -17,8 +17,8 @@ import java.util.List;
 @Dao
 public interface PlaceGroupDao {
 
-    @Insert
-    void insert(PlaceGroup placeGroup);
+    @Query("INSERT INTO PlaceGroup (name) VALUES(:name)")
+    void insert(String name);
 
     @Insert
     void insert(PlaceGroupPlaceCrossRef placeGroupPlaceCrossRef);

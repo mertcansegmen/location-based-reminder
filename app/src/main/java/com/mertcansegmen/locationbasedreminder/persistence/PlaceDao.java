@@ -14,8 +14,8 @@ import java.util.List;
 @Dao
 public interface PlaceDao {
 
-    @Insert
-    void insert(Place place);
+    @Query("INSERT INTO Place (name,latitude,longitude,radius) VALUES(:name,:latitude,:longitude,:radius)")
+    void insert(String name, double latitude, double longitude, int radius);
 
     @Update
     void update(Place place);

@@ -3,13 +3,9 @@ package com.mertcansegmen.locationbasedreminder.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import com.mertcansegmen.locationbasedreminder.util.DateConverter;
-
-import java.util.Date;
 
 @Entity
 public class Note implements Parcelable {
@@ -19,12 +15,11 @@ public class Note implements Parcelable {
 
     private String body;
 
-    @TypeConverters({DateConverter.class})
-    private Date createdAt;
+    @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
+    private String createdAt;
 
-    public Note(String body, Date createdAt) {
+    public Note(String body) {
         this.body = body;
-        this.createdAt = createdAt;
     }
 
     public long getNoteId() {
@@ -43,11 +38,11 @@ public class Note implements Parcelable {
         this.body = body;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
