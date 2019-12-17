@@ -44,6 +44,13 @@
         android:name="com.mertcansegmen.locationbasedreminder.ui.placegroups.PlaceGroupsFragment"
         android:label="@string/title_place_groups"
         tools:layout="@layout/fragment_place_groups" >
+        <action
+            android:id="@+id/action_placeGroupsFragment_to_addEditPlaceGroupFragment"
+            app:destination="@id/addEditPlaceGroupFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
 
     <fragment
@@ -67,6 +74,16 @@
         android:name="com.mertcansegmen.locationbasedreminder.ui.addeditplace.AddEditPlaceFragment"
         android:label="@string/new_place"
         tools:layout="@layout/fragment_add_edit_place" >
+    </fragment>
+    
+    <fragment
+        android:id="@+id/addEditPlaceGroupFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.ui.addeditplacegroup.AddEditPlaceGroupFragment"
+        android:label="New Place Group"
+        tools:layout="@layout/fragment_add_edit_place_group" >
+        <argument
+            android:name="placeGroup"
+            app:argType="com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces" />
     </fragment>
 
 </navigation>

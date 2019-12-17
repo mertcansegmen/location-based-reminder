@@ -34,6 +34,8 @@ public class PlaceGroupsFragment extends Fragment {
 
     private PlaceGroupsFragmentViewModel viewModel;
 
+    private NavController navController;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +58,15 @@ public class PlaceGroupsFragment extends Fragment {
             @Override
             public void onChanged(List<PlaceGroupWithPlaces> placeGroupsWithPlaces) {
                 adapter.submitList(placeGroupsWithPlaces);
+            }
+        });
+
+        adapter.setOnItemClickListener(new PlaceGroupWithPlacesAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(PlaceGroupWithPlaces placeGroupWithPlaces) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(AddEditPlaceGroupFragment.PLACE_GROUP_BUNDLE_KEY, placeGroupWithPlaces);
+                navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment, bundle);
             }
         });
 
@@ -107,5 +118,19 @@ public class PlaceGroupsFragment extends Fragment {
         }).attachToRecyclerView(recyclerView);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        navController = Navigation.findNavController(view);
+
+        addPlaceGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment);
+            }
+        });
     }
 }
