@@ -4,11 +4,15 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import com.mertcansegmen.locationbasedreminder.model.Place;
+import com.mertcansegmen.locationbasedreminder.model.PlaceGroupPlaceCrossRef;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.persistence.AppDatabase;
 import com.mertcansegmen.locationbasedreminder.persistence.PlaceGroupDao;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class PlaceGroupRepository {
 
@@ -23,5 +27,35 @@ public class PlaceGroupRepository {
 
     public LiveData<List<PlaceGroupWithPlaces>> getAllPlaceGroupsWithPlaces() {
         return allPlaceGroupsWithPlaces;
+    }
+
+    public void deletePlaceGroupWithPlaces(PlaceGroupWithPlaces placeGroupWithPlaces) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            placeGroupDao.delete(placeGroupWithPlaces.getPlaceGroup());
+            placeGroupDao.deleteAllPlaceGroupRefs(placeGroupWithPlaces.getPlaceGroup().getPlaceGroupId());
+        });
+    }
+
+    public void updatePlaceGroupWithPlaces(PlaceGroupWithPlaces placeGroupWithPlaces) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            placeGroupDao.deleteAllPlaceGroupRefs(placeGroupWithPlaces.getPlaceGroup().getPlaceGroupId());
+            placeGroupDao.update(placeGroupWithPlaces.getPlaceGroup());
+            for(Place place : placeGroupWithPlaces.getPlaces()) {
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(place.getPlaceId(),
+                        placeGroupWithPlaces.getPlaceGroup().getPlaceGroupId()));
+            }
+        });
+    }
+
+    public void insertPlaceGroupWithPlaces(PlaceGroupWithPlaces placeGroupWithPlaces) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            long placeGroupId = placeGroupDao.insert(placeGroupWithPlaces.getPlaceGroup().getName());
+            for(Place place : placeGroupWithPlaces.getPlaces()) {
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(place.getPlaceId(), placeGroupId));
+            }
+        });
     }
 }

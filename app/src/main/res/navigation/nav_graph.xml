@@ -75,7 +75,7 @@
         android:label="@string/new_place"
         tools:layout="@layout/fragment_add_edit_place" >
     </fragment>
-    
+
     <fragment
         android:id="@+id/addEditPlaceGroupFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.addeditplacegroup.AddEditPlaceGroupFragment"
