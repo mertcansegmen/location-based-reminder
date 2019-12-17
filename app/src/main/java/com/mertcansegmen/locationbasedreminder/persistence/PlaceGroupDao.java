@@ -40,6 +40,6 @@ public interface PlaceGroupDao {
     LiveData<List<PlaceGroup>> getAllPlaceGroups();
 
     @Transaction
-    @Query("SELECT * FROM PlaceGroup")
+    @Query("SELECT * FROM PlaceGroup ORDER BY createdAt DESC")
     LiveData<List<PlaceGroupWithPlaces>> getAllPlaceGroupsWithPlaces();
 }

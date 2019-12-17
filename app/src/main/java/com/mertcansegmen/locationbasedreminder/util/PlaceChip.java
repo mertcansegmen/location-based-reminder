@@ -3,12 +3,10 @@ package com.mertcansegmen.locationbasedreminder.util;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 
