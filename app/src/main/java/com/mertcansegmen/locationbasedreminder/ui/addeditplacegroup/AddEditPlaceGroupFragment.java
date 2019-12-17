@@ -25,6 +25,7 @@ import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroup;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
+import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.util.PlaceChip;
 import com.mertcansegmen.locationbasedreminder.util.Utils;
 
@@ -85,14 +86,18 @@ public class AddEditPlaceGroupFragment extends Fragment {
     }
 
     private void addChip(Place place) {
-        PlaceChip chip = new PlaceChip(requireContext());
-        chip.setPlace(place);
-        chip.setText(place.getName());
-        chip.setCloseIconVisible(true);
-        chip.setCloseIconTint(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorBlack)));
-        chip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_places));
-        chipGroup.addView(chip, chipGroup.getChildCount() - 1);
-        chip.setOnCloseIconClickListener(removeChip -> chipGroup.removeView(removeChip));
+        PlaceChip chipToAdd = new PlaceChip(requireContext());
+        chipToAdd.setPlace(place);
+        chipToAdd.setText(place.getName());
+        chipToAdd.setCloseIconVisible(true);
+        chipToAdd.setCloseIconTint(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorBlack)));
+        chipToAdd.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_places));
+        chipGroup.addView(chipToAdd, chipGroup.getChildCount() - 1);
+        Animator.addViewWithFadeAnimation(chipToAdd);
+        chipToAdd.setOnCloseIconClickListener(chipToRemove -> {
+            chipGroup.removeView(chipToRemove);
+            Animator.removeViewWithFadeAnimation(chipToRemove);
+        });
     }
 
     private void createAddPlaceChip() {

@@ -1,5 +1,8 @@
 package com.mertcansegmen.locationbasedreminder.util;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
@@ -39,5 +42,17 @@ public class Animator {
             public void onAnimationRepeat(Animation animation) { }
         });
         button.startAnimation(disappearAnim);
+    }
+
+    public static void removeViewWithFadeAnimation(View view) {
+        AlphaAnimation anim = new AlphaAnimation(1f, 0f);
+        anim.setDuration(300);
+        view.startAnimation(anim);
+    }
+
+    public static void addViewWithFadeAnimation(View view) {
+        AlphaAnimation anim = new AlphaAnimation(0f, 1f);
+        anim.setDuration(300);
+        view.startAnimation(anim);
     }
 }

@@ -21,7 +21,6 @@ public class PlaceGroupWithPlaces implements Parcelable {
     )
     private List<Place> places;
 
-    @Ignore
     public PlaceGroupWithPlaces() {}
 
     public PlaceGroup getPlaceGroup() {
