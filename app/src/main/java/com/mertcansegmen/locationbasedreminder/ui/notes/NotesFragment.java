@@ -74,6 +74,8 @@ public class NotesFragment extends Fragment {
             }
         });
 
+        // This is needed for recycler view to go top when new record is added. Without this, new
+        // element is getting inserted off of the screen.
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {

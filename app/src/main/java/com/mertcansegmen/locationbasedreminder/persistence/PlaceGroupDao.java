@@ -8,6 +8,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
+import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroup;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupPlaceCrossRef;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
@@ -18,7 +19,7 @@ import java.util.List;
 public interface PlaceGroupDao {
 
     @Query("INSERT INTO PlaceGroup (name) VALUES(:name)")
-    void insert(String name);
+    long insert(String name);
 
     @Insert
     void insert(PlaceGroupPlaceCrossRef placeGroupPlaceCrossRef);
@@ -28,6 +29,9 @@ public interface PlaceGroupDao {
 
     @Delete
     void delete(PlaceGroup placeGroup);
+
+    @Query("DELETE FROM PlaceGroupPlaceCrossRef WHERE placeGroupId = :placeGroupId")
+    void deleteAllPlaceGroupRefs(long placeGroupId);
 
     @Query("DELETE FROM PlaceGroup")
     void deleteAllPlaceGroups();

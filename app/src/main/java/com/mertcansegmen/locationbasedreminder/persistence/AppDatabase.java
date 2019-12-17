@@ -66,9 +66,18 @@ public abstract class AppDatabase extends RoomDatabase {
                 placeDao.insert("Zara", 41.180304, -73.187537, 50);
                 placeDao.insert("Mango", 41.190783, -73.139186, 40);
                 placeDao.insert("Pull&Bear", 41.221928, -73.074861, 100);
+                placeDao.insert("Shell", 41.297474, -72.926468, 100);
+                placeDao.insert("Buc-ee's", 41.180304, -73.187537, 50);
+                placeDao.insert("QuikTrip", 41.190783, -73.139186, 40);
+                placeDao.insert("Hy-Vee Gas", 41.221928, -73.074861, 100);
+                placeDao.insert("Celine Patisserie", 41.180304, -73.187537, 50);
+                placeDao.insert("Daily Donuts", 41.190783, -73.139186, 40);
+                placeDao.insert("Defloured ", 41.221928, -73.074861, 100);
 
                 placeGroupDao.insert("Grocery Stores");
                 placeGroupDao.insert("Clothing Stores");
+                placeGroupDao.insert("Gas Stations");
+                placeGroupDao.insert("Bakeries");
 
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(1, 1));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(2, 1));
@@ -77,6 +86,13 @@ public abstract class AppDatabase extends RoomDatabase {
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(5, 2));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(6, 2));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(7, 2));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(8, 3));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(9, 3));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(10, 3));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(11, 3));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(12, 4));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(13, 4));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(14, 4));
             });
         }
     };

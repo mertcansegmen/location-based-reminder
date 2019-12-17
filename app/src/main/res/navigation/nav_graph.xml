@@ -43,7 +43,8 @@
         android:id="@+id/placeGroupsFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.placegroups.PlaceGroupsFragment"
         android:label="@string/title_place_groups"
-        tools:layout="@layout/fragment_place_groups" />
+        tools:layout="@layout/fragment_place_groups" >
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"

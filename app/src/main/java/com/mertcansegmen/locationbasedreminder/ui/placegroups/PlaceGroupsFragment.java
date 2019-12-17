@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
+import com.mertcansegmen.locationbasedreminder.ui.addeditplacegroup.AddEditPlaceGroupFragment;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 
 import java.util.List;
@@ -56,6 +59,8 @@ public class PlaceGroupsFragment extends Fragment {
             }
         });
 
+        // This is needed for recycler view to go top when new record is added. Without this, new
+        // element is getting inserted off of the screen.
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
@@ -97,11 +102,10 @@ public class PlaceGroupsFragment extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                //viewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
+                viewModel.delete(adapter.getPlaceGroupWithPlacesAt(viewHolder.getAdapterPosition()));
             }
         }).attachToRecyclerView(recyclerView);
 
         return view;
     }
-
 }

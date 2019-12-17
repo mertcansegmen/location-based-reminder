@@ -54,7 +54,8 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
             PlaceChip chip = new PlaceChip(holder.placeGroupTextView.getContext());
             chip.setPlace(place);
             chip.setText(place.getName());
-            chip.setTextSize(Dimension.SP, 12);
+            chip.setEnsureMinTouchTargetSize(false);
+//            chip.setTextSize(Dimension.SP, 12);
             chip.setChipIcon(holder.placeGroupTextView.getContext().getResources().getDrawable(R.drawable.ic_places));
             holder.chipGroup.addView(chip);
         }

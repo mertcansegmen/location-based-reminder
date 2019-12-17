@@ -3,10 +3,12 @@ package com.mertcansegmen.locationbasedreminder.util;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 
@@ -41,17 +43,17 @@ public class PlaceChip extends Chip {
 
     public PlaceChip(Context context) {
         super(context);
-        configureChipColors(context);
+        configureChip(context);
     }
 
     public PlaceChip(Context context, AttributeSet attrs) {
         super(context, attrs);
-        configureChipColors(context);
+        configureChip(context);
     }
 
     public PlaceChip(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        configureChipColors(context);
+        configureChip(context);
     }
 
     public Place getPlace() {
@@ -62,9 +64,10 @@ public class PlaceChip extends Chip {
         this.place = place;
     }
 
-    private void configureChipColors(Context context) {
+    private void configureChip(Context context) {
         setRandomChipColor(context);
         setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorBlack)));
+        setTextStartPadding(3);
     }
 
     private void setRandomChipColor(Context context) {

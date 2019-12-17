@@ -21,10 +21,11 @@ import android.widget.Toast;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
+import com.mertcansegmen.locationbasedreminder.util.Utils;
 
 public class AddEditNoteFragment extends Fragment {
 
-    public static final String NOTE_BUNDLE_KEY ="com.mertcansegmen.locationbasedreminder.EXTRA_NOTE";
+    public static final String NOTE_BUNDLE_KEY = "com.mertcansegmen.locationbasedreminder.EXTRA_NOTE";
 
     private EditText noteEditText;
 
@@ -78,14 +79,6 @@ public class AddEditNoteFragment extends Fragment {
         return note == null;
     }
 
-    private void closeKeyboard() {
-        View view = requireActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if(isNewNote(currentNote)) {
@@ -101,12 +94,12 @@ public class AddEditNoteFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.save_note:
                 saveNote();
-                closeKeyboard();
+                Utils.closeKeyboard(requireActivity());
                 requireActivity().onBackPressed();
                 return true;
             case R.id.delete_note:
                 viewModel.delete(currentNote);
-                closeKeyboard();
+                Utils.closeKeyboard(requireActivity());
                 requireActivity().onBackPressed();
             default:
                 return super.onOptionsItemSelected(item);

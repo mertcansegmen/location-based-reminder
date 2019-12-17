@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#455a64</color>
+    <color name="colorPrimary">#0288d1</color>
     <color name="colorPrimaryDark">#212121</color>
-    <color name="colorAccent">#FF9800</color>
+    <color name="colorAccent">#29b6f6</color>
     <color name="colorWhite">#FFF</color>
     <color name="colorBlack">#000</color>
+    <color name="colorError">#f44336</color>
 
     <!-- Seek Bar Colors -->
     <color name="colorSeekBarBackground">#ababab</color>
@@ -34,4 +35,5 @@
     <color name="colorChipDeepOrange">#ffab91</color>
     <color name="colorChipBrown">#bcaaa4</color>
     <color name="colorChipBlueGray">#b0bec5</color>
+    <color name="colorChipDefault">#ccc</color>
 </resources>
