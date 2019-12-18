@@ -31,10 +31,13 @@ public interface PlaceGroupDao {
     void delete(PlaceGroup placeGroup);
 
     @Query("DELETE FROM PlaceGroupPlaceCrossRef WHERE placeGroupId = :placeGroupId")
-    void deleteAllPlaceGroupRefs(long placeGroupId);
+    void deletePlaceGroupRefs(long placeGroupId);
 
     @Query("DELETE FROM PlaceGroup")
     void deleteAllPlaceGroups();
+
+    @Query("DELETE FROM PlaceGroupPlaceCrossRef")
+    void deleteAllPlaceGroupRefs();
 
     @Query("SELECT * FROM PlaceGroup")
     LiveData<List<PlaceGroup>> getAllPlaceGroups();

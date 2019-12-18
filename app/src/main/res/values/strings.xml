@@ -29,4 +29,8 @@
     <string name="name">Name</string>
     <string name="error_empty_place_group_name">Place group name can not be empty</string>
     <string name="error_place_count">In order to create a place group, you need to add at least 2 places</string>
+    <string name="question_delete_all_notes">Are you sure you want to delete all of your notes?</string>
+    <string name="question_delete_all_places">Are you sure you want to delete all of your places?</string>
+    <string name="question_delete_all_place_groups">Are you sure you want to delete all of your place groups?</string>
+    <string name="delete_all">Delete All</string>
 </resources>

@@ -34,8 +34,11 @@ public class NoteRepository {
     }
 
     public void delete(Note note) {
+    }
+
+    public void deleteAll() {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> noteDao.delete(note));
+        executor.execute(() -> noteDao.deleteAllNotes());
     }
 
     public LiveData<List<Note>> getAllNotes() {

@@ -38,6 +38,11 @@ public class PlaceRepository {
         executor.execute(() -> placeDao.delete(place));
     }
 
+    public void deleteAll() {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> placeDao.deleteAllPlaces());
+    }
+
     public LiveData<List<Place>> getAllPlaces() {
         return allPlaces;
     }

@@ -26,6 +26,10 @@ public class PlaceGroupsFragmentViewModel extends AndroidViewModel {
         repository.deletePlaceGroupWithPlaces(placeGroupWithPlaces);
     }
 
+    public void deleteAll() {
+        repository.deleteAll();
+    }
+
     public LiveData<List<PlaceGroupWithPlaces>> getAllPlaceGroupsWithPlaces() {
         return allPlaceGroupsWithPlaces;
     }

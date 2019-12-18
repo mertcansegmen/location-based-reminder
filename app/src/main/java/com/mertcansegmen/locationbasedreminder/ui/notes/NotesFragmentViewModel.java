@@ -26,6 +26,10 @@ public class NotesFragmentViewModel extends AndroidViewModel {
         repository.delete(note);
     }
 
+    public void deleteAll() {
+        repository.deleteAll();
+    }
+
     public LiveData<List<Note>> getAllNotes() {
         return allNotes;
     }

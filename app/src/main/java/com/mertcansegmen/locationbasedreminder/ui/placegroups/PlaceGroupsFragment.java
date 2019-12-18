@@ -1,5 +1,6 @@
 package com.mertcansegmen.locationbasedreminder.ui.placegroups;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,9 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
@@ -41,6 +46,7 @@ public class PlaceGroupsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_place_groups, container, false);
+        setHasOptionsMenu(true);
 
         addPlaceGroupButton = view.findViewById(R.id.btn_add_place_group);
         recyclerView = view.findViewById(R.id.recycler_view);
@@ -132,5 +138,28 @@ public class PlaceGroupsFragment extends Fragment {
                 navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment);
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.place_groups_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_all_place_groups:
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setMessage(getString(R.string.question_delete_all_place_groups))
+                        .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
+                            viewModel.deleteAll();
+                        })
+                        .setNegativeButton(getString(R.string.cancel), null)
+                        .show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

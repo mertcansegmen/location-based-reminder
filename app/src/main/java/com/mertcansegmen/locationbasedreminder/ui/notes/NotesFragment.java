@@ -2,6 +2,9 @@ package com.mertcansegmen.locationbasedreminder.ui.notes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -23,6 +26,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
@@ -45,6 +49,7 @@ public class NotesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notes, container, false);
+        setHasOptionsMenu(true);
 
         addNoteButton = view.findViewById(R.id.btn_add_note);
         recyclerView = view.findViewById(R.id.recycler_view);
@@ -136,5 +141,28 @@ public class NotesFragment extends Fragment {
                 navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment);
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.notes_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_all_notes:
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setMessage(getString(R.string.question_delete_all_notes))
+                        .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
+                            viewModel.deleteAll();
+                        })
+                        .setNegativeButton(getString(R.string.cancel), null)
+                        .show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
