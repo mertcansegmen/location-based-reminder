@@ -1,5 +1,6 @@
 package com.mertcansegmen.locationbasedreminder.ui.notes;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +24,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,6 +65,9 @@ public class NotesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         adapter = new NoteAdapter();
         recyclerView.setAdapter(adapter);
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        }
 
         Animator.animateFloatingActionButton(addNoteButton);
 

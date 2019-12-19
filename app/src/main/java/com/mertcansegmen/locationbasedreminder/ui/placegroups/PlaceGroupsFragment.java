@@ -1,5 +1,6 @@
 package com.mertcansegmen.locationbasedreminder.ui.placegroups;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,12 +56,15 @@ public class PlaceGroupsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         adapter = new PlaceGroupWithPlacesAdapter();
         recyclerView.setAdapter(adapter);
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        }
 
         Animator.animateFloatingActionButton(addPlaceGroupButton);
 
         viewModel.getAllPlaceGroupsWithPlaces().observe(this, placeGroupsWithPlaces -> {
             emptyMessageLayout.setVisibility(placeGroupsWithPlaces.isEmpty() ? View.VISIBLE : View.GONE);
-            
+
             adapter.submitList(placeGroupsWithPlaces);
         });
 
