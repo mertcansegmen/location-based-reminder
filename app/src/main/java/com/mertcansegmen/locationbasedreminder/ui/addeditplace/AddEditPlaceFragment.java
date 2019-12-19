@@ -3,8 +3,12 @@ package com.mertcansegmen.locationbasedreminder.ui.addeditplace;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,16 +18,19 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSeekBar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,9 +42,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
@@ -56,6 +67,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     private MapView mapView;
     private GoogleMap googleMap;
+    private Marker currentPlaceMarker;
     private LocationManager locationManager;
 
     private TextView radiusTextView;
@@ -126,25 +138,33 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
         configureLocationListener();
 
-        if(!isFirstMapStart()) {
-            // Map restarted due to screen rotation, language change etc..
-            goToLocation(viewModel.getLastKnownScreenLocation().latitude,
-                    viewModel.getLastKnownScreenLocation().longitude, viewModel.getLastKnownZoom());
-        } else {
+        if(isFirstMapStart()) {
             // Map started for the first time
             if(isNewPlace(currentPlace)) {
                 viewModel.setRadius(DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS));
             } else {
-                viewModel.setRadius(currentPlace.getRadius());
+                addMarker(currentPlace);
+                drawCircle(currentPlace.getRadius(),
+                        new LatLng(currentPlace.getLatitude(), currentPlace.getLongitude()));
                 goToLocation(currentPlace.getLatitude(), currentPlace.getLongitude(), DEFAULT_ZOOM);
+                viewModel.setRadius(currentPlace.getRadius());
             }
+        } else {
+            // Map restarted due to configuration change such as screen rotation, language change etc..
+            if(!isNewPlace(currentPlace)) {
+                addMarker(currentPlace);
+                drawCircle(currentPlace.getRadius(),
+                        new LatLng(currentPlace.getLatitude(), currentPlace.getLongitude()));
+            }
+            goToLocation(viewModel.getLastKnownScreenLocation().latitude,
+                    viewModel.getLastKnownScreenLocation().longitude, viewModel.getLastKnownZoom());
         }
 
         radiusSeekBar.setProgress(viewModel.getRadius());
         radiusTextView.setText(getString(R.string.radius_text, viewModel.getRadius()));
-        drawCircle(viewModel.getRadius());
-        this.googleMap.setOnCameraMoveListener(() -> {
-            drawCircle(viewModel.getRadius());
+        radiusCircle = drawCircle(viewModel.getRadius(), googleMap.getCameraPosition().target);
+        googleMap.setOnCameraMoveListener(() -> {
+            radiusCircle = drawCircle(viewModel.getRadius(), googleMap.getCameraPosition().target);
             viewModel.setLastKnownScreenLocation(googleMap.getCameraPosition().target);
             viewModel.setLastKnownZoom(googleMap.getCameraPosition().zoom);
         });
@@ -153,7 +173,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 viewModel.setRadius(progress);
                 radiusTextView.setText(getString(R.string.radius_text, viewModel.getRadius()));
-                drawCircle(viewModel.getRadius());
+                radiusCircle = drawCircle(viewModel.getRadius(), googleMap.getCameraPosition().target);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -162,17 +182,75 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         });
     }
 
-    private void drawCircle(int radius) {
+    private void addMarker(Place place) {
+        if(currentPlaceMarker != null) currentPlaceMarker.remove();
+
+        MarkerOptions options = new MarkerOptions()
+                .title(place.getName())
+                .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_icon))
+                .snippet(getString(R.string.marker_snippet, place.getRadius()))
+                .position(new LatLng(place.getLatitude(), place.getLongitude()));
+        currentPlaceMarker = googleMap.addMarker(options);
+        configureMarkerSnippet();
+    }
+
+    /**
+     * Marker snippet can not normally be more than 1 line, this makes it possible. Must add line
+     * break to snippet text when setting it.
+     */
+    private void configureMarkerSnippet() {
+        googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                LinearLayout info = new LinearLayout(requireContext());
+                info.setOrientation(LinearLayout.VERTICAL);
+
+                TextView title = new TextView(requireContext());
+                title.setTextColor(Color.BLACK);
+                title.setGravity(Gravity.CENTER);
+                title.setTypeface(null, Typeface.BOLD);
+                title.setText(marker.getTitle());
+
+                TextView snippet = new TextView(requireContext());
+                snippet.setTextColor(Color.GRAY);
+                snippet.setText(marker.getSnippet());
+
+                info.addView(title);
+                info.addView(snippet);
+
+                return info;
+            }
+        });
+    }
+
+    /**
+     * Converts vector image to bitmap.
+     */
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    private Circle drawCircle(int radius, LatLng latLng) {
         if(radiusCircle != null) {
             removeCircle();
         }
         CircleOptions options = new CircleOptions()
-                .center(googleMap.getCameraPosition().target)
+                .center(latLng)
                 .radius(radius)
                 .fillColor(getResources().getColor(R.color.colorRadiusFill))
                 .strokeColor(getResources().getColor(R.color.colorStroke))
                 .strokeWidth(2);
-        radiusCircle = googleMap.addCircle(options);
+        return googleMap.addCircle(options);
     }
 
     private void removeCircle() {
