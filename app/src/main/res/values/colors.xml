@@ -6,6 +6,7 @@
     <color name="colorWhite">#FFF</color>
     <color name="colorBlack">#000</color>
     <color name="colorError">#f44336</color>
+    <color name="colorMessage">#777</color>
 
     <!-- Seek Bar Colors -->
     <color name="colorSeekBarBackground">#ababab</color>

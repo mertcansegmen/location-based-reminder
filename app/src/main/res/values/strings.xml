@@ -34,4 +34,7 @@
     <string name="question_delete_all_place_groups">Are you sure you want to delete all of your place groups?</string>
     <string name="delete_all">Delete All</string>
     <string name="error_empty_place_group">No place added</string>
+    <string name="msg_empty_notes">You haven\'t added any notes yet, click the button down below and add your first note!</string>
+    <string name="msg_empty_places">You haven\'t added any places yet, click the button down below and add your first place!</string>
+    <string name="msg_empty_place_groups">You haven\'t added any place groups yet, click the button down below and add your first place group!</string>
 </resources>

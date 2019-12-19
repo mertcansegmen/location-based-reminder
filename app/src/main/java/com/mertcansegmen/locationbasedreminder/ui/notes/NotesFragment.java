@@ -14,6 +14,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +38,7 @@ import java.util.List;
 
 public class NotesFragment extends Fragment {
 
+    private LinearLayout emptyMessageLayout;
     private RecyclerView recyclerView;
     private NoteAdapter adapter;
     private FloatingActionButton addNoteButton;
@@ -53,6 +55,7 @@ public class NotesFragment extends Fragment {
 
         addNoteButton = view.findViewById(R.id.btn_add_note);
         recyclerView = view.findViewById(R.id.recycler_view);
+        emptyMessageLayout = view.findViewById(R.id.empty_msg_layout);
 
         viewModel = ViewModelProviders.of(this).get(NotesFragmentViewModel.class);
 
@@ -63,7 +66,11 @@ public class NotesFragment extends Fragment {
 
         Animator.animateFloatingActionButton(addNoteButton);
 
-        viewModel.getAllNotes().observe(this, notes -> adapter.submitList(notes));
+        viewModel.getAllNotes().observe(this, notes -> {
+            emptyMessageLayout.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
+
+            adapter.submitList(notes);
+        });
 
         adapter.setOnItemClickListener(note -> {
             Bundle bundle = new Bundle();
