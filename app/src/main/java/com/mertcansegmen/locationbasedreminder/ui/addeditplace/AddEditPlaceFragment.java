@@ -143,13 +143,10 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         radiusSeekBar.setProgress(viewModel.getRadius());
         radiusTextView.setText(getString(R.string.radius_text, viewModel.getRadius()));
         drawCircle(viewModel.getRadius());
-        this.googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-            @Override
-            public void onCameraMove() {
-                drawCircle(viewModel.getRadius());
-                viewModel.setLastKnownScreenLocation(googleMap.getCameraPosition().target);
-                viewModel.setLastKnownZoom(googleMap.getCameraPosition().zoom);
-            }
+        this.googleMap.setOnCameraMoveListener(() -> {
+            drawCircle(viewModel.getRadius());
+            viewModel.setLastKnownScreenLocation(googleMap.getCameraPosition().target);
+            viewModel.setLastKnownZoom(googleMap.getCameraPosition().zoom);
         });
         radiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -229,12 +226,9 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
             case R.id.delete_place:
                 new MaterialAlertDialogBuilder(requireContext())
                         .setMessage(getString(R.string.delete_place_message))
-                        .setPositiveButton(getText(R.string.ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                viewModel.delete(currentPlace);
-                                requireActivity().onBackPressed();
-                            }
+                        .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
+                            viewModel.delete(currentPlace);
+                            requireActivity().onBackPressed();
                         })
                         .setNegativeButton(getString(R.string.cancel), null)
                         .show();

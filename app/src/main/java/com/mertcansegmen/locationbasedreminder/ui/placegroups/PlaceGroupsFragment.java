@@ -60,20 +60,12 @@ public class PlaceGroupsFragment extends Fragment {
 
         Animator.animateFloatingActionButton(addPlaceGroupButton);
 
-        viewModel.getAllPlaceGroupsWithPlaces().observe(this, new Observer<List<PlaceGroupWithPlaces>>() {
-            @Override
-            public void onChanged(List<PlaceGroupWithPlaces> placeGroupsWithPlaces) {
-                adapter.submitList(placeGroupsWithPlaces);
-            }
-        });
+        viewModel.getAllPlaceGroupsWithPlaces().observe(this, placeGroupsWithPlaces -> adapter.submitList(placeGroupsWithPlaces));
 
-        adapter.setOnItemClickListener(new PlaceGroupWithPlacesAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClicked(PlaceGroupWithPlaces placeGroupWithPlaces) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(AddEditPlaceGroupFragment.PLACE_GROUP_BUNDLE_KEY, placeGroupWithPlaces);
-                navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment, bundle);
-            }
+        adapter.setOnItemClickListener(placeGroupWithPlaces -> {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(AddEditPlaceGroupFragment.PLACE_GROUP_BUNDLE_KEY, placeGroupWithPlaces);
+            navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment, bundle);
         });
 
         // This is needed for recycler view to go top when new record is added. Without this, new
@@ -132,12 +124,7 @@ public class PlaceGroupsFragment extends Fragment {
 
         navController = Navigation.findNavController(view);
 
-        addPlaceGroupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment);
-            }
-        });
+        addPlaceGroupButton.setOnClickListener(v -> navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment));
     }
 
     @Override

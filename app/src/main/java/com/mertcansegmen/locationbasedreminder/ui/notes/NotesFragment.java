@@ -63,20 +63,12 @@ public class NotesFragment extends Fragment {
 
         Animator.animateFloatingActionButton(addNoteButton);
 
-        viewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(@Nullable List<Note> notes) {
-                adapter.submitList(notes);
-            }
-        });
+        viewModel.getAllNotes().observe(this, notes -> adapter.submitList(notes));
 
-        adapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClicked(Note note) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(AddEditNoteFragment.NOTE_BUNDLE_KEY, note);
-                navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment, bundle);
-            }
+        adapter.setOnItemClickListener(note -> {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(AddEditNoteFragment.NOTE_BUNDLE_KEY, note);
+            navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment, bundle);
         });
 
         // This is needed for recycler view to go top when new record is added. Without this, new
@@ -135,12 +127,7 @@ public class NotesFragment extends Fragment {
 
         navController = Navigation.findNavController(view);
 
-        addNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment);
-            }
-        });
+        addNoteButton.setOnClickListener(v -> navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment));
     }
 
     @Override
@@ -155,9 +142,7 @@ public class NotesFragment extends Fragment {
             case R.id.delete_all_notes:
                 new MaterialAlertDialogBuilder(requireContext())
                         .setMessage(getString(R.string.question_delete_all_notes))
-                        .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
-                            viewModel.deleteAll();
-                        })
+                        .setPositiveButton(getText(R.string.ok), (dialog, which) -> viewModel.deleteAll())
                         .setNegativeButton(getString(R.string.cancel), null)
                         .show();
                 return true;

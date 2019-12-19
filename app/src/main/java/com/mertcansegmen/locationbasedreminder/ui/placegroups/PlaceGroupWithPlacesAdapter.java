@@ -50,6 +50,7 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
     public void onBindViewHolder(@NonNull PlaceGroupWithPlacesViewHolder holder, int position) {
         PlaceGroupWithPlaces currentPlaceGroupWithPlaces = getItem(position);
         holder.placeGroupTextView.setText(currentPlaceGroupWithPlaces.getPlaceGroup().getName());
+
         for(final Place place : currentPlaceGroupWithPlaces.getPlaces()) {
             PlaceChip chip = new PlaceChip(holder.placeGroupTextView.getContext());
             chip.setPlace(place);
@@ -58,6 +59,13 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
 //            chip.setTextSize(Dimension.SP, 12);
             chip.setChipIcon(holder.placeGroupTextView.getContext().getResources().getDrawable(R.drawable.ic_places));
             holder.chipGroup.addView(chip);
+        }
+
+        if(holder.chipGroup.getChildCount() < 1) {
+            TextView noPlaceTextView = new TextView(holder.chipGroup.getContext());
+            noPlaceTextView.setText(R.string.error_empty_place_group);
+            noPlaceTextView.setTextSize(Dimension.SP, 12);
+            holder.chipGroup.addView(noPlaceTextView);
         }
     }
 
@@ -75,13 +83,10 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
             placeGroupTextView = itemView.findViewById(R.id.txt_place_group);
             chipGroup = itemView.findViewById(R.id.chip_group);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if(listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClicked(getItem(position));
-                    }
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if(listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onItemClicked(getItem(position));
                 }
             });
         }

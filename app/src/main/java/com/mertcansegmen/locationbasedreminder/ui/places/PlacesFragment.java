@@ -49,23 +49,15 @@ public class PlacesFragment extends Fragment {
 
         Animator.animateFloatingActionButton(addPlaceButton);
 
-        viewModel.getAllPlaces().observe(this, new Observer<List<Place>>() {
-            @Override
-            public void onChanged(List<Place> places) {
-                chipGroup.removeAllViews();
-                for(final Place place : places) {
-                    PlaceChip chip = new PlaceChip(view.getContext());
-                    chip.setPlace(place);
-                    chip.setText(place.getName());
-                    chip.setChipIcon(getResources().getDrawable(R.drawable.ic_places));
-                    chipGroup.addView(chip);
-                    chip.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            navigateForEdit(place);
-                        }
-                    });
-                }
+        viewModel.getAllPlaces().observe(this, places -> {
+            chipGroup.removeAllViews();
+            for(final Place place : places) {
+                PlaceChip chip = new PlaceChip(view.getContext());
+                chip.setPlace(place);
+                chip.setText(place.getName());
+                chip.setChipIcon(getResources().getDrawable(R.drawable.ic_places));
+                chipGroup.addView(chip);
+                chip.setOnClickListener(v -> navigateForEdit(place));
             }
         });
 
@@ -78,12 +70,7 @@ public class PlacesFragment extends Fragment {
 
         navController = Navigation.findNavController(view);
 
-        addPlaceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment);
-            }
-        });
+        addPlaceButton.setOnClickListener(v -> navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment));
     }
 
     private void navigateForEdit(Place place) {

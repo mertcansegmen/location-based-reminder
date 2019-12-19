@@ -71,7 +71,7 @@ public class AddEditPlaceGroupFragment extends Fragment {
         if(getArguments() != null) {
             currentPlaceGroup = getArguments().getParcelable(PLACE_GROUP_BUNDLE_KEY);
             if (!isNewPlaceGroup(currentPlaceGroup)) {
-                ((MainActivity) requireActivity()).getSupportActionBar().setTitle("Edit Place Group");
+                ((MainActivity) requireActivity()).getSupportActionBar().setTitle(currentPlaceGroup.getPlaceGroup().getName());
                 placeGroupNameEditText.setText(currentPlaceGroup.getPlaceGroup().getName());
                 loadPlaceChips();
             }
@@ -104,15 +104,34 @@ public class AddEditPlaceGroupFragment extends Fragment {
         Chip addPlaceChip = new Chip(requireContext());
         addPlaceChip.setText(R.string.add_place);
         addPlaceChip.setTextStartPadding(3);
+        addPlaceChip.setChipStrokeWidth(2);
         addPlaceChip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_add));
-        addPlaceChip.setTextColor(getResources().getColor(R.color.colorBlack));
-        addPlaceChip.setChipIconTintResource(R.color.colorBlack);
-        addPlaceChip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat
-                .getColor(requireContext(), R.color.colorChipDefault)));
+
+        if(Utils.isDarkModeEnabled(requireContext())) {
+            createLightChip(addPlaceChip);
+        } else {
+            createDarkChip(addPlaceChip);
+        }
         chipGroup.addView(addPlaceChip);
         addPlaceChip.setOnClickListener(v -> {
             // TODO: Navigate dialog to select new place
         });
+    }
+
+    private void createLightChip(Chip chip) {
+        styleChip(chip, R.color.colorBlack, R.color.colorWhite);
+    }
+
+    private void createDarkChip(Chip chip) {
+        styleChip(chip, R.color.colorWhite, R.color.colorBlack);
+    }
+
+    private void styleChip(Chip chip, int backgroundColor, int borderColor) {
+        chip.setChipIconTintResource(borderColor);
+        chip.setChipStrokeColor(ColorStateList.valueOf(ContextCompat
+                .getColor(requireContext(), borderColor)));
+        chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat
+                .getColor(requireContext(), backgroundColor)));
     }
 
     /**

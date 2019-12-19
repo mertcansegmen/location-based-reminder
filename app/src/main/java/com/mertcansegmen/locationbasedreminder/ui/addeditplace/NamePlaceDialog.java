@@ -51,33 +51,25 @@ public class NamePlaceDialog extends DialogFragment {
             placeNameEditText.setText(place.getName());
         }
 
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String placeName = placeNameEditText.getText().toString().trim();
-                place.setName(placeName);
+        okButton.setOnClickListener(v -> {
+            String placeName = placeNameEditText.getText().toString().trim();
+            place.setName(placeName);
 
-                // Show error if place name field is empty
-                if(placeName.isEmpty()) {
-                    placeNameLayout.setError(getString(R.string.error_empty_place_name));
-                    return;
-                }
-
-                if(isNewPlace(place)) {
-                    viewModel.insert(place);
-                } else {
-                    viewModel.update(place);
-                }
-                dismiss();
+            // Show error if place name field is empty
+            if(placeName.isEmpty()) {
+                placeNameLayout.setError(getString(R.string.error_empty_place_name));
+                return;
             }
+
+            if(isNewPlace(place)) {
+                viewModel.insert(place);
+            } else {
+                viewModel.update(place);
+            }
+            dismiss();
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        cancelButton.setOnClickListener(v -> dismiss());
 
         placeNameEditText.addTextChangedListener(new TextWatcher() {
 
