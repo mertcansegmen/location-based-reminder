@@ -1,10 +1,16 @@
 package com.mertcansegmen.locationbasedreminder.ui.placegroups;
 
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -39,6 +45,8 @@ public class PlaceGroupsFragment extends Fragment {
 
     private int deletedPosition;
     private PlaceGroupWithPlaces deletedPlaceGroup;
+    private Drawable deleteIcon;
+    private ColorDrawable swipeBackground = new ColorDrawable(Color.parseColor("#FF0000"));
 
     private PlaceGroupsFragmentViewModel viewModel;
 
@@ -54,6 +62,7 @@ public class PlaceGroupsFragment extends Fragment {
         addPlaceGroupButton = view.findViewById(R.id.btn_add_place_group);
         recyclerView = view.findViewById(R.id.recycler_view);
         emptyMessageLayout = view.findViewById(R.id.empty_msg_layout);
+        deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete_32);
 
         viewModel = ViewModelProviders.of(this).get(PlaceGroupsFragmentViewModel.class);
 
@@ -129,6 +138,7 @@ public class PlaceGroupsFragment extends Fragment {
 
                 Snackbar.make(viewHolder.itemView, "Place group deleted.", Snackbar.LENGTH_LONG)
                         .setAction("UNDO", v -> viewModel.insertBack(deletedPlaceGroup))
+                        .setAnchorView(addPlaceGroupButton)
                         .show();
             }
         }).attachToRecyclerView(recyclerView);

@@ -137,6 +137,7 @@ public class NotesFragment extends Fragment {
 
                 Snackbar.make(viewHolder.itemView, "Note deleted.", Snackbar.LENGTH_LONG)
                         .setAction("UNDO", v -> viewModel.insertBack(deletedNote))
+                        .setAnchorView(addNoteButton)
                         .show();
             }
         }).attachToRecyclerView(recyclerView);
