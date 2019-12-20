@@ -22,8 +22,17 @@ public class PlaceGroupsFragmentViewModel extends AndroidViewModel {
         allPlaceGroupsWithPlaces = repository.getAllPlaceGroupsWithPlaces();
     }
 
+    public void insert(PlaceGroupWithPlaces placeGroupWithPlaces) {
+        repository.insert(placeGroupWithPlaces);
+    }
+
+    public void insertBack(PlaceGroupWithPlaces placeGroupWithPlaces) {
+        repository.insertBack(placeGroupWithPlaces);
+    }
+
+
     public void delete(PlaceGroupWithPlaces placeGroupWithPlaces) {
-        repository.deletePlaceGroupWithPlaces(placeGroupWithPlaces);
+        repository.delete(placeGroupWithPlaces);
     }
 
     public void deleteAll() {

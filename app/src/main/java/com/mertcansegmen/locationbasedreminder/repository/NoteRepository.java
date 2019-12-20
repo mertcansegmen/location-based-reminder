@@ -28,6 +28,11 @@ public class NoteRepository {
         executor.execute(() -> noteDao.insert(note.getBody()));
     }
 
+    public void insertBack(Note note) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> noteDao.insert(note));
+    }
+
     public void update(Note note) {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> noteDao.update(note));

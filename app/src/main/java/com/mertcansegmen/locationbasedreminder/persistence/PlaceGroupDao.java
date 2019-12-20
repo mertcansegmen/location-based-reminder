@@ -8,7 +8,6 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroup;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupPlaceCrossRef;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
@@ -20,6 +19,9 @@ public interface PlaceGroupDao {
 
     @Query("INSERT INTO PlaceGroup (name) VALUES(:name)")
     long insert(String name);
+
+    @Insert
+    long insert(PlaceGroup placeGroup);
 
     @Insert
     void insert(PlaceGroupPlaceCrossRef placeGroupPlaceCrossRef);

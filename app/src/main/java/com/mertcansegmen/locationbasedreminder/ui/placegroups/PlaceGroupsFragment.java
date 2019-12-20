@@ -24,7 +24,9 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.mertcansegmen.locationbasedreminder.R;
+import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.ui.addeditplacegroup.AddEditPlaceGroupFragment;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 
@@ -34,6 +36,9 @@ public class PlaceGroupsFragment extends Fragment {
     private RecyclerView recyclerView;
     private PlaceGroupWithPlacesAdapter adapter;
     private FloatingActionButton addPlaceGroupButton;
+
+    private int deletedPosition;
+    private PlaceGroupWithPlaces deletedPlaceGroup;
 
     private PlaceGroupsFragmentViewModel viewModel;
 
@@ -117,7 +122,14 @@ public class PlaceGroupsFragment extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                deletedPosition = viewHolder.getAdapterPosition();
+                deletedPlaceGroup = adapter.getPlaceGroupWithPlacesAt(deletedPosition);
+
                 viewModel.delete(adapter.getPlaceGroupWithPlacesAt(viewHolder.getAdapterPosition()));
+
+                Snackbar.make(viewHolder.itemView, "Place group deleted.", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", v -> viewModel.insertBack(deletedPlaceGroup))
+                        .show();
             }
         }).attachToRecyclerView(recyclerView);
 

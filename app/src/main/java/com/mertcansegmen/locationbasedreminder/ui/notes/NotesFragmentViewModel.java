@@ -22,8 +22,16 @@ public class NotesFragmentViewModel extends AndroidViewModel {
         allNotes = repository.getAllNotes();
     }
 
+    public void insert(Note note) {
+        repository.insert(note);
+    }
+
     public void delete(Note note) {
         repository.delete(note);
+    }
+
+    public void insertBack(Note note) {
+        repository.insertBack(note);
     }
 
     public void deleteAll() {

@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.ui.addeditnote.AddEditNoteFragment;
@@ -44,6 +45,9 @@ public class NotesFragment extends Fragment {
     private RecyclerView recyclerView;
     private NoteAdapter adapter;
     private FloatingActionButton addNoteButton;
+
+    private Note deletedNote;
+    private int deletedPosition;
 
     private NotesFragmentViewModel viewModel;
 
@@ -126,7 +130,14 @@ public class NotesFragment extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                deletedPosition = viewHolder.getAdapterPosition();
+                deletedNote = adapter.getNoteAt(deletedPosition);
+
                 viewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
+
+                Snackbar.make(viewHolder.itemView, "Note deleted.", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", v -> viewModel.insertBack(deletedNote))
+                        .show();
             }
         }).attachToRecyclerView(recyclerView);
 

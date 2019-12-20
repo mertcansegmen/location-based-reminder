@@ -17,6 +17,9 @@ public interface NoteDao {
     @Query("INSERT INTO Note (body) VALUES(:body)")
     void insert(String body);
 
+    @Insert
+    void insert(Note note);
+
     @Update
     void update(Note note);
 

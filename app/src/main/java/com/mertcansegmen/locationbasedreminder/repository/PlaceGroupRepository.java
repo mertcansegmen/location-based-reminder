@@ -29,7 +29,7 @@ public class PlaceGroupRepository {
         return allPlaceGroupsWithPlaces;
     }
 
-    public void deletePlaceGroupWithPlaces(PlaceGroupWithPlaces placeGroupWithPlaces) {
+    public void delete(PlaceGroupWithPlaces placeGroupWithPlaces) {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             placeGroupDao.delete(placeGroupWithPlaces.getPlaceGroup());
@@ -37,7 +37,7 @@ public class PlaceGroupRepository {
         });
     }
 
-    public void updatePlaceGroupWithPlaces(PlaceGroupWithPlaces placeGroupWithPlaces) {
+    public void update(PlaceGroupWithPlaces placeGroupWithPlaces) {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             placeGroupDao.deletePlaceGroupRefs(placeGroupWithPlaces.getPlaceGroup().getPlaceGroupId());
@@ -49,10 +49,20 @@ public class PlaceGroupRepository {
         });
     }
 
-    public void insertPlaceGroupWithPlaces(PlaceGroupWithPlaces placeGroupWithPlaces) {
+    public void insert(PlaceGroupWithPlaces placeGroupWithPlaces) {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             long placeGroupId = placeGroupDao.insert(placeGroupWithPlaces.getPlaceGroup().getName());
+            for(Place place : placeGroupWithPlaces.getPlaces()) {
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(place.getPlaceId(), placeGroupId));
+            }
+        });
+    }
+
+    public void insertBack(PlaceGroupWithPlaces placeGroupWithPlaces) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            long placeGroupId = placeGroupDao.insert(placeGroupWithPlaces.getPlaceGroup());
             for(Place place : placeGroupWithPlaces.getPlaces()) {
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(place.getPlaceId(), placeGroupId));
             }

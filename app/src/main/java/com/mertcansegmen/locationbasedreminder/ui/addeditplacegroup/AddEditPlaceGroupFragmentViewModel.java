@@ -18,14 +18,14 @@ public class AddEditPlaceGroupFragmentViewModel extends AndroidViewModel {
     }
 
     public void insert(PlaceGroupWithPlaces placeGroupWithPlaces) {
-        repository.insertPlaceGroupWithPlaces(placeGroupWithPlaces);
+        repository.insert(placeGroupWithPlaces);
     }
 
     public void update(PlaceGroupWithPlaces placeGroupWithPlaces) {
-        repository.updatePlaceGroupWithPlaces(placeGroupWithPlaces);
+        repository.update(placeGroupWithPlaces);
     }
 
     public void delete(PlaceGroupWithPlaces placeGroupWithPlaces) {
-        repository.deletePlaceGroupWithPlaces(placeGroupWithPlaces);
+        repository.delete(placeGroupWithPlaces);
     }
 }
