@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -46,6 +48,8 @@ public class AddEditPlaceGroupFragment extends Fragment {
 
     private AddEditPlaceGroupFragmentViewModel viewModel;
 
+    private NavController navController;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,10 +61,25 @@ public class AddEditPlaceGroupFragment extends Fragment {
         chipGroup = view.findViewById(R.id.chip_group);
         scrollView = view.findViewById(R.id.scroll_view);
 
-        viewModel = ViewModelProviders.of(this).get(AddEditPlaceGroupFragmentViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(AddEditPlaceGroupFragmentViewModel.class);
+
+        viewModel.getSelectedPlace().observe(this, selectedPlace -> addChip(selectedPlace));
 
         // Scroll to bottom on create because add place chip is at the bottom.
         scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
+
+        if(getArguments() != null) {
+            currentPlaceGroup = getArguments().getParcelable(PLACE_GROUP_BUNDLE_KEY);
+        }
+
+        createAddPlaceChip();
+
+        if(!isNewPlaceGroup(currentPlaceGroup)) {
+            ((MainActivity) requireActivity()).getSupportActionBar().setTitle(currentPlaceGroup.getPlaceGroup().getName());
+
+            placeGroupNameEditText.setText(currentPlaceGroup.getPlaceGroup().getName());
+            loadPlaceChips(currentPlaceGroup.getPlaces());
+        }
 
         return view;
     }
@@ -69,19 +88,11 @@ public class AddEditPlaceGroupFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(getArguments() != null) {
-            currentPlaceGroup = getArguments().getParcelable(PLACE_GROUP_BUNDLE_KEY);
-            if (!isNewPlaceGroup(currentPlaceGroup)) {
-                ((MainActivity) requireActivity()).getSupportActionBar().setTitle(currentPlaceGroup.getPlaceGroup().getName());
-                placeGroupNameEditText.setText(currentPlaceGroup.getPlaceGroup().getName());
-                loadPlaceChips();
-            }
-        }
-        createAddPlaceChip();
+        navController = Navigation.findNavController(view);
     }
 
-    private void loadPlaceChips() {
-        for(Place place : currentPlaceGroup.getPlaces()) {
+    private void loadPlaceChips(List<Place> places) {
+        for(Place place : places) {
             addChip(place);
         }
     }
@@ -93,8 +104,10 @@ public class AddEditPlaceGroupFragment extends Fragment {
         chipToAdd.setCloseIconVisible(true);
         chipToAdd.setCloseIconTint(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorBlack)));
         chipToAdd.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_places));
+
         chipGroup.addView(chipToAdd, chipGroup.getChildCount() - 1);
         Animator.addViewWithFadeAnimation(chipToAdd);
+
         chipToAdd.setOnCloseIconClickListener(chipToRemove -> {
             chipGroup.removeView(chipToRemove);
             Animator.removeViewWithFadeAnimation(chipToRemove);
@@ -115,7 +128,10 @@ public class AddEditPlaceGroupFragment extends Fragment {
         }
         chipGroup.addView(addPlaceChip);
         addPlaceChip.setOnClickListener(v -> {
-            // TODO: Navigate dialog to select new place
+            Bundle bundle = new Bundle();
+            ArrayList<Place> selectedPlaces = new ArrayList<>(getPlacesFromChips());
+            bundle.putParcelableArrayList(PickPlaceDialog.SELECTED_PLACES_BUNDLE_KEY, selectedPlaces);
+            navController.navigate(R.id.action_addEditPlaceGroupFragment_to_pickPlaceDialog, bundle);
         });
     }
 
@@ -141,8 +157,9 @@ public class AddEditPlaceGroupFragment extends Fragment {
      */
     private List<Place> getPlacesFromChips() {
         ArrayList<Place> places = new ArrayList<>();
-        for(int i = 0; i < chipGroup.getChildCount() - 1; i++) {
-            places.add(((PlaceChip) chipGroup.getChildAt(i)).getPlace());
+        for(int i = 0; i < chipGroup.getChildCount(); i++) {
+            if(chipGroup.getChildAt(i) instanceof PlaceChip)
+                places.add(((PlaceChip) chipGroup.getChildAt(i)).getPlace());
         }
         return places;
     }
