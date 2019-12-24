@@ -8,19 +8,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnticipateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Interpolator;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -91,33 +83,10 @@ public class NotesFragment extends Fragment {
         // element is getting inserted off of the screen.
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
-            public void onChanged() {
-                recyclerView.scrollToPosition(0);
-            }
-
-            @Override
-            public void onItemRangeChanged(int positionStart, int itemCount) {
-                recyclerView.scrollToPosition(0);
-            }
-
-            @Override
-            public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
-                recyclerView.scrollToPosition(0);
-            }
-
-            @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                recyclerView.scrollToPosition(0);
-            }
-
-            @Override
-            public void onItemRangeRemoved(int positionStart, int itemCount) {
-                recyclerView.scrollToPosition(0);
-            }
-
-            @Override
-            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-                recyclerView.scrollToPosition(0);
+                if(positionStart == 0) {
+                    recyclerView.scrollToPosition(0);
+                }
             }
         });
 

@@ -83,33 +83,10 @@ public class PlaceGroupsFragment extends Fragment {
         // element is getting inserted off of the screen.
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
-            public void onChanged() {
-                recyclerView.scrollToPosition(0);
-            }
-
-            @Override
-            public void onItemRangeChanged(int positionStart, int itemCount) {
-                recyclerView.scrollToPosition(0);
-            }
-
-            @Override
-            public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
-                recyclerView.scrollToPosition(0);
-            }
-
-            @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                recyclerView.scrollToPosition(0);
-            }
-
-            @Override
-            public void onItemRangeRemoved(int positionStart, int itemCount) {
-                recyclerView.scrollToPosition(0);
-            }
-
-            @Override
-            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-                recyclerView.scrollToPosition(0);
+                if(positionStart == 0) {
+                    recyclerView.scrollToPosition(0);
+                }
             }
         });
 
