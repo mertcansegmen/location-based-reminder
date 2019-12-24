@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mertcansegmen.locationbasedreminder.R;
@@ -146,6 +147,33 @@ public class AddEditPlaceGroupFragment extends Fragment {
         return places;
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        if(isNewPlaceGroup(currentPlaceGroup)) {
+            inflater.inflate(R.menu.add_place_group_menu, menu);
+        } else {
+            inflater.inflate(R.menu.edit_place_group_menu, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save_place_group:
+                savePlaceGroup();
+                Utils.closeKeyboard(requireActivity());
+                return true;
+            case R.id.delete_place_group:
+                deletePlaceGroup();
+                requireActivity().onBackPressed();
+                Utils.closeKeyboard(requireActivity());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void savePlaceGroup() {
         String placeGroupName = placeGroupNameEditText.getText().toString().trim();
         List<Place> placesToSave = getPlacesFromChips();
@@ -168,30 +196,14 @@ public class AddEditPlaceGroupFragment extends Fragment {
         requireActivity().onBackPressed();
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        if(isNewPlaceGroup(currentPlaceGroup)) {
-            inflater.inflate(R.menu.add_place_group_menu, menu);
-        } else {
-            inflater.inflate(R.menu.edit_place_group_menu, menu);
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.save_place_group:
-                savePlaceGroup();
-                Utils.closeKeyboard(requireActivity());
-                return true;
-            case R.id.delete_place_group:
-                viewModel.delete(currentPlaceGroup);
-                requireActivity().onBackPressed();
-                Utils.closeKeyboard(requireActivity());
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    private void deletePlaceGroup() {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setMessage(getString(R.string.delete_place_group_message))
+                .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
+                    viewModel.delete(currentPlaceGroup);
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
     }
 
     private boolean isNewPlaceGroup(PlaceGroupWithPlaces placeGroup) {

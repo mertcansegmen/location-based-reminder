@@ -19,6 +19,8 @@
     <string name="name_this_place">Name This Place</string>
     <string name="cannot_connect_play_services">Can not connect to play services</string>
     <string name="delete_place_message">Are you sure you want to delete this place?</string>
+    <string name="delete_note_message">Are you sure you want to delete this note?</string>
+    <string name="delete_place_group_message">Are you sure you want to delete this place group?</string>
     <string name="google_Services_not_available">Google services are not available</string>
     <string name="location_permission_message">You need to grant location permission to use Location Based Reminder</string>
     <string name="grant_location_permission">Please grant location permissions</string>

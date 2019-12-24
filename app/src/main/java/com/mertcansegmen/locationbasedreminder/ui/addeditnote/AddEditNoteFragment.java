@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
@@ -56,23 +57,6 @@ public class AddEditNoteFragment extends Fragment {
         }
     }
 
-    private void saveNote() {
-        String text = noteEditText.getText().toString().trim();
-        if(text.isEmpty()) {
-            if(isNewNote(currentNote)) {
-                Toast.makeText(getContext(), "Empty note deleted", Toast.LENGTH_SHORT).show();
-            }
-            return;
-        }
-        if(isNewNote(currentNote)) {
-            Note newNote = new Note(text);
-            viewModel.insert(newNote);
-        } else {
-            currentNote.setBody(text);
-            viewModel.update(currentNote);
-        }
-    }
-
     private boolean isNewNote(Note note) {
         return note == null;
     }
@@ -96,11 +80,38 @@ public class AddEditNoteFragment extends Fragment {
                 requireActivity().onBackPressed();
                 return true;
             case R.id.delete_note:
-                viewModel.delete(currentNote);
+                deleteNote();
                 Utils.closeKeyboard(requireActivity());
                 requireActivity().onBackPressed();
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void saveNote() {
+        String text = noteEditText.getText().toString().trim();
+        if(text.isEmpty()) {
+            if(isNewNote(currentNote)) {
+                Toast.makeText(getContext(), "Empty note deleted", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        if(isNewNote(currentNote)) {
+            Note newNote = new Note(text);
+            viewModel.insert(newNote);
+        } else {
+            currentNote.setBody(text);
+            viewModel.update(currentNote);
+        }
+    }
+
+    private void deleteNote() {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setMessage(getString(R.string.delete_note_message))
+                .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
+                    viewModel.delete(currentNote);
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
     }
 }

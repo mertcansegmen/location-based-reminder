@@ -302,18 +302,22 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
                 requireActivity().onBackPressed();
                 return true;
             case R.id.delete_place:
-                new MaterialAlertDialogBuilder(requireContext())
-                        .setMessage(getString(R.string.delete_place_message))
-                        .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
-                            viewModel.delete(currentPlace);
-                            requireActivity().onBackPressed();
-                        })
-                        .setNegativeButton(getString(R.string.cancel), null)
-                        .show();
+                deletePlace();
+                requireActivity().onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void deletePlace() {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setMessage(getString(R.string.delete_place_message))
+                .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
+                    viewModel.delete(currentPlace);
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
     }
 
     private void configurePlaceLatLngRad() {
