@@ -13,7 +13,6 @@
         android:hint="@string/note"
         android:gravity="top"
         android:padding="16dp"
-        android:background="@null"
-        android:inputType="text" />
+        android:background="@null" />
 
 </FrameLayout>

@@ -33,9 +33,12 @@
     <string name="question_delete_all_places">Are you sure you want to delete all of your places?</string>
     <string name="question_delete_all_place_groups">Are you sure you want to delete all of your place groups?</string>
     <string name="delete_all">Delete All</string>
-    <string name="error_empty_place_group">No place added</string>
+    <string name="msg_empty_place_group">No place added</string>
     <string name="msg_empty_notes">You haven\'t added any notes yet, click the button down below and add your first note!</string>
     <string name="msg_empty_places">You haven\'t added any places yet, click the button down below and add your first place!</string>
     <string name="msg_empty_place_groups">You haven\'t added any place groups yet, click the button down below and add your first place group!</string>
     <string name="marker_snippet">If you set a reminder here, you will be notified when you are \nwithin %d meters of this location</string>
+    <string name="pick_places">Pick Places</string>
+    <string name="msg_no_available_place">There is no available place to add.</string>
+    <string name="create_new_place">Create New Place</string>
 </resources>

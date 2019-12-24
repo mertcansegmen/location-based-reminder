@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -51,20 +50,19 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
         PlaceGroupWithPlaces currentPlaceGroupWithPlaces = getItem(position);
         holder.placeGroupTextView.setText(currentPlaceGroupWithPlaces.getPlaceGroup().getName());
 
+        holder.chipGroup.removeAllViews();
         for(final Place place : currentPlaceGroupWithPlaces.getPlaces()) {
             PlaceChip chip = new PlaceChip(holder.placeGroupTextView.getContext());
             chip.setPlace(place);
             chip.setText(place.getName());
             chip.setEnsureMinTouchTargetSize(false);
-//            chip.setTextSize(Dimension.SP, 12);
             chip.setChipIcon(holder.placeGroupTextView.getContext().getResources().getDrawable(R.drawable.ic_places));
             holder.chipGroup.addView(chip);
         }
 
         if(holder.chipGroup.getChildCount() < 1) {
             TextView noPlaceTextView = new TextView(holder.chipGroup.getContext());
-            noPlaceTextView.setText(R.string.error_empty_place_group);
-            noPlaceTextView.setTextSize(Dimension.SP, 12);
+            noPlaceTextView.setText(R.string.msg_empty_place_group);
             holder.chipGroup.addView(noPlaceTextView);
         }
     }
