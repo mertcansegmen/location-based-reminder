@@ -3,6 +3,7 @@ package com.mertcansegmen.locationbasedreminder.persistence;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
+import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -13,8 +14,8 @@ import java.util.List;
 @Dao
 public interface PlaceDao {
 
-    @Query("INSERT INTO Place (name,latitude,longitude,radius) VALUES(:name,:latitude,:longitude,:radius)")
-    void insert(String name, double latitude, double longitude, int radius);
+    @Insert
+    void insert(Place place);
 
     @Update
     void update(Place place);

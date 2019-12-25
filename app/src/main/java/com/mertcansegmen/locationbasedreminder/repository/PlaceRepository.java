@@ -25,7 +25,7 @@ public class PlaceRepository {
 
     public void insert(Place place) {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> placeDao.insert(place.getName(), place.getLatitude(), place.getLongitude(), place.getRadius()));
+        executor.execute(() -> placeDao.insert(place));
     }
 
     public void update(Place place) {

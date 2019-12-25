@@ -26,10 +26,6 @@ public class PlaceGroupsFragmentViewModel extends AndroidViewModel {
         repository.insert(placeGroupWithPlaces);
     }
 
-    public void insertBack(PlaceGroupWithPlaces placeGroupWithPlaces) {
-        repository.insertBack(placeGroupWithPlaces);
-    }
-
 
     public void delete(PlaceGroupWithPlaces placeGroupWithPlaces) {
         repository.delete(placeGroupWithPlaces);

@@ -73,6 +73,10 @@ public class PlaceGroupsFragment extends Fragment {
             adapter.submitList(placeGroupsWithPlaces);
         });
 
+        addPlaceGroupButton.setOnClickListener(v -> {
+            navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment);
+        });
+
         adapter.setOnItemClickListener(placeGroupWithPlaces -> {
             Bundle bundle = new Bundle();
             bundle.putParcelable(AddEditPlaceGroupFragment.PLACE_GROUP_BUNDLE_KEY, placeGroupWithPlaces);
@@ -105,7 +109,7 @@ public class PlaceGroupsFragment extends Fragment {
                 viewModel.delete(adapter.getPlaceGroupWithPlacesAt(deletedPosition));
 
                 Snackbar.make(viewHolder.itemView, "Place group deleted.", Snackbar.LENGTH_LONG)
-                        .setAction("UNDO", v -> viewModel.insertBack(deletedPlaceGroup))
+                        .setAction("UNDO", v -> viewModel.insert(deletedPlaceGroup))
                         .setAnchorView(addPlaceGroupButton)
                         .show();
             }
@@ -119,8 +123,6 @@ public class PlaceGroupsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
-
-        addPlaceGroupButton.setOnClickListener(v -> navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment));
     }
 
     @Override

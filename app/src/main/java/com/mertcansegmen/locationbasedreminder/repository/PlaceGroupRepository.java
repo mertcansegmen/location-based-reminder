@@ -52,16 +52,6 @@ public class PlaceGroupRepository {
     public void insert(PlaceGroupWithPlaces placeGroupWithPlaces) {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            long placeGroupId = placeGroupDao.insert(placeGroupWithPlaces.getPlaceGroup().getName());
-            for(Place place : placeGroupWithPlaces.getPlaces()) {
-                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(place.getPlaceId(), placeGroupId));
-            }
-        });
-    }
-
-    public void insertBack(PlaceGroupWithPlaces placeGroupWithPlaces) {
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
             long placeGroupId = placeGroupDao.insert(placeGroupWithPlaces.getPlaceGroup());
             for(Place place : placeGroupWithPlaces.getPlaces()) {
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(place.getPlaceId(), placeGroupId));

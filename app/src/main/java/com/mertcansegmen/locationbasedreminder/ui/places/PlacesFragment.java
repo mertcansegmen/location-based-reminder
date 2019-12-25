@@ -63,6 +63,10 @@ public class PlacesFragment extends Fragment {
             }
         });
 
+        addPlaceButton.setOnClickListener(v -> {
+            navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment);
+        });
+
         return view;
     }
 
@@ -71,8 +75,6 @@ public class PlacesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
-
-        addPlaceButton.setOnClickListener(v -> navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment));
     }
 
     private void navigateForEdit(Place place) {

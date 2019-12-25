@@ -30,10 +30,6 @@ public class NotesFragmentViewModel extends AndroidViewModel {
         repository.delete(note);
     }
 
-    public void insertBack(Note note) {
-        repository.insertBack(note);
-    }
-
     public void deleteAll() {
         repository.deleteAll();
     }

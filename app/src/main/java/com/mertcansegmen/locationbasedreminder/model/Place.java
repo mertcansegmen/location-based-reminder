@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -22,9 +21,6 @@ public class Place implements Parcelable {
     private double longitude;
 
     private int radius;
-
-    @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
-    private String createdAt;
 
     @Ignore
     public Place() {}
@@ -74,14 +70,6 @@ public class Place implements Parcelable {
 
     public void setRadius(int radius) {
         this.radius = radius;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
     }
 
     protected Place(Parcel in) {

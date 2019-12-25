@@ -3,7 +3,6 @@ package com.mertcansegmen.locationbasedreminder.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -14,9 +13,6 @@ public class Note implements Parcelable {
     private long noteId;
 
     private String body;
-
-    @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
-    private String createdAt;
 
     public Note(String body) {
         this.body = body;
@@ -36,14 +32,6 @@ public class Note implements Parcelable {
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
     }
 
     protected Note(Parcel in) {
@@ -79,7 +67,6 @@ public class Note implements Parcelable {
         return "Note{" +
                 "noteId=" + noteId +
                 ", body='" + body + '\'' +
-                ", createdAt=" + createdAt +
                 '}';
     }
 }

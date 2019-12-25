@@ -14,9 +14,6 @@ import java.util.List;
 @Dao
 public interface NoteDao {
 
-    @Query("INSERT INTO Note (body) VALUES(:body)")
-    void insert(String body);
-
     @Insert
     void insert(Note note);
 
@@ -29,6 +26,6 @@ public interface NoteDao {
     @Query("DELETE FROM note")
     void deleteAllNotes();
 
-    @Query("SELECT * FROM note ORDER BY createdAt DESC")
+    @Query("SELECT * FROM note ORDER BY noteId DESC")
     LiveData<List<Note>> getAllNotes();
 }

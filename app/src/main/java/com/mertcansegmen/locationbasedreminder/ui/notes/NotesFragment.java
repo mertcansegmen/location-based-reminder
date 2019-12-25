@@ -73,6 +73,10 @@ public class NotesFragment extends Fragment {
             adapter.submitList(notes);
         });
 
+        addNoteButton.setOnClickListener(v -> {
+            navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment);
+        });
+
         adapter.setOnItemClickListener(note -> {
             Bundle bundle = new Bundle();
             bundle.putParcelable(AddEditNoteFragment.NOTE_BUNDLE_KEY, note);
@@ -105,7 +109,7 @@ public class NotesFragment extends Fragment {
                 viewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
 
                 Snackbar.make(viewHolder.itemView, "Note deleted.", Snackbar.LENGTH_LONG)
-                        .setAction("UNDO", v -> viewModel.insertBack(deletedNote))
+                        .setAction("UNDO", v -> viewModel.insert(deletedNote))
                         .setAnchorView(addNoteButton)
                         .show();
             }
@@ -119,8 +123,6 @@ public class NotesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
-
-        addNoteButton.setOnClickListener(v -> navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment));
     }
 
     @Override

@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 @Database(entities = {
         Reminder.class, Note.class, AlarmAttribute.class,
         Place.class, PlaceGroup.class, PlaceGroupPlaceCrossRef.class
-}, version = 15)
+}, version = 16)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
@@ -55,29 +55,49 @@ public abstract class AppDatabase extends RoomDatabase {
                 PlaceDao placeDao = instance.placeDao();
                 PlaceGroupDao placeGroupDao = instance.placeGroupDao();
 
-                noteDao.insert("Feed the dog");
-                noteDao.insert("Return book to library");
-                noteDao.insert("Reply to Angela");
+                noteDao.insert(new Note("Feed the dog"));
+                noteDao.insert(new Note("Return book to library"));
+                noteDao.insert(new Note("Reply to Angela"));
+                noteDao.insert(new Note("Schedule meeting with Alex"));
+                noteDao.insert(new Note("Find hotel recommendations in London"));
+                noteDao.insert(new Note("Shopping List: \n" +
+                        "Pasta\n" +
+                        "Breakfast cereal\n" +
+                        "Rice\n" +
+                        "Soup\n" +
+                        "Fruits, nuts and seeds\n" +
+                        "Skinless white meat\n" +
+                        "Salt\n" +
+                        "Honey\n" +
+                        "Eggs"));
+                noteDao.insert(new Note("Buy a graduation gift for Sarah"));
+                noteDao.insert(new Note("Find hotel recommendations in London"));
+                noteDao.insert(new Note("Buy a graduation gift for Sarah"));
+                noteDao.insert(new Note("Movies to Watch: \n" +
+                        "Scorpion\n" +
+                        "Joker\n" +
+                        "Countdown\n" +
+                        "Star Wars: The Rise of Skywalker"));
 
-                placeDao.insert("Food Lion", 42.421935, -71.065640, 100);
-                placeDao.insert("Target", 42.360037, -71.087794, 300);
-                placeDao.insert("Walmart", 41.373641, -72.919015, 300);
-                placeDao.insert("H&M", 41.297474, -72.926468, 100);
-                placeDao.insert("Zara", 41.180304, -73.187537, 50);
-                placeDao.insert("Mango", 41.190783, -73.139186, 40);
-                placeDao.insert("Pull&Bear", 41.221928, -73.074861, 100);
-                placeDao.insert("Shell", 41.297474, -72.926468, 100);
-                placeDao.insert("Buc-ee's", 41.180304, -73.187537, 50);
-                placeDao.insert("QuikTrip", 41.190783, -73.139186, 40);
-                placeDao.insert("Hy-Vee Gas", 41.221928, -73.074861, 100);
-                placeDao.insert("Celine Patisserie", 41.180304, -73.187537, 50);
-                placeDao.insert("Daily Donuts", 41.190783, -73.139186, 40);
-                placeDao.insert("Defloured ", 41.221928, -73.074861, 100);
+                placeDao.insert(new Place("Food Lion", 42.421935, -71.065640, 100));
+                placeDao.insert(new Place("Target", 42.360037, -71.087794, 300));
+                placeDao.insert(new Place("Walmart", 41.373641, -72.919015, 300));
+                placeDao.insert(new Place("H&M", 41.297474, -72.926468, 100));
+                placeDao.insert(new Place("Zara", 41.180304, -73.187537, 50));
+                placeDao.insert(new Place("Mango", 41.190783, -73.139186, 40));
+                placeDao.insert(new Place("Pull&Bear", 41.221928, -73.074861, 100));
+                placeDao.insert(new Place("Shell", 41.297474, -72.926468, 100));
+                placeDao.insert(new Place("Buc-ee's", 41.180304, -73.187537, 50));
+                placeDao.insert(new Place("QuikTrip", 41.190783, -73.139186, 40));
+                placeDao.insert(new Place("Hy-Vee Gas", 41.221928, -73.074861, 100));
+                placeDao.insert(new Place("Celine Patisserie", 41.180304, -73.187537, 50));
+                placeDao.insert(new Place("Daily Donuts", 41.190783, -73.139186, 40));
+                placeDao.insert(new Place("Defloured ", 41.221928, -73.074861, 100));
 
-                placeGroupDao.insert("Grocery Stores");
-                placeGroupDao.insert("Clothing Stores");
-                placeGroupDao.insert("Gas Stations");
-                placeGroupDao.insert("Bakeries");
+                placeGroupDao.insert(new PlaceGroup("Grocery Stores"));
+                placeGroupDao.insert(new PlaceGroup("Clothing Stores"));
+                placeGroupDao.insert(new PlaceGroup("Gas Stations"));
+                placeGroupDao.insert(new PlaceGroup("Bakeries"));
 
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(1, 1));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(2, 1));

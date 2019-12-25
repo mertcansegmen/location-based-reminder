@@ -17,9 +17,6 @@ import java.util.List;
 @Dao
 public interface PlaceGroupDao {
 
-    @Query("INSERT INTO PlaceGroup (name) VALUES(:name)")
-    long insert(String name);
-
     @Insert
     long insert(PlaceGroup placeGroup);
 
@@ -45,6 +42,6 @@ public interface PlaceGroupDao {
     LiveData<List<PlaceGroup>> getAllPlaceGroups();
 
     @Transaction
-    @Query("SELECT * FROM PlaceGroup ORDER BY createdAt DESC")
+    @Query("SELECT * FROM PlaceGroup ORDER BY placeGroupId DESC")
     LiveData<List<PlaceGroupWithPlaces>> getAllPlaceGroupsWithPlaces();
 }
