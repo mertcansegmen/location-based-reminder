@@ -82,7 +82,6 @@ public class AddEditNoteFragment extends Fragment {
             case R.id.delete_note:
                 deleteNote();
                 Utils.closeKeyboard(requireActivity());
-                requireActivity().onBackPressed();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -110,6 +109,7 @@ public class AddEditNoteFragment extends Fragment {
                 .setMessage(getString(R.string.delete_note_message))
                 .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
                     viewModel.delete(currentNote);
+                    requireActivity().onBackPressed();
                 })
                 .setNegativeButton(getString(R.string.cancel), null)
                 .show();

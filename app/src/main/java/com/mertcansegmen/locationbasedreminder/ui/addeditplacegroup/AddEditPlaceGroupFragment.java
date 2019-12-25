@@ -183,7 +183,6 @@ public class AddEditPlaceGroupFragment extends Fragment {
                 return true;
             case R.id.delete_place_group:
                 deletePlaceGroup();
-                requireActivity().onBackPressed();
                 Utils.closeKeyboard(requireActivity());
                 return true;
             default:
@@ -218,6 +217,7 @@ public class AddEditPlaceGroupFragment extends Fragment {
                 .setMessage(getString(R.string.delete_place_group_message))
                 .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
                     viewModel.delete(currentPlaceGroup);
+                    requireActivity().onBackPressed();
                 })
                 .setNegativeButton(getString(R.string.cancel), null)
                 .show();
