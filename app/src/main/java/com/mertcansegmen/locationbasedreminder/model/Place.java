@@ -119,6 +119,14 @@ public class Place implements Parcelable {
     }
 
     @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj instanceof Place) {
+            return placeId.equals(((Place) obj).getPlaceId());
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "Place{" +
                 "placeId=" + placeId +

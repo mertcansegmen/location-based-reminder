@@ -29,7 +29,14 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
 
         @Override
         public boolean areContentsTheSame(@NonNull PlaceGroupWithPlaces oldItem, @NonNull PlaceGroupWithPlaces newItem) {
-            return oldItem.getPlaceGroup().getName().equals(newItem.getPlaceGroup().getName());
+            // Check place group names and the number of place they have
+            if(oldItem.getPlaces().size() != newItem.getPlaces().size() ||
+                    !oldItem.getPlaceGroup().getName().equals(newItem.getPlaceGroup().getName())) {
+                return false;
+            }
+            // Check for each place
+            return oldItem.getPlaces().containsAll(newItem.getPlaces()) &&
+                    newItem.getPlaces().containsAll(oldItem.getPlaces());
         }
     };
 
