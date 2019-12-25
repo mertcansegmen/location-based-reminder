@@ -7,13 +7,14 @@
     <color name="colorBlack">#000</color>
     <color name="colorError">#f44336</color>
     <color name="colorMessage">#777</color>
+    <color name="colorCardBorder">#70aaaaaa</color>
 
     <!-- Seek Bar Colors -->
     <color name="colorSeekBarBackground">#ababab</color>
     <color name="colorSeekBarProgress">#ffb600</color>
     <color name="colorSeekBarSecondaryProgress">#3399CC</color>
 
-    <!-- Map Radius Colors -->
+    <!-- Map Radius Circle Colors -->
     <color name="colorRadiusFill">#5090caf9</color>
     <color name="colorStroke">#771565c0</color>
 

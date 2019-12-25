@@ -18,7 +18,7 @@ public class PlaceChip extends Chip {
 
     private Place place;
 
-    private List<Integer> colors = Arrays.asList(
+    private static final List<Integer> colors = Arrays.asList(
             R.color.colorChipRed300,
             R.color.colorChipPink300,
             R.color.colorChipPurple300,
