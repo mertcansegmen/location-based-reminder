@@ -77,14 +77,12 @@ public class PickPlaceDialog extends DialogFragment {
         chipGroup.removeAllViews();
 
         if(places.isEmpty()) {
-            TextView noPlaceTextView = new TextView(requireContext());
-            noPlaceTextView.setText(getResources().getString(R.string.msg_no_available_place));
-            chipGroup.addView(noPlaceTextView);
+            showNoPlaceMessage();
+        } else {
+            for(Place newPlace : places) {
+                addChip(newPlace);
+            }
         }
-        for(Place newPlace : places) {
-            addChip(newPlace);
-        }
-
     }
 
     private void addChip(Place place) {
@@ -102,5 +100,14 @@ public class PickPlaceDialog extends DialogFragment {
         viewModel.selectPlace(place);
         chipGroup.removeView(chip);
         Animator.removeViewWithFadeAnimation(chip);
+        if(chipGroup.getChildCount() == 0) {
+            showNoPlaceMessage();
+        }
+    }
+
+    private void showNoPlaceMessage() {
+        TextView noPlaceTextView = new TextView(requireContext());
+        noPlaceTextView.setText(getResources().getString(R.string.msg_no_available_place));
+        chipGroup.addView(noPlaceTextView);
     }
 }

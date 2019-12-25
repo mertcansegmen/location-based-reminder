@@ -2,6 +2,8 @@ package com.mertcansegmen.locationbasedreminder.ui.addeditplacegroup;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -80,6 +82,18 @@ public class AddEditPlaceGroupFragment extends Fragment {
             placeGroupNameEditText.setText(currentPlaceGroup.getPlaceGroup().getName());
             loadPlaceChips(currentPlaceGroup.getPlaces());
         }
+
+        placeGroupNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                placeGroupNameEditTextLayout.setErrorEnabled(false);
+            }
+        });
 
         return view;
     }
@@ -194,10 +208,13 @@ public class AddEditPlaceGroupFragment extends Fragment {
         String placeGroupName = placeGroupNameEditText.getText().toString().trim();
         List<Place> placesToSave = getPlacesFromChips();
 
-        // TODO: Add validation
+        if(placeGroupName.isEmpty()) {
+            placeGroupNameEditTextLayout.setError(getString(R.string.error_empty_place_group_name));
+            return;
+        }
 
         if(isNewPlaceGroup(currentPlaceGroup)) {
-            // Add new place group
+            // Create new place group and insert it
             PlaceGroupWithPlaces placeGroup = new PlaceGroupWithPlaces();
             placeGroup.setPlaceGroup(new PlaceGroup(placeGroupName));
             placeGroup.setPlaces(placesToSave);
