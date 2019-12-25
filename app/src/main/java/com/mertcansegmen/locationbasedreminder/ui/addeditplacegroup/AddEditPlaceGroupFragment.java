@@ -65,7 +65,10 @@ public class AddEditPlaceGroupFragment extends Fragment {
 
         viewModel = ViewModelProviders.of(requireActivity()).get(AddEditPlaceGroupFragmentViewModel.class);
 
-        viewModel.getSelectedPlace().observe(this, selectedPlace -> addChip(selectedPlace));
+        viewModel.getSelectedPlace().observe(this, selectedPlace -> {
+            if(selectedPlace == null) return;
+            addChip(selectedPlace);
+        });
 
         // Scroll to bottom on create because add place chip is at the bottom.
         scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
@@ -103,6 +106,15 @@ public class AddEditPlaceGroupFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // In order for view model to be shared, it has to be scoped to the activity. That causes
+        // the last selected place to stay in memory as long as the activity is alive. That's why
+        // last selected place must be cleared when AddEditPlaceGroupFragment is closed.
+        viewModel.selectPlace(null);
     }
 
     private void loadPlaceChips(List<Place> places) {
