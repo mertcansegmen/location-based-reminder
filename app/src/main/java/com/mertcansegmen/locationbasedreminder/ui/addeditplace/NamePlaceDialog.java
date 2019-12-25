@@ -7,10 +7,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -27,15 +31,16 @@ public class NamePlaceDialog extends DialogFragment {
     private TextInputLayout placeNameLayout;
     private TextInputEditText placeNameEditText;
 
+    Place currentPlace;
+
     private NamePlaceDialogViewModel viewModel;
+
+    private NavController navController;
 
     @Nullable
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(requireActivity());
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_name_place, null);
-        dialog.setView(view).setTitle(getString(R.string.name_this_place));
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.dialog_name_place, container, false);
 
         okButton = view.findViewById(R.id.btn_ok);
         cancelButton = view.findViewById(R.id.btn_cancel);
@@ -44,16 +49,17 @@ public class NamePlaceDialog extends DialogFragment {
 
         viewModel = ViewModelProviders.of(this).get(NamePlaceDialogViewModel.class);
 
-        Bundle bundle = getArguments();
-        final Place place = bundle.getParcelable(BUNDLE_KEY_PLACE);
+        if(getArguments() != null) {
+            currentPlace = getArguments().getParcelable(BUNDLE_KEY_PLACE);
+        }
 
-        if(!isNewPlace(place)) {
-            placeNameEditText.setText(place.getName());
+        if(!isNewPlace(currentPlace)) {
+            placeNameEditText.setText(currentPlace.getName());
         }
 
         okButton.setOnClickListener(v -> {
             String placeName = placeNameEditText.getText().toString().trim();
-            place.setName(placeName);
+            currentPlace.setName(placeName);
 
             // Show error if place name field is empty
             if(placeName.isEmpty()) {
@@ -61,12 +67,13 @@ public class NamePlaceDialog extends DialogFragment {
                 return;
             }
 
-            if(isNewPlace(place)) {
-                viewModel.insert(place);
+            if(isNewPlace(currentPlace)) {
+                viewModel.insert(currentPlace);
             } else {
-                viewModel.update(place);
+                viewModel.update(currentPlace);
             }
-            dismiss();
+
+            navController.navigate(R.id.action_namePlaceDialog_to_placesFragment);
         });
 
         cancelButton.setOnClickListener(v -> dismiss());
@@ -84,7 +91,15 @@ public class NamePlaceDialog extends DialogFragment {
             public void afterTextChanged(Editable s) {}
         });
 
-        return dialog.create();
+        return view;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        navController = NavHostFragment.findNavController(this);
     }
 
     private boolean isNewPlace(Place place) {

@@ -19,9 +19,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -76,10 +77,17 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     private AddEditPlaceFragmentViewModel viewModel;
 
+    NavController navController;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_edit_place, container, false);
         setHasOptionsMenu(true);
+
+        if(getArguments() != null) {
+            currentPlace = getArguments().getParcelable(BUNDLE_KEY_PLACE);
+            ((MainActivity)requireActivity()).getSupportActionBar().setTitle(currentPlace.getName());
+        }
 
         mapView = view.findViewById(R.id.map_view);
         radiusSeekBar = view.findViewById(R.id.seekbar_radius);
@@ -100,10 +108,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(getArguments() != null) {
-            currentPlace = getArguments().getParcelable(BUNDLE_KEY_PLACE);
-            ((MainActivity)requireActivity()).getSupportActionBar().setTitle(currentPlace.getName());
-        }
+        navController = Navigation.findNavController(view);
     }
 
     private void initMap(Bundle savedInstanceState) {
@@ -298,8 +303,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         switch (item.getItemId()) {
             case R.id.save_place:
                 configurePlaceLatLngRad();
-                showNamePlaceDialog();
-                requireActivity().onBackPressed();
+                navigateToNamePlaceDialog();
                 return true;
             case R.id.delete_place:
                 deletePlace();
@@ -334,14 +338,11 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         return place == null;
     }
 
-    private void showNamePlaceDialog() {
+    private void navigateToNamePlaceDialog() {
         Bundle bundle = new Bundle();
         bundle.putParcelable(NamePlaceDialog.BUNDLE_KEY_PLACE, currentPlace);
 
-        DialogFragment dialog = new NamePlaceDialog();
-        dialog.setCancelable(false);
-        dialog.setArguments(bundle);
-        dialog.show(requireActivity().getSupportFragmentManager(), "Name Place");
+        navController.navigate(R.id.action_addEditPlaceFragment_to_namePlaceDialog, bundle);
     }
 
     @Override

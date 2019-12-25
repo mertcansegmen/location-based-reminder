@@ -74,6 +74,9 @@
         android:name="com.mertcansegmen.locationbasedreminder.ui.addeditplace.AddEditPlaceFragment"
         android:label="@string/new_place"
         tools:layout="@layout/fragment_add_edit_place" >
+        <action
+            android:id="@+id/action_addEditPlaceFragment_to_namePlaceDialog"
+            app:destination="@id/namePlaceDialog" />
     </fragment>
 
     <fragment
@@ -99,6 +102,20 @@
             app:destination="@id/addEditPlaceFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/namePlaceDialog"
+        android:name="com.mertcansegmen.locationbasedreminder.ui.addeditplace.NamePlaceDialog"
+        android:label="dialog_name_place"
+        tools:layout="@layout/dialog_name_place" >
+        <action
+            android:id="@+id/action_namePlaceDialog_to_placesFragment"
+            app:destination="@id/placesFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
     </dialog>

@@ -29,8 +29,6 @@ import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.ui.addeditnote.AddEditNoteFragment;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 
-import java.util.List;
-
 public class NotesFragment extends Fragment {
 
     private LinearLayout emptyMessageLayout;
