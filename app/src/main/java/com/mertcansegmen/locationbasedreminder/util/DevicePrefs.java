@@ -19,5 +19,4 @@ public class DevicePrefs {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getInt(key, defaultValue);
     }
-
 }

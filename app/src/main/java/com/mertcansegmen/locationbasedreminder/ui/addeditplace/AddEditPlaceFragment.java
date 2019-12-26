@@ -58,11 +58,14 @@ import com.mertcansegmen.locationbasedreminder.util.DevicePrefs;
 
 public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
+    public static final String BUNDLE_KEY_PLACE = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_PLACE";
+    private static final String BUNDLE_KEY_MAP_VIEW = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_MAP_VIEW";
     private static final String PREF_KEY_RADIUS = "com.mertcansegmen.locationbasedreminder.PREF_KEY_RADIUS";
     private static final int DEFAULT_RADIUS = 100;
-    public static final String BUNDLE_KEY_PLACE = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_PLACE";
-    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final float DEFAULT_ZOOM = 15F;
+
+    private TextView radiusTextView;
+    private AppCompatSeekBar radiusSeekBar;
 
     private Place currentPlace;
 
@@ -70,24 +73,16 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     private GoogleMap googleMap;
     private Marker currentPlaceMarker;
     private LocationManager locationManager;
-
-    private TextView radiusTextView;
-    private AppCompatSeekBar radiusSeekBar;
     private Circle radiusCircle;
 
     private AddEditPlaceFragmentViewModel viewModel;
 
-    NavController navController;
+    private NavController navController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_edit_place, container, false);
         setHasOptionsMenu(true);
-
-        if(getArguments() != null) {
-            currentPlace = getArguments().getParcelable(BUNDLE_KEY_PLACE);
-            ((MainActivity)requireActivity()).getSupportActionBar().setTitle(currentPlace.getName());
-        }
 
         mapView = view.findViewById(R.id.map_view);
         radiusSeekBar = view.findViewById(R.id.seekbar_radius);
@@ -95,10 +90,12 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
         viewModel = ViewModelProviders.of(this).get(AddEditPlaceFragmentViewModel.class);
 
+        retrievePlace();
+
         if(isGoogleServicesAvailable()) {
             initMap(savedInstanceState);
         } else {
-            Toast.makeText(requireContext(), getString(R.string.google_Services_not_available), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getString(R.string.google_services_not_available), Toast.LENGTH_SHORT).show();
         }
 
         return view;
@@ -111,10 +108,17 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         navController = Navigation.findNavController(view);
     }
 
+    private void retrievePlace() {
+        if(getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_PLACE) != null) {
+            currentPlace = getArguments().getParcelable(BUNDLE_KEY_PLACE);
+            ((MainActivity)requireActivity()).getSupportActionBar().setTitle(currentPlace.getName());
+        }
+    }
+
     private void initMap(Bundle savedInstanceState) {
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
-            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+            mapViewBundle = savedInstanceState.getBundle(BUNDLE_KEY_MAP_VIEW);
         }
 
         mapView.onCreate(mapViewBundle);
@@ -141,22 +145,22 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         this.googleMap = googleMap;
         googleMap.setMyLocationEnabled(true);
 
-        configureLocationListener();
+        startLocationListener();
 
         if(isFirstMapStart()) {
             // Map started for the first time
-            if(isNewPlace(currentPlace)) {
-                viewModel.setRadius(DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS));
-            } else {
+            if(inEditMode()) {
                 addMarker(currentPlace);
                 drawCircle(currentPlace.getRadius(),
                         new LatLng(currentPlace.getLatitude(), currentPlace.getLongitude()));
                 goToLocation(currentPlace.getLatitude(), currentPlace.getLongitude(), DEFAULT_ZOOM);
                 viewModel.setRadius(currentPlace.getRadius());
+            } else {
+                viewModel.setRadius(DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS));
             }
         } else {
             // Map restarted due to configuration change such as screen rotation, language change etc..
-            if(!isNewPlace(currentPlace)) {
+            if(inEditMode()) {
                 addMarker(currentPlace);
                 drawCircle(currentPlace.getRadius(),
                         new LatLng(currentPlace.getLatitude(), currentPlace.getLongitude()));
@@ -168,11 +172,20 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         radiusSeekBar.setProgress(viewModel.getRadius());
         radiusTextView.setText(getString(R.string.radius_text, viewModel.getRadius()));
         radiusCircle = drawCircle(viewModel.getRadius(), googleMap.getCameraPosition().target);
+
+        setOnCameraMoveListener();
+        setSeekBarListener();
+    }
+
+    private void setOnCameraMoveListener() {
         googleMap.setOnCameraMoveListener(() -> {
             radiusCircle = drawCircle(viewModel.getRadius(), googleMap.getCameraPosition().target);
             viewModel.setLastKnownScreenLocation(googleMap.getCameraPosition().target);
             viewModel.setLastKnownZoom(googleMap.getCameraPosition().zoom);
         });
+    }
+
+    private void setSeekBarListener() {
         radiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -183,7 +196,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
 
@@ -200,7 +213,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     }
 
     /**
-     * Marker snippet can not normally be more than 1 line, this makes it possible. Must add line
+     * Marker snippet normally can't be more than 1 line, this makes it possible. Must add line
      * break to snippet text when setting it.
      */
     private void configureMarkerSnippet() {
@@ -246,9 +259,8 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     }
 
     private Circle drawCircle(int radius, LatLng latLng) {
-        if(radiusCircle != null) {
-            removeCircle();
-        }
+        if(radiusCircle != null) removeCircle();
+
         CircleOptions options = new CircleOptions()
                 .center(latLng)
                 .radius(radius)
@@ -276,7 +288,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         googleMap.moveCamera(update);
     }
 
-    private void configureLocationListener() {
+    private void startLocationListener() {
         locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -290,7 +302,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        if(currentPlace != null) {
+        if(inEditMode()) {
             inflater.inflate(R.menu.edit_place_menu, menu);
         } else {
             inflater.inflate(R.menu.add_place_menu, menu);
@@ -302,30 +314,27 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_place:
-                configurePlaceLatLngRad();
                 navigateToNamePlaceDialog();
                 return true;
             case R.id.delete_place:
-                deletePlace();
+                askToDeletePlace();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void deletePlace() {
-        new MaterialAlertDialogBuilder(requireContext())
-                .setMessage(getString(R.string.delete_place_message))
-                .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
-                    viewModel.delete(currentPlace);
-                    requireActivity().onBackPressed();
-                })
-                .setNegativeButton(getString(R.string.cancel), null)
-                .show();
+    private void navigateToNamePlaceDialog() {
+        prepareCurrentPlace();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(NamePlaceDialog.BUNDLE_KEY_PLACE, currentPlace);
+
+        navController.navigate(R.id.action_addEditPlaceFragment_to_namePlaceDialog, bundle);
     }
 
-    private void configurePlaceLatLngRad() {
-        if(isNewPlace(currentPlace)) {
+    private void prepareCurrentPlace() {
+        if(!inEditMode()) {
             currentPlace = new Place();
         }
         LatLng latLng = googleMap.getCameraPosition().target;
@@ -334,20 +343,28 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         currentPlace.setRadius(viewModel.getRadius());
     }
 
-    private boolean isNewPlace(Place place) {
-        return place == null;
+    private void askToDeletePlace() {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setMessage(getString(R.string.msg_delete_place))
+                .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
+                    deleteCurrentPlace();
+                    navController.popBackStack();
+                })
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show();
     }
 
-    private void navigateToNamePlaceDialog() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(NamePlaceDialog.BUNDLE_KEY_PLACE, currentPlace);
+    private void deleteCurrentPlace() {
+        viewModel.delete(currentPlace);
+    }
 
-        navController.navigate(R.id.action_addEditPlaceFragment_to_namePlaceDialog, bundle);
+    private boolean inEditMode() {
+        return currentPlace != null;
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        if(location != null && isFirstMapStart() && isNewPlace(currentPlace)) {
+        if(location != null && isFirstMapStart() && !inEditMode()) {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM);
             googleMap.animateCamera(cameraUpdate);
@@ -356,19 +373,13 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
 
     @Override
-    public void onProviderEnabled(String provider) {
-
-    }
+    public void onProviderEnabled(String provider) {}
 
     @Override
-    public void onProviderDisabled(String provider) {
-
-    }
+    public void onProviderDisabled(String provider) {}
 
     @Override
     public void onResume() {

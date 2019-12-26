@@ -25,15 +25,13 @@ public class PlaceGroupRepository {
         allPlaceGroupsWithPlaces = placeGroupDao.getAllPlaceGroupsWithPlaces();
     }
 
-    public LiveData<List<PlaceGroupWithPlaces>> getAllPlaceGroupsWithPlaces() {
-        return allPlaceGroupsWithPlaces;
-    }
-
-    public void delete(PlaceGroupWithPlaces placeGroupWithPlaces) {
+    public void insert(PlaceGroupWithPlaces placeGroupWithPlaces) {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            placeGroupDao.delete(placeGroupWithPlaces.getPlaceGroup());
-            placeGroupDao.deletePlaceGroupRefs(placeGroupWithPlaces.getPlaceGroup().getPlaceGroupId());
+            long placeGroupId = placeGroupDao.insert(placeGroupWithPlaces.getPlaceGroup());
+            for(Place place : placeGroupWithPlaces.getPlaces()) {
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(place.getPlaceId(), placeGroupId));
+            }
         });
     }
 
@@ -49,13 +47,11 @@ public class PlaceGroupRepository {
         });
     }
 
-    public void insert(PlaceGroupWithPlaces placeGroupWithPlaces) {
+    public void delete(PlaceGroupWithPlaces placeGroupWithPlaces) {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            long placeGroupId = placeGroupDao.insert(placeGroupWithPlaces.getPlaceGroup());
-            for(Place place : placeGroupWithPlaces.getPlaces()) {
-                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(place.getPlaceId(), placeGroupId));
-            }
+            placeGroupDao.delete(placeGroupWithPlaces.getPlaceGroup());
+            placeGroupDao.deletePlaceGroupRefs(placeGroupWithPlaces.getPlaceGroup().getPlaceGroupId());
         });
     }
 
@@ -65,5 +61,9 @@ public class PlaceGroupRepository {
             placeGroupDao.deleteAllPlaceGroups();
             placeGroupDao.deleteAllPlaceGroupRefs();
         });
+    }
+
+    public LiveData<List<PlaceGroupWithPlaces>> getAllPlaceGroupsWithPlaces() {
+        return allPlaceGroupsWithPlaces;
     }
 }

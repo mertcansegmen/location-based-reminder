@@ -25,17 +25,17 @@ import java.util.List;
 
 public class PickPlaceDialog extends DialogFragment {
 
-    public static final String SELECTED_PLACES_BUNDLE_KEY = "com.mertcansegmen.locationbasedreminder.SELECTED_PLACES_BUNDLE_KEY";
+    public static final String BUNDLE_KEY_SELECTED_PLACES = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_SELECTED_PLACES";
 
     private ChipGroup chipGroup;
     private MaterialButton okButton;
     private MaterialButton createNewPlaceButton;
 
+    private List<Place> selectedPlaces;
+
     private AddEditPlaceGroupFragmentViewModel viewModel;
 
     private NavController navController;
-
-    private List<Place> selectedPlaces;
 
     @Nullable
     @Override
@@ -46,22 +46,12 @@ public class PickPlaceDialog extends DialogFragment {
         okButton = view.findViewById(R.id.btn_ok);
         createNewPlaceButton = view.findViewById(R.id.btn_create_new_place);
 
-        if(getArguments() != null) {
-            selectedPlaces = getArguments().getParcelableArrayList(SELECTED_PLACES_BUNDLE_KEY);
-        }
-
         viewModel = ViewModelProviders.of(requireActivity()).get(AddEditPlaceGroupFragmentViewModel.class);
 
-        viewModel.getAllPlaces().observe(this, allPlaces -> {
-            List<Place> availablePlaces = new ArrayList<>(allPlaces);
-            for (Place place : selectedPlaces)
-                availablePlaces.remove(place);
-            loadPlaceChips(availablePlaces);
-        });
-
-        okButton.setOnClickListener(v -> dismiss());
-
-        createNewPlaceButton.setOnClickListener(v -> navController.navigate(R.id.action_pickPlaceDialog_to_addEditPlaceFragment));
+        setObserver();
+        retrievePlaces();
+        setOkButtonClickListener();
+        setCreateNewPlaceButtonClickListener();
 
         return view;
     }
@@ -71,6 +61,31 @@ public class PickPlaceDialog extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = NavHostFragment.findNavController(this);
+    }
+
+    private void setObserver() {
+        viewModel.getAllPlaces().observe(this, allPlaces -> {
+            List<Place> availablePlaces = new ArrayList<>(allPlaces);
+            for (Place place : selectedPlaces)
+                availablePlaces.remove(place);
+            loadPlaceChips(availablePlaces);
+        });
+    }
+
+    private void retrievePlaces() {
+        if(getArguments() != null) {
+            selectedPlaces = getArguments().getParcelableArrayList(BUNDLE_KEY_SELECTED_PLACES);
+        }
+    }
+
+    private void setOkButtonClickListener() {
+        okButton.setOnClickListener(v -> dismiss());
+    }
+
+    private void setCreateNewPlaceButtonClickListener() {
+        createNewPlaceButton.setOnClickListener(v ->
+                navController.navigate(R.id.action_pickPlaceDialog_to_addEditPlaceFragment)
+        );
     }
 
     private void loadPlaceChips(List<Place> places) {
@@ -93,11 +108,13 @@ public class PickPlaceDialog extends DialogFragment {
         chipGroup.addView(chip);
         Animator.addViewWithFadeAnimation(chip);
 
-        chip.setOnClickListener(v -> removeChip(place, chip));
+        chip.setOnClickListener(v -> {
+            viewModel.selectPlace(place);
+            removeChip(chip);
+        });
     }
 
-    private void removeChip(Place place, PlaceChip chip) {
-        viewModel.selectPlace(place);
+    private void removeChip(PlaceChip chip) {
         chipGroup.removeView(chip);
         Animator.removeViewWithFadeAnimation(chip);
         if(chipGroup.getChildCount() == 0) {

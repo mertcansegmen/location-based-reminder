@@ -25,9 +25,6 @@ public class Animator {
         });
         disappearAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
             public void onAnimationEnd(Animation animation) {
                 ScaleAnimation appearAnim = new ScaleAnimation(0,1,0,1, 90, 90);
                 appearAnim.setFillBefore(true);
@@ -39,7 +36,10 @@ public class Animator {
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) { }
+            public void onAnimationStart(Animation animation) {}
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+
         });
         button.startAnimation(disappearAnim);
     }

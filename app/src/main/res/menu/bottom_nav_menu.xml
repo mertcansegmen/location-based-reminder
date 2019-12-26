@@ -4,26 +4,26 @@
     <item
         android:id="@+id/remindersFragment"
         android:icon="@drawable/ic_reminders"
-        android:title="@string/title_reminders" />
+        android:title="@string/reminders" />
 
     <item
         android:id="@+id/notesFragment"
         android:icon="@drawable/ic_notes"
-        android:title="@string/title_notes" />
+        android:title="@string/notes" />
 
     <item
         android:id="@+id/placesFragment"
         android:icon="@drawable/ic_places"
-        android:title="@string/title_places" />
+        android:title="@string/places" />
 
     <item
         android:id="@+id/placeGroupsFragment"
         android:icon="@drawable/ic_place_groups"
-        android:title="@string/title_place_groups" />
+        android:title="@string/place_groups" />
 
     <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"
-        android:title="@string/title_settings" />
+        android:title="@string/settings" />
 
 </menu>

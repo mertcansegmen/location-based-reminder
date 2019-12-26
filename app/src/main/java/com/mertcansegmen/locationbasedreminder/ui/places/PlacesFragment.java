@@ -21,17 +21,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.ui.addeditplace.AddEditPlaceFragment;
-import com.mertcansegmen.locationbasedreminder.ui.addeditplacegroup.AddEditPlaceGroupFragment;
-import com.mertcansegmen.locationbasedreminder.ui.notes.NoteAdapter;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
-import com.mertcansegmen.locationbasedreminder.util.PlaceChip;
 
 public class PlacesFragment extends Fragment {
 
@@ -50,7 +46,7 @@ public class PlacesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_places, container, false);
+        View view = inflater.inflate(R.layout.fragment_places, container, false);
         setHasOptionsMenu(true);
 
         addPlaceButton = view.findViewById(R.id.btn_add_place);
@@ -59,6 +55,27 @@ public class PlacesFragment extends Fragment {
 
         viewModel = ViewModelProviders.of(this).get(PlacesFragmentViewModel.class);
 
+        Animator.animateFloatingActionButton(addPlaceButton);
+
+        setObserver();
+        configureRecyclerView();
+        setAddPlaceButtonClickListener();
+        setOnAdapterItemClickListener();
+        registerAdapterDataObserver();
+        setItemTouchHelper();
+
+        return view;
+    }
+
+    private void setObserver() {
+        viewModel.getAllPlaces().observe(this, places -> {
+            emptyMessageLayout.setVisibility(places.isEmpty() ? View.VISIBLE : View.GONE);
+
+            adapter.submitList(places);
+        });
+    }
+
+    private void configureRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         adapter = new PlaceAdapter();
@@ -66,32 +83,38 @@ public class PlacesFragment extends Fragment {
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         }
+    }
 
-        Animator.animateFloatingActionButton(addPlaceButton);
-
-        viewModel.getAllPlaces().observe(this, places -> {
-            emptyMessageLayout.setVisibility(places.isEmpty() ? View.VISIBLE : View.GONE);
-
-            adapter.submitList(places);
-        });
-
+    private void setAddPlaceButtonClickListener() {
         addPlaceButton.setOnClickListener(v -> {
             navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment);
         });
+    }
 
+    private void setOnAdapterItemClickListener() {
         adapter.setOnItemClickListener(place -> navigateForEdit(place));
+    }
 
-        // This is needed for recycler view to go top when new record is added. Without this, new
-        // element is getting inserted off of the screen.
+    private void navigateForEdit(Place place) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AddEditPlaceFragment.BUNDLE_KEY_PLACE, place);
+        navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment, bundle);
+    }
+
+    /**
+     * This is needed for recycler view to go top when new record is added. Without this, new
+     * element is getting inserted off of the screen.
+     */
+    private void registerAdapterDataObserver() {
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                if(positionStart == 0) {
-                    recyclerView.scrollToPosition(0);
-                }
+                if(positionStart == 0) recyclerView.scrollToPosition(0);
             }
         });
+    }
 
+    private void setItemTouchHelper() {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -106,14 +129,12 @@ public class PlacesFragment extends Fragment {
 
                 viewModel.delete(adapter.getPlaceAt(viewHolder.getAdapterPosition()));
 
-                Snackbar.make(viewHolder.itemView, "Place deleted.", Snackbar.LENGTH_LONG)
-                        .setAction("UNDO", v -> viewModel.insert(deletedPlace))
+                Snackbar.make(viewHolder.itemView, getString(R.string.place_deleted), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.undo), v -> viewModel.insert(deletedPlace))
                         .setAnchorView(addPlaceButton)
                         .show();
             }
         }).attachToRecyclerView(recyclerView);
-
-        return view;
     }
 
     @Override
@@ -121,12 +142,6 @@ public class PlacesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
-    }
-
-    private void navigateForEdit(Place place) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(AddEditPlaceFragment.BUNDLE_KEY_PLACE, place);
-        navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment, bundle);
     }
 
     @Override
@@ -140,7 +155,7 @@ public class PlacesFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.delete_all_places:
                 new MaterialAlertDialogBuilder(requireContext())
-                        .setMessage(getString(R.string.question_delete_all_places))
+                        .setMessage(getString(R.string.msg_delete_all_places))
                         .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
                             viewModel.deleteAll();
                         })

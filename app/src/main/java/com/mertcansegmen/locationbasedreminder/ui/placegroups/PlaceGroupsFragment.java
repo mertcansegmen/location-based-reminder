@@ -46,8 +46,7 @@ public class PlaceGroupsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_place_groups, container, false);
         setHasOptionsMenu(true);
 
@@ -57,6 +56,34 @@ public class PlaceGroupsFragment extends Fragment {
 
         viewModel = ViewModelProviders.of(this).get(PlaceGroupsFragmentViewModel.class);
 
+        Animator.animateFloatingActionButton(addPlaceGroupButton);
+
+        setObserver();
+        configureRecyclerView();
+        setAddPlaceGroupButtonClickListener();
+        setOnAdapterItemClickListener();
+        registerAdapterDataObserver();
+        setItemTouchHelper();
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        navController = Navigation.findNavController(view);
+    }
+
+    private void setObserver() {
+        viewModel.getAllPlaceGroupsWithPlaces().observe(this, placeGroupsWithPlaces -> {
+            emptyMessageLayout.setVisibility(placeGroupsWithPlaces.isEmpty() ? View.VISIBLE : View.GONE);
+
+            adapter.submitList(placeGroupsWithPlaces);
+        });
+    }
+
+    private void configureRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         adapter = new PlaceGroupWithPlacesAdapter();
@@ -64,36 +91,38 @@ public class PlaceGroupsFragment extends Fragment {
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         }
+    }
 
-        Animator.animateFloatingActionButton(addPlaceGroupButton);
-
-        viewModel.getAllPlaceGroupsWithPlaces().observe(this, placeGroupsWithPlaces -> {
-            emptyMessageLayout.setVisibility(placeGroupsWithPlaces.isEmpty() ? View.VISIBLE : View.GONE);
-
-            adapter.submitList(placeGroupsWithPlaces);
-        });
-
+    private void setAddPlaceGroupButtonClickListener() {
         addPlaceGroupButton.setOnClickListener(v -> {
             navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment);
         });
+    }
 
-        adapter.setOnItemClickListener(placeGroupWithPlaces -> {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(AddEditPlaceGroupFragment.PLACE_GROUP_BUNDLE_KEY, placeGroupWithPlaces);
-            navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment, bundle);
-        });
+    private void setOnAdapterItemClickListener() {
+        adapter.setOnItemClickListener(placeGroupWithPlaces -> navigateForEdit(placeGroupWithPlaces));
+    }
 
-        // This is needed for recycler view to go top when new record is added. Without this, new
-        // element is getting inserted off of the screen.
+    private void navigateForEdit(PlaceGroupWithPlaces placeGroupWithPlaces) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AddEditPlaceGroupFragment.BUNDLE_KEY_PLACE_GROUP, placeGroupWithPlaces);
+        navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment, bundle);
+    }
+
+    /**
+     * This is needed for recycler view to go top when new record is added. Without this, new
+     * element is getting inserted off of the screen.
+     */
+    private void registerAdapterDataObserver() {
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                if(positionStart == 0) {
-                    recyclerView.scrollToPosition(0);
-                }
+                if(positionStart == 0) recyclerView.scrollToPosition(0);
             }
         });
+    }
 
+    private void setItemTouchHelper() {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -108,21 +137,12 @@ public class PlaceGroupsFragment extends Fragment {
 
                 viewModel.delete(adapter.getPlaceGroupWithPlacesAt(deletedPosition));
 
-                Snackbar.make(viewHolder.itemView, "Place group deleted.", Snackbar.LENGTH_LONG)
-                        .setAction("UNDO", v -> viewModel.insert(deletedPlaceGroup))
+                Snackbar.make(viewHolder.itemView, getString(R.string.place_group_deleted), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.undo), v -> viewModel.insert(deletedPlaceGroup))
                         .setAnchorView(addPlaceGroupButton)
                         .show();
             }
         }).attachToRecyclerView(recyclerView);
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        navController = Navigation.findNavController(view);
     }
 
     @Override
@@ -136,7 +156,7 @@ public class PlaceGroupsFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.delete_all_place_groups:
                 new MaterialAlertDialogBuilder(requireContext())
-                        .setMessage(getString(R.string.question_delete_all_place_groups))
+                        .setMessage(getString(R.string.msg_delete_all_place_groups))
                         .setPositiveButton(getText(R.string.ok), (dialog, which) -> viewModel.deleteAll())
                         .setNegativeButton(getString(R.string.cancel), null)
                         .show();

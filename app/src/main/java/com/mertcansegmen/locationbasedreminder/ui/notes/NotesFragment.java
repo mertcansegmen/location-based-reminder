@@ -55,6 +55,33 @@ public class NotesFragment extends Fragment {
 
         viewModel = ViewModelProviders.of(this).get(NotesFragmentViewModel.class);
 
+        Animator.animateFloatingActionButton(addNoteButton);
+
+        setObserver();
+        configureRecyclerView();
+        setAddNoteButtonClickListener();
+        setOnAdapterItemClickListener();
+        registerAdapterDataObserver();
+        setItemTouchHelper();
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        navController = Navigation.findNavController(view);
+    }
+
+    private void setObserver() {
+        viewModel.getAllNotes().observe(this, notes -> {
+            emptyMessageLayout.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
+            adapter.submitList(notes);
+        });
+    }
+
+    private void configureRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         adapter = new NoteAdapter();
@@ -62,36 +89,38 @@ public class NotesFragment extends Fragment {
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         }
+    }
 
-        Animator.animateFloatingActionButton(addNoteButton);
+    private void setAddNoteButtonClickListener() {
+        addNoteButton.setOnClickListener(v ->
+            navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment)
+        );
+    }
 
-        viewModel.getAllNotes().observe(this, notes -> {
-            emptyMessageLayout.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
+    private void setOnAdapterItemClickListener() {
+        adapter.setOnItemClickListener(note -> navigateForEdit(note));
+    }
 
-            adapter.submitList(notes);
-        });
+    private void navigateForEdit(Note note) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AddEditNoteFragment.BUNDLE_KEY_NOTE, note);
+        navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment, bundle);
+    }
 
-        addNoteButton.setOnClickListener(v -> {
-            navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment);
-        });
-
-        adapter.setOnItemClickListener(note -> {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(AddEditNoteFragment.NOTE_BUNDLE_KEY, note);
-            navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment, bundle);
-        });
-
-        // This is needed for recycler view to go top when new record is added. Without this, new
-        // element is getting inserted off of the screen.
+    /**
+     * This is needed for recycler view to go top when new record is added. Without this, new
+     * element is getting inserted off of the screen.
+     */
+    private void registerAdapterDataObserver() {
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                if(positionStart == 0) {
-                    recyclerView.scrollToPosition(0);
-                }
+                if(positionStart == 0) recyclerView.scrollToPosition(0);
             }
         });
+    }
 
+    private void setItemTouchHelper() {
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -106,21 +135,12 @@ public class NotesFragment extends Fragment {
 
                 viewModel.delete(adapter.getNoteAt(viewHolder.getAdapterPosition()));
 
-                Snackbar.make(viewHolder.itemView, "Note deleted.", Snackbar.LENGTH_LONG)
-                        .setAction("UNDO", v -> viewModel.insert(deletedNote))
+                Snackbar.make(viewHolder.itemView, getString(R.string.note_deleted), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.undo), v -> viewModel.insert(deletedNote))
                         .setAnchorView(addNoteButton)
                         .show();
             }
         }).attachToRecyclerView(recyclerView);
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        navController = Navigation.findNavController(view);
     }
 
     @Override
@@ -134,7 +154,7 @@ public class NotesFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.delete_all_notes:
                 new MaterialAlertDialogBuilder(requireContext())
-                        .setMessage(getString(R.string.question_delete_all_notes))
+                        .setMessage(getString(R.string.msg_delete_all_notes))
                         .setPositiveButton(getText(R.string.ok), (dialog, which) -> viewModel.deleteAll())
                         .setNegativeButton(getString(R.string.cancel), null)
                         .show();

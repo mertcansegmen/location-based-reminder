@@ -90,14 +90,6 @@ public class PlaceChip extends Chip {
         configureChip(context);
     }
 
-    public Place getPlace() {
-        return place;
-    }
-
-    public void setPlace(Place place) {
-        this.place = place;
-    }
-
     private void configureChip(Context context) {
         setRandomChipColor(context);
         setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorBlack)));
@@ -110,5 +102,13 @@ public class PlaceChip extends Chip {
         int color = colors.get(randomIndex);
         setChipBackgroundColor(ColorStateList.valueOf(ContextCompat
                 .getColor(context, color)));
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
     }
 }

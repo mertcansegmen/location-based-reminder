@@ -39,7 +39,7 @@ import java.util.List;
 
 public class AddEditPlaceGroupFragment extends Fragment {
 
-    public static final String PLACE_GROUP_BUNDLE_KEY = "com.mertcansegmen.locationbasedreminder.PLACE_GROUP_BUNDLE_KEY";
+    public static final String BUNDLE_KEY_PLACE_GROUP = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_PLACE_GROUP";
 
     private TextInputLayout placeGroupNameEditTextLayout;
     private TextInputEditText placeGroupNameEditText;
@@ -65,38 +65,11 @@ public class AddEditPlaceGroupFragment extends Fragment {
 
         viewModel = ViewModelProviders.of(requireActivity()).get(AddEditPlaceGroupFragmentViewModel.class);
 
-        viewModel.getSelectedPlace().observe(this, selectedPlace -> {
-            if(selectedPlace == null) return;
-            addChip(selectedPlace);
-        });
-
-        // Scroll to bottom on create because add place chip is at the bottom.
-        scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
-
-        if(getArguments() != null) {
-            currentPlaceGroup = getArguments().getParcelable(PLACE_GROUP_BUNDLE_KEY);
-        }
-
+        setObserver();
         createAddPlaceChip();
-
-        if(!isNewPlaceGroup(currentPlaceGroup)) {
-            ((MainActivity) requireActivity()).getSupportActionBar().setTitle(currentPlaceGroup.getPlaceGroup().getName());
-
-            placeGroupNameEditText.setText(currentPlaceGroup.getPlaceGroup().getName());
-            loadPlaceChips(currentPlaceGroup.getPlaces());
-        }
-
-        placeGroupNameEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void afterTextChanged(Editable s) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                placeGroupNameEditTextLayout.setErrorEnabled(false);
-            }
-        });
+        retrievePlaceGroup();
+        scrollToBottom();
+        setTextChangedListener();
 
         return view;
     }
@@ -117,6 +90,47 @@ public class AddEditPlaceGroupFragment extends Fragment {
         viewModel.selectPlace(null);
     }
 
+    private void setObserver() {
+        viewModel.getSelectedPlace().observe(this, selectedPlace -> {
+            if(selectedPlace == null) return;
+            addChip(selectedPlace);
+        });
+    }
+
+    /**
+     * Scroll to bottom on create in case of chips doesn't fit screen, because add place chip is at
+     * the bottom.
+     */
+    private void scrollToBottom() {
+        scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
+    }
+
+    /**
+     * If text input has error enabled, clear error when user starts typing.
+     */
+    private void setTextChangedListener() {
+        placeGroupNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                placeGroupNameEditTextLayout.setErrorEnabled(false);
+            }
+        });
+    }
+
+    private void retrievePlaceGroup() {
+        if(getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_PLACE_GROUP) != null) {
+            currentPlaceGroup = getArguments().getParcelable(BUNDLE_KEY_PLACE_GROUP);
+            ((MainActivity) requireActivity()).getSupportActionBar().setTitle(currentPlaceGroup.getPlaceGroup().getName());
+            placeGroupNameEditText.setText(currentPlaceGroup.getPlaceGroup().getName());
+            loadPlaceChips(currentPlaceGroup.getPlaces());
+        }
+    }
+
     private void loadPlaceChips(List<Place> places) {
         for(Place place : places) {
             addChip(place);
@@ -124,41 +138,33 @@ public class AddEditPlaceGroupFragment extends Fragment {
     }
 
     private void addChip(Place place) {
-        PlaceChip chipToAdd = new PlaceChip(requireContext());
-        chipToAdd.setPlace(place);
-        chipToAdd.setText(place.getName());
-        chipToAdd.setCloseIconVisible(true);
-        chipToAdd.setCloseIconTint(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorBlack)));
-        chipToAdd.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_places));
+        PlaceChip chip = new PlaceChip(requireContext());
+        chip.setPlace(place);
+        chip.setText(place.getName());
+        chip.setCloseIconVisible(true);
+        chip.setCloseIconTint(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorBlack)));
+        chip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_places));
 
-        chipGroup.addView(chipToAdd, chipGroup.getChildCount() - 1);
-        Animator.addViewWithFadeAnimation(chipToAdd);
+        chipGroup.addView(chip, chipGroup.getChildCount() - 1);
+        Animator.addViewWithFadeAnimation(chip);
 
-        chipToAdd.setOnCloseIconClickListener(chipToRemove -> {
-            chipGroup.removeView(chipToRemove);
-            Animator.removeViewWithFadeAnimation(chipToRemove);
-        });
+        chip.setOnCloseIconClickListener(v -> removeChip(chip));
+    }
+
+    private void removeChip(PlaceChip chip) {
+        chipGroup.removeView(chip);
+        Animator.removeViewWithFadeAnimation(chip);
     }
 
     private void createAddPlaceChip() {
-        Chip addPlaceChip = new Chip(requireContext());
-        addPlaceChip.setText(R.string.add_place);
-        addPlaceChip.setTextStartPadding(3);
-        addPlaceChip.setChipStrokeWidth(2);
-        addPlaceChip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_add));
+        Chip chip = new Chip(requireContext());
 
-        if(Utils.isDarkModeEnabled(requireContext())) {
-            createLightChip(addPlaceChip);
-        } else {
-            createDarkChip(addPlaceChip);
-        }
-        chipGroup.addView(addPlaceChip);
-        addPlaceChip.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            ArrayList<Place> selectedPlaces = new ArrayList<>(getPlacesFromChips());
-            bundle.putParcelableArrayList(PickPlaceDialog.SELECTED_PLACES_BUNDLE_KEY, selectedPlaces);
-            navController.navigate(R.id.action_addEditPlaceGroupFragment_to_pickPlaceDialog, bundle);
-        });
+        if(Utils.isDarkModeEnabled(requireContext())) createLightChip(chip);
+        else createDarkChip(chip);
+
+        chipGroup.addView(chip);
+
+        chip.setOnClickListener(v -> navigateToPickPlaceDialog());
     }
 
     private void createLightChip(Chip chip) {
@@ -170,11 +176,22 @@ public class AddEditPlaceGroupFragment extends Fragment {
     }
 
     private void styleChip(Chip chip, int backgroundColor, int borderColor) {
+        chip.setText(R.string.add_place);
+        chip.setTextStartPadding(3);
+        chip.setChipStrokeWidth(2);
+        chip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_add));
         chip.setChipIconTintResource(borderColor);
         chip.setChipStrokeColor(ColorStateList.valueOf(ContextCompat
                 .getColor(requireContext(), borderColor)));
         chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat
                 .getColor(requireContext(), backgroundColor)));
+    }
+
+    private void navigateToPickPlaceDialog() {
+        Bundle bundle = new Bundle();
+        ArrayList<Place> selectedPlaces = new ArrayList<>(getPlacesFromChips());
+        bundle.putParcelableArrayList(PickPlaceDialog.BUNDLE_KEY_SELECTED_PLACES, selectedPlaces);
+        navController.navigate(R.id.action_addEditPlaceGroupFragment_to_pickPlaceDialog, bundle);
     }
 
     /**
@@ -192,10 +209,10 @@ public class AddEditPlaceGroupFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        if(isNewPlaceGroup(currentPlaceGroup)) {
-            inflater.inflate(R.menu.add_place_group_menu, menu);
-        } else {
+        if(inEditMode()) {
             inflater.inflate(R.menu.edit_place_group_menu, menu);
+        } else {
+            inflater.inflate(R.menu.add_place_group_menu, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -205,11 +222,9 @@ public class AddEditPlaceGroupFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.save_place_group:
                 savePlaceGroup();
-                Utils.closeKeyboard(requireActivity());
                 return true;
             case R.id.delete_place_group:
-                deletePlaceGroup();
-                Utils.closeKeyboard(requireActivity());
+                askToDeletePlaceGroup();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -218,41 +233,50 @@ public class AddEditPlaceGroupFragment extends Fragment {
 
     private void savePlaceGroup() {
         String placeGroupName = placeGroupNameEditText.getText().toString().trim();
-        List<Place> placesToSave = getPlacesFromChips();
+        List<Place> places = getPlacesFromChips();
 
         if(placeGroupName.isEmpty()) {
             placeGroupNameEditTextLayout.setError(getString(R.string.error_empty_place_group_name));
             return;
         }
 
-        if(isNewPlaceGroup(currentPlaceGroup)) {
-            // Create new place group and insert it
-            PlaceGroupWithPlaces placeGroup = new PlaceGroupWithPlaces();
-            placeGroup.setPlaceGroup(new PlaceGroup(placeGroupName));
-            placeGroup.setPlaces(placesToSave);
-            viewModel.insert(placeGroup);
-        } else {
-            // Update current place group
-            currentPlaceGroup.getPlaceGroup().setName(placeGroupName);
-            currentPlaceGroup.setPlaces(placesToSave);
-            viewModel.update(currentPlaceGroup);
-        }
+        if(inEditMode()) updateCurrentPlaceGroup(placeGroupName, places);
+        else insertNewPlaceGroup(placeGroupName, places);
 
-        requireActivity().onBackPressed();
+        Utils.closeKeyboard(requireActivity());
+        navController.popBackStack();
     }
 
-    private void deletePlaceGroup() {
+    private void insertNewPlaceGroup(String placeGroupName, List<Place> places) {
+        PlaceGroupWithPlaces placeGroup = new PlaceGroupWithPlaces();
+        placeGroup.setPlaceGroup(new PlaceGroup(placeGroupName));
+        placeGroup.setPlaces(places);
+        viewModel.insert(placeGroup);
+    }
+
+    private void updateCurrentPlaceGroup(String placeGroupName, List<Place> places) {
+        currentPlaceGroup.getPlaceGroup().setName(placeGroupName);
+        currentPlaceGroup.setPlaces(places);
+        viewModel.update(currentPlaceGroup);
+    }
+
+    private void askToDeletePlaceGroup() {
         new MaterialAlertDialogBuilder(requireContext())
-                .setMessage(getString(R.string.delete_place_group_message))
+                .setMessage(getString(R.string.msg_delete_place_group))
                 .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
-                    viewModel.delete(currentPlaceGroup);
-                    requireActivity().onBackPressed();
+                    deletePlaceGroup();
+                    Utils.closeKeyboard(requireActivity());
+                    navController.popBackStack();
                 })
                 .setNegativeButton(getString(R.string.cancel), null)
                 .show();
     }
 
-    private boolean isNewPlaceGroup(PlaceGroupWithPlaces placeGroup) {
-        return placeGroup == null;
+    private void deletePlaceGroup() {
+        viewModel.delete(currentPlaceGroup);
+    }
+
+    private boolean inEditMode() {
+        return currentPlaceGroup != null;
     }
 }

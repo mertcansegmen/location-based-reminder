@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
@@ -24,13 +25,15 @@ import com.mertcansegmen.locationbasedreminder.util.Utils;
 
 public class AddEditNoteFragment extends Fragment {
 
-    public static final String NOTE_BUNDLE_KEY = "com.mertcansegmen.locationbasedreminder.EXTRA_NOTE";
+    public static final String BUNDLE_KEY_NOTE = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_NOTE";
 
     private EditText noteEditText;
 
     private Note currentNote;
 
     private AddEditNoteFragmentViewModel viewModel;
+
+    private NavController navController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +44,8 @@ public class AddEditNoteFragment extends Fragment {
 
         viewModel = ViewModelProviders.of(this).get(AddEditNoteFragmentViewModel.class);
 
+        retrieveNote();
+
         return view;
     }
 
@@ -48,25 +53,23 @@ public class AddEditNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(getArguments() != null) {
-            currentNote = getArguments().getParcelable(NOTE_BUNDLE_KEY);
-            if (!isNewNote(currentNote)) {
-                ((MainActivity) requireActivity()).getSupportActionBar().setTitle("Edit Note");
-                noteEditText.setText(currentNote.getBody());
-            }
-        }
+        navController = Navigation.findNavController(view);
     }
 
-    private boolean isNewNote(Note note) {
-        return note == null;
+    private void retrieveNote() {
+        if(getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_NOTE) != null) {
+            currentNote = getArguments().getParcelable(BUNDLE_KEY_NOTE);
+            ((MainActivity) requireActivity()).getSupportActionBar().setTitle(getString(R.string.edit_note));
+            noteEditText.setText(currentNote.getBody());
+        }
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        if(isNewNote(currentNote)) {
-            inflater.inflate(R.menu.add_note_menu, menu);
-        } else {
+        if(inEditMode()) {
             inflater.inflate(R.menu.edit_note_menu, menu);
+        } else {
+            inflater.inflate(R.menu.add_note_menu, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -76,42 +79,54 @@ public class AddEditNoteFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.save_note:
                 saveNote();
-                Utils.closeKeyboard(requireActivity());
-                requireActivity().onBackPressed();
                 return true;
             case R.id.delete_note:
-                deleteNote();
-                Utils.closeKeyboard(requireActivity());
+                askToDeleteCurrentNote();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     private void saveNote() {
-        String text = noteEditText.getText().toString().trim();
-        if(text.isEmpty()) {
-            if(isNewNote(currentNote)) {
-                Toast.makeText(getContext(), "Empty note deleted", Toast.LENGTH_SHORT).show();
-            }
-            return;
-        }
-        if(isNewNote(currentNote)) {
-            Note newNote = new Note(text);
-            viewModel.insert(newNote);
-        } else {
-            currentNote.setBody(text);
-            viewModel.update(currentNote);
-        }
+        String noteBody = noteEditText.getText().toString().trim();
+
+        if(noteBody.isEmpty()) return;
+
+        if(inEditMode()) updateCurrentNote(noteBody);
+        else insertNewNote(noteBody);
+
+        Utils.closeKeyboard(requireActivity());
+        navController.popBackStack();
     }
 
-    private void deleteNote() {
+    private void updateCurrentNote(String noteBody) {
+        currentNote.setBody(noteBody);
+        viewModel.update(currentNote);
+    }
+
+    private void insertNewNote(String noteBody) {
+        Note newNote = new Note(noteBody);
+        viewModel.insert(newNote);
+    }
+
+    private void askToDeleteCurrentNote() {
         new MaterialAlertDialogBuilder(requireContext())
-                .setMessage(getString(R.string.delete_note_message))
+                .setMessage(getString(R.string.msg_delete_note))
                 .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
-                    viewModel.delete(currentNote);
-                    requireActivity().onBackPressed();
+                    deleteCurrentNote();
+                    Utils.closeKeyboard(requireActivity());
+                    navController.popBackStack();
                 })
                 .setNegativeButton(getString(R.string.cancel), null)
                 .show();
+    }
+
+    private void deleteCurrentNote() {
+        viewModel.delete(currentNote);
+    }
+
+    private boolean inEditMode() {
+        return currentNote != null;
     }
 }

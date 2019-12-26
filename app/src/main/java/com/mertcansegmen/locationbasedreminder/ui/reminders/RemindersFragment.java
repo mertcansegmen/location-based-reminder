@@ -15,7 +15,7 @@ import com.mertcansegmen.locationbasedreminder.util.Animator;
 
 public class RemindersFragment extends Fragment {
 
-    FloatingActionButton addReminderButton;
+    private FloatingActionButton addReminderButton;
 
     @Nullable
     @Override

@@ -1,7 +1,5 @@
 package com.mertcansegmen.locationbasedreminder.ui.addeditplace;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -49,47 +47,10 @@ public class NamePlaceDialog extends DialogFragment {
 
         viewModel = ViewModelProviders.of(this).get(NamePlaceDialogViewModel.class);
 
-        if(getArguments() != null) {
-            currentPlace = getArguments().getParcelable(BUNDLE_KEY_PLACE);
-        }
-
-        if(!isNewPlace(currentPlace)) {
-            placeNameEditText.setText(currentPlace.getName());
-        }
-
-        okButton.setOnClickListener(v -> {
-            String placeName = placeNameEditText.getText().toString().trim();
-            currentPlace.setName(placeName);
-
-            // Show error if place name field is empty
-            if(placeName.isEmpty()) {
-                placeNameLayout.setError(getString(R.string.error_empty_place_name));
-                return;
-            }
-
-            if(isNewPlace(currentPlace)) {
-                viewModel.insert(currentPlace);
-            } else {
-                viewModel.update(currentPlace);
-            }
-
-            navController.navigate(R.id.action_namePlaceDialog_to_placesFragment);
-        });
-
-        cancelButton.setOnClickListener(v -> dismiss());
-
-        placeNameEditText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                placeNameLayout.setErrorEnabled(false);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
+        retrievePlace();
+        setOkButtonClickListener();
+        setCancelButtonClickListener();
+        setTextChangedListener();
 
         return view;
     }
@@ -101,7 +62,51 @@ public class NamePlaceDialog extends DialogFragment {
         navController = NavHostFragment.findNavController(this);
     }
 
-    private boolean isNewPlace(Place place) {
-        return place.getPlaceId() == null;
+    private void retrievePlace() {
+        if(getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_PLACE) != null) {
+            currentPlace = getArguments().getParcelable(BUNDLE_KEY_PLACE);
+            placeNameEditText.setText(currentPlace.getName());
+        }
+    }
+
+    private void setOkButtonClickListener() {
+        okButton.setOnClickListener(v -> {
+            String placeName = placeNameEditText.getText().toString().trim();
+
+            // Show error if place name field is empty
+            if(placeName.isEmpty()) {
+                placeNameLayout.setError(getString(R.string.error_empty_place_name));
+                return;
+            }
+
+            currentPlace.setName(placeName);
+
+            if(!inEditMode()) viewModel.insert(currentPlace);
+            else viewModel.update(currentPlace);
+
+            navController.navigate(R.id.action_namePlaceDialog_to_placesFragment);
+        });
+    }
+
+    private void setCancelButtonClickListener() {
+        cancelButton.setOnClickListener(v -> dismiss());
+    }
+
+    private void setTextChangedListener() {
+        placeNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                placeNameLayout.setErrorEnabled(false);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private boolean inEditMode() {
+        return currentPlace.getPlaceId() == null;
     }
 }

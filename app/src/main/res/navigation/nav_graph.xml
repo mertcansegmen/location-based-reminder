@@ -8,13 +8,13 @@
     <fragment
         android:id="@+id/remindersFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.reminders.RemindersFragment"
-        android:label="@string/title_reminders"
+        android:label="@string/reminders"
         tools:layout="@layout/fragment_reminders" />
 
     <fragment
         android:id="@+id/notesFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.notes.NotesFragment"
-        android:label="@string/title_notes"
+        android:label="@string/notes"
         tools:layout="@layout/fragment_notes" >
         <action
             android:id="@+id/action_notesFragment_to_addEditNoteFragment"
@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/placesFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.places.PlacesFragment"
-        android:label="@string/title_places"
+        android:label="@string/places"
         tools:layout="@layout/fragment_places" >
         <action
             android:id="@+id/action_placesFragment_to_addEditPlaceFragment"
@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/placeGroupsFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.placegroups.PlaceGroupsFragment"
-        android:label="@string/title_place_groups"
+        android:label="@string/place_groups"
         tools:layout="@layout/fragment_place_groups" >
         <action
             android:id="@+id/action_placeGroupsFragment_to_addEditPlaceGroupFragment"
@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.settings.SettingsFragment"
-        android:label="@string/title_settings"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
