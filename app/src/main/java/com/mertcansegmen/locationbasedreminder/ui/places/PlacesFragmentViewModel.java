@@ -22,6 +22,14 @@ public class PlacesFragmentViewModel extends AndroidViewModel {
         allPlaces = repository.getAllPlaces();
     }
 
+    public void insert(Place place) {
+        repository.insert(place);
+    }
+
+    public void delete(Place place) {
+        repository.delete(place);
+    }
+
     public void deleteAll() {
         repository.deleteAll();
     }

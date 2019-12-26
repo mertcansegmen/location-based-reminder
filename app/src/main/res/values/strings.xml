@@ -43,5 +43,4 @@
     <string name="pick_places">Pick Places</string>
     <string name="msg_no_available_place">There is no available place to add.</string>
     <string name="create_new_place">Create New Place</string>
-    <string name="place_radius">%d meters</string>
 </resources>
