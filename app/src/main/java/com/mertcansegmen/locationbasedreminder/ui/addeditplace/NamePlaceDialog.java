@@ -31,7 +31,7 @@ public class NamePlaceDialog extends DialogFragment {
     private TextInputLayout placeNameLayout;
     private TextInputEditText placeNameEditText;
 
-    Place currentPlace;
+    private Place currentPlace;
 
     private NamePlaceDialogViewModel viewModel;
 
