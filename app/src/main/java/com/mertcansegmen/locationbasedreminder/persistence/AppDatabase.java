@@ -70,7 +70,6 @@ public abstract class AppDatabase extends RoomDatabase {
                         "Salt\n" +
                         "Honey\n" +
                         "Eggs"));
-                noteDao.insert(new Note("Buy a graduation gift for Sarah"));
                 noteDao.insert(new Note("Find hotel recommendations in London"));
                 noteDao.insert(new Note("Buy a graduation gift for Sarah"));
                 noteDao.insert(new Note("Movies to Watch: \n" +

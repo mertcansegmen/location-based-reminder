@@ -84,7 +84,8 @@ public class NamePlaceDialog extends DialogFragment {
             if(!inEditMode()) viewModel.insert(currentPlace);
             else viewModel.update(currentPlace);
 
-            navController.navigate(R.id.action_namePlaceDialog_to_placesFragment);
+            navController.popBackStack();
+            navController.popBackStack();
         });
     }
 
@@ -107,6 +108,6 @@ public class NamePlaceDialog extends DialogFragment {
     }
 
     private boolean inEditMode() {
-        return currentPlace.getPlaceId() == null;
+        return currentPlace.getPlaceId() != null;
     }
 }
