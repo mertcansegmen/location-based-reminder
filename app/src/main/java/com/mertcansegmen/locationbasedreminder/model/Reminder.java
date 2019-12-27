@@ -1,44 +1,19 @@
 package com.mertcansegmen.locationbasedreminder.model;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(foreignKeys = {
-        @ForeignKey(
-                entity = Note.class,
-                parentColumns = "noteId",
-                childColumns = "noteId",
-                onDelete = ForeignKey.CASCADE
-        ),
-        @ForeignKey(
-                entity = Place.class,
-                parentColumns = "placeId",
-                childColumns = "placeId"
-        ),
-        @ForeignKey(
-                entity = PlaceGroup.class,
-                parentColumns = "placeGroupId",
-                childColumns = "placeGroupId"
-        )
-})
+@Entity
 public class Reminder {
 
     @PrimaryKey(autoGenerate = true)
     private long reminderId;
 
-    @ColumnInfo(index = true)
     private int noteId;
 
-    @ColumnInfo(index = true)
     private int placeId;
 
-    @ColumnInfo(index = true)
     private int placeGroupId;
-
-//    @TypeConverters({DateConverter.class})
-//    private Date createdAt;
 
     private boolean isActive;
 
@@ -80,14 +55,6 @@ public class Reminder {
     public void setPlaceGroupId(int placeGroupId) {
         this.placeGroupId = placeGroupId;
     }
-
-//    public Date getCreatedAt() {
-//        return createdAt;
-//    }
-//
-//    public void setCreatedAt(Date createdAt) {
-//        this.createdAt = createdAt;
-//    }
 
     public boolean isActive() {
         return isActive;
