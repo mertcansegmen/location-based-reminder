@@ -44,7 +44,16 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note currentNote = getItem(position);
-        holder.noteTextView.setText(currentNote.getBody());
+
+        if(currentNote.getTitle() != null)
+            holder.titleTextView.setText(currentNote.getTitle());
+        else
+            holder.titleTextView.setVisibility(View.GONE);
+
+        if(currentNote.getBody() != null)
+            holder.noteTextView.setText(currentNote.getBody());
+        else
+            holder.noteTextView.setVisibility(View.GONE);
     }
 
     public Note getNoteAt(int position) {
@@ -53,10 +62,12 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
 
     class NoteViewHolder extends RecyclerView.ViewHolder {
 
+        private TextView titleTextView;
         private TextView noteTextView;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
+            titleTextView = itemView.findViewById(R.id.txt_title);
             noteTextView = itemView.findViewById(R.id.txt_note);
 
             itemView.setOnClickListener(v -> {

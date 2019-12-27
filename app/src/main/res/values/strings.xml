@@ -56,5 +56,6 @@
 
     <!--Settings-->
     <string name="settings">Settings</string>
+    <string name="title">Title</string>
 
 </resources>

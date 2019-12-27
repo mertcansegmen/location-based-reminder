@@ -27,6 +27,7 @@ public class AddEditNoteFragment extends Fragment {
 
     public static final String BUNDLE_KEY_NOTE = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_NOTE";
 
+    private EditText titleEditText;
     private EditText noteEditText;
 
     private Note currentNote;
@@ -40,6 +41,7 @@ public class AddEditNoteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_edit_note, container, false);
         setHasOptionsMenu(true);
 
+        titleEditText = view.findViewById(R.id.txt_title);
         noteEditText = view.findViewById(R.id.txt_note);
 
         viewModel = ViewModelProviders.of(this).get(AddEditNoteFragmentViewModel.class);
@@ -60,7 +62,8 @@ public class AddEditNoteFragment extends Fragment {
         if(getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_NOTE) != null) {
             currentNote = getArguments().getParcelable(BUNDLE_KEY_NOTE);
             ((MainActivity) requireActivity()).getSupportActionBar().setTitle(getString(R.string.edit_note));
-            noteEditText.setText(currentNote.getBody());
+            if(currentNote.getTitle() != null) titleEditText.setText(currentNote.getTitle());
+            if(currentNote.getBody() != null) noteEditText.setText(currentNote.getBody());
         }
     }
 
@@ -89,24 +92,34 @@ public class AddEditNoteFragment extends Fragment {
     }
 
     private void saveNote() {
+        String noteTitle = titleEditText.getText().toString().trim();
         String noteBody = noteEditText.getText().toString().trim();
 
-        if(noteBody.isEmpty()) return;
+        if(noteBody.isEmpty() && noteTitle.isEmpty()) return;
 
-        if(inEditMode()) updateCurrentNote(noteBody);
-        else insertNewNote(noteBody);
+        if(inEditMode()) updateCurrentNote(noteTitle, noteBody);
+        else insertNewNote(noteTitle, noteBody);
 
         Utils.closeKeyboard(requireActivity());
         navController.popBackStack();
     }
 
-    private void updateCurrentNote(String noteBody) {
-        currentNote.setBody(noteBody);
+    private void updateCurrentNote(String noteTitle, String noteBody) {
+        if(!noteTitle.isEmpty()) currentNote.setTitle(noteTitle);
+        else currentNote.setTitle(null);
+
+        if(!noteBody.isEmpty()) currentNote.setBody(noteBody);
+        else currentNote.setBody(null);
+
         viewModel.update(currentNote);
     }
 
-    private void insertNewNote(String noteBody) {
-        Note newNote = new Note(noteBody);
+    private void insertNewNote(String noteTitle, String noteBody) {
+        Note newNote = new Note();
+
+        if(!noteTitle.isEmpty()) newNote.setTitle(noteTitle);
+        if(!noteBody.isEmpty()) newNote.setBody(noteBody);
+
         viewModel.insert(newNote);
     }
 

@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 @Database(entities = {
         Reminder.class, Note.class, AlarmAttribute.class,
         Place.class, PlaceGroup.class, PlaceGroupPlaceCrossRef.class
-}, version = 16)
+}, version = 18)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
@@ -60,7 +60,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 noteDao.insert(new Note("Reply to Angela"));
                 noteDao.insert(new Note("Schedule meeting with Alex"));
                 noteDao.insert(new Note("Find hotel recommendations in London"));
-                noteDao.insert(new Note("Shopping List: \n" +
+                noteDao.insert(new Note("Shopping List",
                         "Pasta\n" +
                         "Breakfast cereal\n" +
                         "Rice\n" +
@@ -72,7 +72,7 @@ public abstract class AppDatabase extends RoomDatabase {
                         "Eggs"));
                 noteDao.insert(new Note("Find hotel recommendations in London"));
                 noteDao.insert(new Note("Buy a graduation gift for Sarah"));
-                noteDao.insert(new Note("Movies to Watch: \n" +
+                noteDao.insert(new Note("Movies to Watch",
                         "Scorpion\n" +
                         "Joker\n" +
                         "Countdown\n" +
