@@ -38,9 +38,6 @@ public interface PlaceGroupDao {
     @Query("DELETE FROM PlaceGroupPlaceCrossRef")
     void deleteAllPlaceGroupRefs();
 
-    @Query("SELECT * FROM PlaceGroup")
-    LiveData<List<PlaceGroup>> getAllPlaceGroups();
-
     @Transaction
     @Query("SELECT * FROM PlaceGroup ORDER BY placeGroupId DESC")
     LiveData<List<PlaceGroupWithPlaces>> getAllPlaceGroupsWithPlaces();

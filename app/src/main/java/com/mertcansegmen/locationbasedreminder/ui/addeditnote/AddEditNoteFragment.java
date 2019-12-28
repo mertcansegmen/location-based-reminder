@@ -62,8 +62,8 @@ public class AddEditNoteFragment extends Fragment {
         if(getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_NOTE) != null) {
             currentNote = getArguments().getParcelable(BUNDLE_KEY_NOTE);
             ((MainActivity) requireActivity()).getSupportActionBar().setTitle(getString(R.string.edit_note));
-            if(currentNote.getTitle() != null) titleEditText.setText(currentNote.getTitle());
-            if(currentNote.getBody() != null) noteEditText.setText(currentNote.getBody());
+            titleEditText.setText(currentNote.getTitle());
+            noteEditText.setText(currentNote.getBody());
         }
     }
 
@@ -105,20 +105,14 @@ public class AddEditNoteFragment extends Fragment {
     }
 
     private void updateCurrentNote(String noteTitle, String noteBody) {
-        if(!noteTitle.isEmpty()) currentNote.setTitle(noteTitle);
-        else currentNote.setTitle(null);
-
-        if(!noteBody.isEmpty()) currentNote.setBody(noteBody);
-        else currentNote.setBody(null);
+        currentNote.setTitle(noteTitle);
+        currentNote.setBody(noteBody);
 
         viewModel.update(currentNote);
     }
 
     private void insertNewNote(String noteTitle, String noteBody) {
-        Note newNote = new Note();
-
-        if(!noteTitle.isEmpty()) newNote.setTitle(noteTitle);
-        if(!noteBody.isEmpty()) newNote.setBody(noteBody);
+        Note newNote = new Note(noteTitle, noteBody);
 
         viewModel.insert(newNote);
     }

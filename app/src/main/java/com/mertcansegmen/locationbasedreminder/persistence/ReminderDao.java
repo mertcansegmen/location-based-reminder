@@ -5,9 +5,11 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.mertcansegmen.locationbasedreminder.model.Reminder;
+import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
 
 import java.util.List;
 
@@ -26,7 +28,8 @@ public interface ReminderDao {
     @Query("DELETE FROM Reminder")
     void deleteAllReminders();
 
-    @Query("SELECT * FROM Reminder")
-    LiveData<List<Reminder>> getAllReminders();
+    @Transaction
+    @Query("SELECT * FROM Reminder ORDER BY reminderId DESC")
+    LiveData<List<ReminderWithNotePlacePlaceGroup>> getAllRemindersWithNotePlacePlaceGroup();
 
 }

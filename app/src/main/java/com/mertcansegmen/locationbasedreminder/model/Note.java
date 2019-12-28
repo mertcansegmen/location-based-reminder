@@ -18,10 +18,8 @@ public class Note implements Parcelable {
     private String body;
 
     @Ignore
-    public Note() {}
-
-    @Ignore
     public Note(String body) {
+        this.title = "";
         this.body = body;
     }
 

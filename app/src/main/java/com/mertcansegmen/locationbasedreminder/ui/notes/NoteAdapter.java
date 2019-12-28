@@ -25,7 +25,8 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
 
         @Override
         public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-            return oldItem.getBody().equals(newItem.getBody());
+            return oldItem.getTitle().equals(newItem.getTitle()) &&
+                    oldItem.getBody().equals(newItem.getBody());
         }
     };
 
@@ -45,15 +46,11 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
         Note currentNote = getItem(position);
 
-        if(currentNote.getTitle() != null)
-            holder.titleTextView.setText(currentNote.getTitle());
-        else
-            holder.titleTextView.setVisibility(View.GONE);
+        holder.titleTextView.setText(currentNote.getTitle());
+        holder.noteTextView.setText(currentNote.getBody());
 
-        if(currentNote.getBody() != null)
-            holder.noteTextView.setText(currentNote.getBody());
-        else
-            holder.noteTextView.setVisibility(View.GONE);
+        holder.titleTextView.setVisibility(currentNote.getTitle().isEmpty() ? View.GONE : View.VISIBLE);
+        holder.noteTextView.setVisibility(currentNote.getBody().isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     public Note getNoteAt(int position) {
