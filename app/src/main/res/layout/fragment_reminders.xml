@@ -41,7 +41,7 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_notes"
+                android:src="@drawable/ic_reminders"
                 android:tint="@color/colorMessage" />
 
             <TextView

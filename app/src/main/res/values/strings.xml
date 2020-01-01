@@ -1,6 +1,6 @@
 <resources>
     <!--Generic stuff-->
-    <string name="app_name">LocationBasedReminder</string>
+    <string name="app_name">Location Based Reminder</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
@@ -23,6 +23,7 @@
     <string name="title_optional">Title(Optional)</string>
     <string name="msg_place_was_removed">The place or place group attached to this reminder was removed</string>
     <string name="msg_place_group_does_not_contain_any_place">This place group does not contain any place</string>
+    <string name="msg_delete_all_reminders">Are you sure you want to delete all of your reminders?</string>
 
     <!--Notes-->
     <string name="notes">Notes</string>

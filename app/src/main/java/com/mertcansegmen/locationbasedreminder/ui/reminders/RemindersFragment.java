@@ -4,6 +4,9 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mertcansegmen.locationbasedreminder.R;
@@ -43,6 +47,7 @@ public class RemindersFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reminders, container, false);
+        setHasOptionsMenu(true);
 
         addReminderButton = view.findViewById(R.id.btn_add_reminder);
         recyclerView = view.findViewById(R.id.recycler_view);
@@ -137,5 +142,26 @@ public class RemindersFragment extends Fragment {
                         .show();
             }
         }).attachToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.reminders_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_all_reminders:
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setMessage(getString(R.string.msg_delete_all_reminders))
+                        .setPositiveButton(getText(R.string.ok), (dialog, which) -> viewModel.deleteAll())
+                        .setNegativeButton(getString(R.string.cancel), null)
+                        .show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

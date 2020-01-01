@@ -78,11 +78,11 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
             addPlaceGroupChip(context, currentReminder, holder.chipGroup);
             if(currentReminder.getPlaceGroupWithPlaces().getPlaces().isEmpty()) {
                 // If the place group attached to reminder does not contain any place
-                addEmptyPlaceGroupMessage(context, holder.rootLayout);
+                holder.placeGroupEmptyTextView.setVisibility(View.VISIBLE);
             }
         } else {
             // If the place or place group attached to reminder was removed
-            addPlaceRemovedMessage(context, holder.chipGroup);
+            holder.placeRemovedTextView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -102,25 +102,6 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
         chipGroup.addView(chip);
     }
 
-    private void addEmptyPlaceGroupMessage(Context context, LinearLayout rootLayout) {
-        TextView textView = new TextView(context);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rootLayout.getLayoutParams();
-        params.setMargins(0,16,0,0);
-        textView.setLayoutParams(params);
-        textView.setTextSize(Dimension.SP, 12);
-        textView.setTextColor(ColorStateList.valueOf(ContextCompat
-                .getColor(context, R.color.colorError)));
-        textView.setText(R.string.msg_place_group_does_not_contain_any_place);
-        rootLayout.addView(textView);
-    }
-
-    private void addPlaceRemovedMessage(Context context, ChipGroup chipGroup) {
-        TextView textView = new TextView(context);
-        textView.setTextSize(Dimension.SP, 12);
-        textView.setText(R.string.msg_place_was_removed);
-        chipGroup.addView(textView);
-    }
-
 
     public ReminderWithNotePlacePlaceGroup getReminderAt(int position) {
         return getItem(position);
@@ -132,7 +113,8 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
         private TextView noteTextView;
         private ChipGroup chipGroup;
         private MaterialCheckBox checkBox;
-        private LinearLayout rootLayout;
+        private TextView placeRemovedTextView;
+        private TextView placeGroupEmptyTextView;
 
         public ReminderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -140,7 +122,8 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
             noteTextView = itemView.findViewById(R.id.txt_note);
             chipGroup = itemView.findViewById(R.id.chip_group);
             checkBox = itemView.findViewById(R.id.check_box);
-            rootLayout = itemView.findViewById(R.id.root_layout);
+            placeRemovedTextView = itemView.findViewById(R.id.txt_place_removed_error);
+            placeGroupEmptyTextView = itemView.findViewById(R.id.txt_place_group_empty_error);
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();

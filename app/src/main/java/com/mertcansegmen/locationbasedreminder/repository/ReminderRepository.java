@@ -71,6 +71,14 @@ public class ReminderRepository {
         });
     }
 
+    public void deleteAll() {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            reminderDao.deleteAllReminderNotes();
+            reminderDao.deleteAllReminders();
+        });
+    }
+
     public LiveData<List<ReminderWithNotePlacePlaceGroup>> getAllRemindersWithNotePlacePlaceGroup() {
         return allRemindersWithNotePlacePlaceGroup;
     }

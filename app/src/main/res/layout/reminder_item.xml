@@ -28,7 +28,6 @@
             android:layout_height="match_parent" />
 
         <LinearLayout
-            android:id="@+id/root_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -58,6 +57,26 @@
                 android:layout_marginTop="4dp" >
 
             </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/txt_place_removed_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:textSize="12sp"
+                android:text="@string/msg_place_was_removed"
+                android:textColor="@color/colorError"/>
+
+            <TextView
+                android:id="@+id/txt_place_group_empty_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:textSize="12sp"
+                android:text="@string/msg_place_group_does_not_contain_any_place"
+                android:textColor="@color/colorError"/>
 
         </LinearLayout>
 

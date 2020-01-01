@@ -80,7 +80,6 @@ public abstract class AppDatabase extends RoomDatabase {
                         "Star Wars: The Rise of Skywalker"));
                 noteDao.insert(new Note("Buy a cooler for the laptop"));
                 noteDao.insert(new Note("Return Quinn's flash drive back"));
-                noteDao.insert(new Note("Do laundries"));
 
                 noteDao.insert(new Note("Buy a cooler for the laptop"));
                 noteDao.insert(new Note("Return Quinn's flash drive back"));
@@ -96,6 +95,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                 "Honey\n" +
                                 "Eggs"));
                 noteDao.insert(new Note("Buy a graduation gift for Sarah"));
+                noteDao.insert(new Note("Return book to library"));
 
                 placeDao.insert(new Place("Food Lion", 42.421935, -71.065640, 100));
                 placeDao.insert(new Place("Falletti Foods", 42.360037, -71.087794, 300));
@@ -121,6 +121,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 placeDao.insert(new Place("Best Buy ", 41.221928, -73.074861, 100));
                 placeDao.insert(new Place("Quinn's House", 41.221928, -73.074861, 200));
                 placeDao.insert(new Place("Home", 41.221928, -73.074861, 200));
+                placeDao.insert(new Place("School", 41.221928, -73.074861, 150));
 
                 placeGroupDao.insert(new PlaceGroup("Grocery Stores"));
                 placeGroupDao.insert(new PlaceGroup("Clothing Stores"));
@@ -152,11 +153,12 @@ public abstract class AppDatabase extends RoomDatabase {
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(21, 6));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(22, 6));
 
-                reminderDao.insert(new Reminder(13, null, 6L, true));
-                reminderDao.insert(new Reminder(14, 23L, null, true));
-                reminderDao.insert(new Reminder(15, 24L, null, true));
-                reminderDao.insert(new Reminder(16, null, 1L, true));
-                reminderDao.insert(new Reminder(17, null, 5L, true));
+                reminderDao.insert(new Reminder(12, null, 6L, true));
+                reminderDao.insert(new Reminder(13, 23L, null, true));
+                reminderDao.insert(new Reminder(14, 24L, null, true));
+                reminderDao.insert(new Reminder(15, null, 1L, true));
+                reminderDao.insert(new Reminder(16, null, 5L, true));
+                reminderDao.insert(new Reminder(17, 25L, null, true));
             });
         }
     };
