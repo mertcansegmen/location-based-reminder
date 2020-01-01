@@ -26,6 +26,6 @@ public interface NoteDao {
     @Query("DELETE FROM Note")
     void deleteAllNotes();
 
-    @Query("SELECT * FROM Note ORDER BY noteId DESC")
+    @Query("SELECT * FROM Note WHERE noteId NOT IN (SELECT noteId FROM Reminder) ORDER BY noteId DESC")
     LiveData<List<Note>> getAllNotes();
 }
