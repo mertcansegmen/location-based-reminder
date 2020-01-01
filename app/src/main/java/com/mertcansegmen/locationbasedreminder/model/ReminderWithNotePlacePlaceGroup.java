@@ -8,23 +8,14 @@ public class ReminderWithNotePlacePlaceGroup {
     @Embedded
     private Reminder reminder;
 
-    @Relation(
-            parentColumn = "reminderId",
-            entityColumn = "noteId"
-    )
+    @Relation(parentColumn = "noteId", entityColumn = "noteId")
     private Note note;
 
-    @Relation(
-            parentColumn = "reminderId",
-            entityColumn = "placeId"
-    )
+    @Relation(parentColumn = "placeId", entityColumn = "placeId")
     private Place place;
 
-    @Relation(
-            parentColumn = "reminderId",
-            entityColumn = "placeGroupId"
-    )
-    private PlaceGroup placeGroup;
+    @Relation(parentColumn = "placeGroupId", entityColumn = "placeGroupId", entity = PlaceGroup.class)
+    private PlaceGroupWithPlaces placeGroupWithPlaces;
 
     public Reminder getReminder() {
         return reminder;
@@ -50,11 +41,21 @@ public class ReminderWithNotePlacePlaceGroup {
         this.place = place;
     }
 
-    public PlaceGroup getPlaceGroup() {
-        return placeGroup;
+    public PlaceGroupWithPlaces getPlaceGroupWithPlaces() {
+        return placeGroupWithPlaces;
     }
 
-    public void setPlaceGroup(PlaceGroup placeGroup) {
-        this.placeGroup = placeGroup;
+    public void setPlaceGroupWithPlaces(PlaceGroupWithPlaces placeGroupWithPlaces) {
+        this.placeGroupWithPlaces = placeGroupWithPlaces;
+    }
+
+    @Override
+    public String toString() {
+        return "ReminderWithNotePlacePlaceGroup{" +
+                "reminder=" + reminder +
+                ", note=" + note +
+                ", place=" + place +
+                ", placeGroupWithPlaces=" + placeGroupWithPlaces +
+                '}';
     }
 }

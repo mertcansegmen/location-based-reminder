@@ -54,14 +54,14 @@ public abstract class AppDatabase extends RoomDatabase {
                 NoteDao noteDao = instance.noteDao();
                 PlaceDao placeDao = instance.placeDao();
                 PlaceGroupDao placeGroupDao = instance.placeGroupDao();
+                ReminderDao reminderDao = instance.reminderDao();
 
                 noteDao.insert(new Note("Feed the dog"));
-                noteDao.insert(new Note("Return book to library"));
-                noteDao.insert(new Note("Reply to Angela"));
                 noteDao.insert(new Note("Schedule meeting with Alex"));
                 noteDao.insert(new Note("Find hotel recommendations in London"));
+                noteDao.insert(new Note("Do laundries"));
                 noteDao.insert(new Note("Shopping List",
-                        "Pasta\n" +
+                        "Curly Pasta\n" +
                         "Breakfast cereal\n" +
                         "Rice\n" +
                         "Soup\n" +
@@ -70,48 +70,93 @@ public abstract class AppDatabase extends RoomDatabase {
                         "Salt\n" +
                         "Honey\n" +
                         "Eggs"));
-                noteDao.insert(new Note("Find hotel recommendations in London"));
                 noteDao.insert(new Note("Buy a graduation gift for Sarah"));
+                noteDao.insert(new Note("Return book to library"));
+                noteDao.insert(new Note("Reply to Angela"));
                 noteDao.insert(new Note("Movies to Watch",
                         "Scorpion\n" +
                         "Joker\n" +
                         "Countdown\n" +
                         "Star Wars: The Rise of Skywalker"));
+                noteDao.insert(new Note("Buy a cooler for the laptop"));
+                noteDao.insert(new Note("Return Quinn's flash drive back"));
+                noteDao.insert(new Note("Do laundries"));
+
+                noteDao.insert(new Note("Buy a cooler for the laptop"));
+                noteDao.insert(new Note("Return Quinn's flash drive back"));
+                noteDao.insert(new Note("Do laundries"));
+                noteDao.insert(new Note("Shopping List",
+                        "Curly Pasta\n" +
+                                "Breakfast cereal\n" +
+                                "Rice\n" +
+                                "Soup\n" +
+                                "Fruits, nuts and seeds\n" +
+                                "Skinless white meat\n" +
+                                "Salt\n" +
+                                "Honey\n" +
+                                "Eggs"));
+                noteDao.insert(new Note("Buy a graduation gift for Sarah"));
 
                 placeDao.insert(new Place("Food Lion", 42.421935, -71.065640, 100));
-                placeDao.insert(new Place("Target", 42.360037, -71.087794, 300));
-                placeDao.insert(new Place("Walmart", 41.373641, -72.919015, 300));
+                placeDao.insert(new Place("Falletti Foods", 42.360037, -71.087794, 300));
+                placeDao.insert(new Place("Bi-Rite Market", 41.373641, -72.919015, 300));
+                placeDao.insert(new Place("Rainbow Grocery", 41.373641, -72.919015, 300));
                 placeDao.insert(new Place("H&M", 41.297474, -72.926468, 100));
-                placeDao.insert(new Place("Zara", 41.180304, -73.187537, 50));
-                placeDao.insert(new Place("Mango", 41.190783, -73.139186, 40));
+                placeDao.insert(new Place("Old Navy", 41.180304, -73.187537, 100));
+                placeDao.insert(new Place("Mango", 41.190783, -73.139186, 160));
                 placeDao.insert(new Place("Pull&Bear", 41.221928, -73.074861, 100));
-                placeDao.insert(new Place("Shell", 41.297474, -72.926468, 100));
-                placeDao.insert(new Place("Buc-ee's", 41.180304, -73.187537, 50));
-                placeDao.insert(new Place("QuikTrip", 41.190783, -73.139186, 40));
+                placeDao.insert(new Place("Shell", 41.297474, -72.926468, 600));
+                placeDao.insert(new Place("Buc-ee's", 41.180304, -73.187537, 400));
+                placeDao.insert(new Place("QuikTrip", 41.190783, -73.139186, 120));
                 placeDao.insert(new Place("Hy-Vee Gas", 41.221928, -73.074861, 100));
-                placeDao.insert(new Place("Celine Patisserie", 41.180304, -73.187537, 50));
-                placeDao.insert(new Place("Daily Donuts", 41.190783, -73.139186, 40));
-                placeDao.insert(new Place("Defloured ", 41.221928, -73.074861, 100));
+                placeDao.insert(new Place("Celine Patisserie", 41.180304, -73.187537, 150));
+                placeDao.insert(new Place("Daily Donuts", 41.190783, -73.139186, 100));
+                placeDao.insert(new Place("Defloured", 41.221928, -73.074861, 100));
+                placeDao.insert(new Place("Crocker Galleria", 41.221928, -73.074861, 100));
+                placeDao.insert(new Place("Embarcadero Center", 41.180304, -73.187537, 150));
+                placeDao.insert(new Place("Osaka Way", 41.190783, -73.139186, 100));
+                placeDao.insert(new Place("Potrero Center ", 41.221928, -73.074861, 100));
+                placeDao.insert(new Place("Dyson Demo Store", 41.180304, -73.187537, 150));
+                placeDao.insert(new Place("Central Computers", 41.190783, -73.139186, 100));
+                placeDao.insert(new Place("Best Buy ", 41.221928, -73.074861, 100));
+                placeDao.insert(new Place("Quinn's House", 41.221928, -73.074861, 200));
+                placeDao.insert(new Place("Home", 41.221928, -73.074861, 200));
 
                 placeGroupDao.insert(new PlaceGroup("Grocery Stores"));
                 placeGroupDao.insert(new PlaceGroup("Clothing Stores"));
                 placeGroupDao.insert(new PlaceGroup("Gas Stations"));
                 placeGroupDao.insert(new PlaceGroup("Bakeries"));
+                placeGroupDao.insert(new PlaceGroup("Shopping Malls"));
+                placeGroupDao.insert(new PlaceGroup("Electronics Stores"));
 
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(1, 1));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(2, 1));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(3, 1));
-                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(4, 2));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(4, 1));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(5, 2));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(6, 2));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(7, 2));
-                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(8, 3));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(8, 2));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(9, 3));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(10, 3));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(11, 3));
-                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(12, 4));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(12, 3));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(13, 4));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(14, 4));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(15, 4));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(16, 5));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(17, 5));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(18, 5));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(19, 5));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(20, 6));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(21, 6));
+                placeGroupDao.insert(new PlaceGroupPlaceCrossRef(22, 6));
+
+                reminderDao.insert(new Reminder(13, null, 6L, true));
+                reminderDao.insert(new Reminder(14, 23L, null, true));
+                reminderDao.insert(new Reminder(15, 24L, null, true));
+                reminderDao.insert(new Reminder(16, null, 1L, true));
+                reminderDao.insert(new Reminder(17, null, 5L, true));
             });
         }
     };

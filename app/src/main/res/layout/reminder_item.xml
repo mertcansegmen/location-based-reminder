@@ -23,10 +23,12 @@
         android:paddingBottom="16dp">
 
         <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/check_box"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
         <LinearLayout
+            android:id="@+id/root_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -37,37 +39,23 @@
                 android:id="@+id/txt_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:ellipsize="end"
-                android:maxLines="1"
-                android:text="Title" />
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/txt_note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:ellipsize="end"
-                android:maxLines="2"
-                android:text="Note Body " />
+                android:maxLines="3"  />
 
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp" >
-
-<!--                    <com.google.android.material.chip.Chip-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        app:chipIcon="@drawable/ic_places"-->
-<!--                        android:text="Home" />-->
-
-<!--                    <com.google.android.material.chip.Chip-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        app:chipIcon="@drawable/ic_place_groups"-->
-<!--                        android:text="Grocery Stores" />-->
 
             </com.google.android.material.chip.ChipGroup>
 

@@ -85,7 +85,7 @@
         android:label="New Place Group"
         tools:layout="@layout/fragment_add_edit_place_group">
         <argument
-            android:name="placeGroup"
+            android:name="placeGroupWithPlaces"
             app:argType="com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces" />
         <action
             android:id="@+id/action_addEditPlaceGroupFragment_to_pickPlaceDialog"

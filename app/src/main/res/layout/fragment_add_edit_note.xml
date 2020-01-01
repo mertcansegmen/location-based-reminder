@@ -15,7 +15,7 @@
         android:padding="16dp"
         android:textSize="22sp"
         android:maxLines="1"
-        android:inputType="text"
+        android:inputType="textCapSentences"
         android:background="@null" />
 
     <EditText

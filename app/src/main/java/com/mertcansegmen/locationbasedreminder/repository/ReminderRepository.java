@@ -4,9 +4,6 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import com.mertcansegmen.locationbasedreminder.model.Place;
-import com.mertcansegmen.locationbasedreminder.model.PlaceGroup;
-import com.mertcansegmen.locationbasedreminder.model.PlaceGroupPlaceCrossRef;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
 import com.mertcansegmen.locationbasedreminder.persistence.AppDatabase;
 import com.mertcansegmen.locationbasedreminder.persistence.NoteDao;
@@ -41,8 +38,8 @@ public class ReminderRepository {
             noteDao.insert(reminderWithNotePlacePlaceGroup.getNote());
             if(reminderWithNotePlacePlaceGroup.getPlace() != null) {
                 placeDao.insert(reminderWithNotePlacePlaceGroup.getPlace());
-            } else {
-                placeGroupDao.insert(reminderWithNotePlacePlaceGroup.getPlaceGroup());
+            } else if(reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces() != null) {
+                placeGroupDao.insert(reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces().getPlaceGroup());
             }
             reminderDao.insert(reminderWithNotePlacePlaceGroup.getReminder());
         });
@@ -55,7 +52,7 @@ public class ReminderRepository {
             if(reminderWithNotePlacePlaceGroup.getPlace() != null) {
                 placeDao.update(reminderWithNotePlacePlaceGroup.getPlace());
             } else {
-                placeGroupDao.update(reminderWithNotePlacePlaceGroup.getPlaceGroup());
+                placeGroupDao.update(reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces().getPlaceGroup());
             }
             reminderDao.update(reminderWithNotePlacePlaceGroup.getReminder());
         });
@@ -67,8 +64,8 @@ public class ReminderRepository {
             noteDao.delete(reminderWithNotePlacePlaceGroup.getNote());
             if(reminderWithNotePlacePlaceGroup.getPlace() != null) {
                 placeDao.delete(reminderWithNotePlacePlaceGroup.getPlace());
-            } else {
-                placeGroupDao.delete(reminderWithNotePlacePlaceGroup.getPlaceGroup());
+            } else if(reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces() != null) {
+                placeGroupDao.delete(reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces().getPlaceGroup());
             }
             reminderDao.delete(reminderWithNotePlacePlaceGroup.getReminder());
         });

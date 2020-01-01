@@ -9,15 +9,15 @@ public class Reminder {
     @PrimaryKey(autoGenerate = true)
     private long reminderId;
 
-    private int noteId;
+    private long noteId;
 
-    private int placeId;
+    private Long placeId;
 
-    private int placeGroupId;
+    private Long placeGroupId;
 
     private boolean isActive;
 
-    public Reminder(int noteId, int placeId, int placeGroupId, boolean isActive) {
+    public Reminder(long noteId, Long placeId, Long placeGroupId, boolean isActive) {
         this.noteId = noteId;
         this.placeId = placeId;
         this.placeGroupId = placeGroupId;
@@ -32,27 +32,27 @@ public class Reminder {
         this.reminderId = reminderId;
     }
 
-    public int getNoteId() {
+    public long getNoteId() {
         return noteId;
     }
 
-    public void setNoteId(int noteId) {
+    public void setNoteId(long noteId) {
         this.noteId = noteId;
     }
 
-    public int getPlaceId() {
+    public Long getPlaceId() {
         return placeId;
     }
 
-    public void setPlaceId(int placeId) {
+    public void setPlaceId(Long placeId) {
         this.placeId = placeId;
     }
 
-    public int getPlaceGroupId() {
+    public Long getPlaceGroupId() {
         return placeGroupId;
     }
 
-    public void setPlaceGroupId(int placeGroupId) {
+    public void setPlaceGroupId(Long placeGroupId) {
         this.placeGroupId = placeGroupId;
     }
 

@@ -23,7 +23,7 @@ public interface PlaceDao {
     @Delete
     void delete(Place place);
 
-    @Query("DELETE FROM place")
+    @Query("DELETE FROM Place")
     void deleteAllPlaces();
 
     @Query("SELECT * FROM Place ORDER BY placeId DESC")
