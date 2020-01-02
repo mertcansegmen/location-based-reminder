@@ -31,6 +31,7 @@ import com.mertcansegmen.locationbasedreminder.model.PlaceGroup;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
+import com.mertcansegmen.locationbasedreminder.util.OutlineChip;
 import com.mertcansegmen.locationbasedreminder.util.PlaceChip;
 import com.mertcansegmen.locationbasedreminder.util.Utils;
 
@@ -157,34 +158,13 @@ public class AddEditPlaceGroupFragment extends Fragment {
     }
 
     private void createAddPlaceChip() {
-        Chip chip = new Chip(requireContext());
-
-        if(Utils.isDarkModeEnabled(requireContext())) createLightChip(chip);
-        else createDarkChip(chip);
+        OutlineChip chip = new OutlineChip(requireContext());
+        chip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_add));
+        chip.setText(R.string.add_place);
 
         chipGroup.addView(chip);
 
         chip.setOnClickListener(v -> navigateToPickPlaceDialog());
-    }
-
-    private void createLightChip(Chip chip) {
-        styleChip(chip, R.color.colorBlack, R.color.colorWhite);
-    }
-
-    private void createDarkChip(Chip chip) {
-        styleChip(chip, R.color.colorWhite, R.color.colorBlack);
-    }
-
-    private void styleChip(Chip chip, int backgroundColor, int borderColor) {
-        chip.setText(R.string.add_place);
-        chip.setTextStartPadding(3);
-        chip.setChipStrokeWidth(2);
-        chip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_add));
-        chip.setChipIconTintResource(borderColor);
-        chip.setChipStrokeColor(ColorStateList.valueOf(ContextCompat
-                .getColor(requireContext(), borderColor)));
-        chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat
-                .getColor(requireContext(), backgroundColor)));
     }
 
     private void navigateToPickPlaceDialog() {

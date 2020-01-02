@@ -1,25 +1,21 @@
 package com.mertcansegmen.locationbasedreminder.ui.reminders;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
+import com.mertcansegmen.locationbasedreminder.util.OutlineChip;
 
 public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup, ReminderAdapter.ReminderViewHolder> {
 
@@ -88,7 +84,7 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
 
     private void addPlaceChip(Context context, ReminderWithNotePlacePlaceGroup currentReminder,
                               ChipGroup chipGroup) {
-        Chip chip = new Chip(context);
+        OutlineChip chip = new OutlineChip(context);
         chip.setChipIcon(context.getResources().getDrawable(R.drawable.ic_places));
         chip.setText(currentReminder.getPlace().getName());
         chipGroup.addView(chip);
@@ -96,8 +92,8 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
 
     private void addPlaceGroupChip(Context context, ReminderWithNotePlacePlaceGroup currentReminder,
                                    ChipGroup chipGroup) {
-        Chip chip = new Chip(context);
-        chip.setChipIcon(context.getResources().getDrawable(R.drawable.ic_place_groups));
+        OutlineChip chip = new OutlineChip(context);
+        chip.setChipIcon(context.getResources().getDrawable(R.drawable.ic_place_groups_small));
         chip.setText(currentReminder.getPlaceGroupWithPlaces().getPlaceGroup().getName());
         chipGroup.addView(chip);
     }
