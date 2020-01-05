@@ -84,6 +84,7 @@ public class Note implements Parcelable {
     public String toString() {
         return "Note{" +
                 "noteId=" + noteId +
+                ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 '}';
     }

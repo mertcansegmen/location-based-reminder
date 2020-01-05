@@ -20,7 +20,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -31,8 +30,8 @@ import com.mertcansegmen.locationbasedreminder.model.PlaceGroup;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
-import com.mertcansegmen.locationbasedreminder.util.OutlineChip;
-import com.mertcansegmen.locationbasedreminder.util.PlaceChip;
+import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
+import com.mertcansegmen.locationbasedreminder.ui.views.PlaceChip;
 import com.mertcansegmen.locationbasedreminder.util.Utils;
 
 import java.util.ArrayList;
@@ -86,8 +85,9 @@ public class AddEditPlaceGroupFragment extends Fragment {
     public void onPause() {
         super.onPause();
         // In order for view model to be shared, it has to be scoped to the activity. That causes
-        // the last selected place to stay in memory as long as the activity is alive. That's why
-        // last selected place must be cleared when AddEditPlaceGroupFragment is closed.
+        // the last selected place or place group to stay in memory as long as the activity is
+        // alive. That's why last selected place must be cleared when AddEditPlaceGroupFragment is
+        // closed.
         viewModel.selectPlace(null);
     }
 

@@ -18,7 +18,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
-import com.mertcansegmen.locationbasedreminder.util.PlaceChip;
+import com.mertcansegmen.locationbasedreminder.ui.views.PlaceChip;
 
 import java.util.ArrayList;
 import java.util.List;

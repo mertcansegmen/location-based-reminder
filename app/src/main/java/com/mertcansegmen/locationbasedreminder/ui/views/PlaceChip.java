@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder.util;
+package com.mertcansegmen.locationbasedreminder.ui.views;
 
 import android.content.Context;
 import android.content.res.ColorStateList;

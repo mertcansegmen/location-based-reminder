@@ -1,9 +1,13 @@
 package com.mertcansegmen.locationbasedreminder.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.Embedded;
+import androidx.room.Ignore;
 import androidx.room.Relation;
 
-public class ReminderWithNotePlacePlaceGroup {
+public class ReminderWithNotePlacePlaceGroup implements Parcelable {
 
     @Embedded
     private Reminder reminder;
@@ -16,6 +20,8 @@ public class ReminderWithNotePlacePlaceGroup {
 
     @Relation(parentColumn = "placeGroupId", entityColumn = "placeGroupId", entity = PlaceGroup.class)
     private PlaceGroupWithPlaces placeGroupWithPlaces;
+
+    public ReminderWithNotePlacePlaceGroup() {}
 
     public Reminder getReminder() {
         return reminder;
@@ -57,5 +63,35 @@ public class ReminderWithNotePlacePlaceGroup {
                 ", place=" + place +
                 ", placeGroupWithPlaces=" + placeGroupWithPlaces +
                 '}';
+    }
+
+    protected ReminderWithNotePlacePlaceGroup(Parcel in) {
+        note = in.readParcelable(Note.class.getClassLoader());
+        place = in.readParcelable(Place.class.getClassLoader());
+        placeGroupWithPlaces = in.readParcelable(PlaceGroupWithPlaces.class.getClassLoader());
+    }
+
+    public static final Creator<ReminderWithNotePlacePlaceGroup> CREATOR = new Creator<ReminderWithNotePlacePlaceGroup>() {
+        @Override
+        public ReminderWithNotePlacePlaceGroup createFromParcel(Parcel in) {
+            return new ReminderWithNotePlacePlaceGroup(in);
+        }
+
+        @Override
+        public ReminderWithNotePlacePlaceGroup[] newArray(int size) {
+            return new ReminderWithNotePlacePlaceGroup[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(note, flags);
+        dest.writeParcelable(place, flags);
+        dest.writeParcelable(placeGroupWithPlaces, flags);
     }
 }

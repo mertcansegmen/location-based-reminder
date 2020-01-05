@@ -22,6 +22,7 @@
                 android:id="@+id/txt_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textCapWords"
                 android:hint="@string/title_optional" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -50,34 +51,51 @@
             android:textStyle="bold"
             android:text="@string/remind_me_here" />
 
-        <TextView
-            android:id="@+id/txt_no_place"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/not_selected_place_yet" />
-
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:layout_marginTop="32dp">
 
-            <com.mertcansegmen.locationbasedreminder.util.OutlineChip
-                android:id="@+id/chip_select_place"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:chipIcon="@drawable/ic_add_place"
-                android:text="@string/select_place" />
-
-            <com.mertcansegmen.locationbasedreminder.util.OutlineChip
-                android:id="@+id/chip_select_place_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:chipIcon="@drawable/ic_add_place_group"
-                android:text="@string/select_place_group" />
-
         </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/txt_no_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/not_selected_place_yet" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal" >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_select_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:textSize="12sp"
+                android:layout_weight="1"
+                app:iconGravity="textStart"
+                app:icon="@drawable/ic_add"
+                android:text="@string/place"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_select_place_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textSize="12sp"
+                android:layout_weight="1"
+                app:iconGravity="textStart"
+                app:icon="@drawable/ic_add"
+                android:text="@string/place_group"/>
+
+
+        </LinearLayout>
 
     </LinearLayout>
 

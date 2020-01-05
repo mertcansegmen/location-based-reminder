@@ -15,7 +15,7 @@ import java.util.List;
 public interface NoteDao {
 
     @Insert
-    void insert(Note note);
+    long insert(Note note);
 
     @Update
     void update(Note note);
@@ -23,7 +23,7 @@ public interface NoteDao {
     @Delete
     void delete(Note note);
 
-    @Query("DELETE FROM Note")
+    @Query("DELETE FROM Note WHERE noteId NOT IN (SELECT noteId FROM Reminder)")
     void deleteAllNotes();
 
     @Query("SELECT * FROM Note WHERE noteId NOT IN (SELECT noteId FROM Reminder) ORDER BY noteId DESC")

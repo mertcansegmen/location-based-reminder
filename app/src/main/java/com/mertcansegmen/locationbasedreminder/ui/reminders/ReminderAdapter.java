@@ -15,7 +15,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.chip.ChipGroup;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
-import com.mertcansegmen.locationbasedreminder.util.OutlineChip;
+import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
 
 public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup, ReminderAdapter.ReminderViewHolder> {
 
@@ -34,9 +34,10 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
                                           @NonNull ReminderWithNotePlacePlaceGroup newItem) {
             return oldItem.getNote().getTitle().equals(newItem.getNote().getTitle()) &&
                     oldItem.getNote().getBody().equals(newItem.getNote().getBody()) &&
-                    ((oldItem.getPlace() != null && oldItem.getPlace().getName().equals(newItem.getPlace().getName())) ||
-                    (oldItem.getPlaceGroupWithPlaces() != null &&
-                            oldItem.getPlaceGroupWithPlaces().getPlaceGroup().getName()
+                    ((oldItem.getPlace() != null && newItem.getPlace() != null &&
+                    oldItem.getPlace().getName().equals(newItem.getPlace().getName())) ||
+                    (oldItem.getPlaceGroupWithPlaces() != null && newItem.getPlaceGroupWithPlaces() != null &&
+                    oldItem.getPlaceGroupWithPlaces().getPlaceGroup().getName()
                                     .equals(newItem.getPlaceGroupWithPlaces().getPlaceGroup().getName())));
         }
     };
@@ -66,6 +67,8 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
         holder.noteTextView.setVisibility(currentReminder.getNote().getBody().isEmpty() ? View.GONE : View.VISIBLE);
 
         holder.chipGroup.removeAllViews();
+        holder.placeGroupEmptyTextView.setVisibility(View.GONE);
+        holder.placeRemovedTextView.setVisibility(View.GONE);
 
         Context context = holder.chipGroup.getContext();
         if(currentReminder.getPlace() != null) {

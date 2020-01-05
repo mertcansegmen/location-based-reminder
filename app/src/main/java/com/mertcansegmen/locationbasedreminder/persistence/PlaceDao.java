@@ -15,7 +15,7 @@ import java.util.List;
 public interface PlaceDao {
 
     @Insert
-    void insert(Place place);
+    long insert(Place place);
 
     @Update
     void update(Place place);

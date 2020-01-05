@@ -9,7 +9,18 @@
         android:id="@+id/remindersFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.reminders.RemindersFragment"
         android:label="@string/reminders"
-        tools:layout="@layout/fragment_reminders" />
+        tools:layout="@layout/fragment_reminders" >
+        <argument
+            android:name="reminderWithNotePlacePlaceGroup"
+            app:argType="com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup" />
+        <action
+            android:id="@+id/action_remindersFragment_to_addEditReminderFragment"
+            app:destination="@id/addEditReminderFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/notesFragment"
@@ -112,5 +123,11 @@
         android:label="dialog_name_place"
         tools:layout="@layout/dialog_name_place" >
     </dialog>
+
+    <fragment
+        android:id="@+id/addEditReminderFragment"
+        android:name="com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminderFragment"
+        android:label="Add Reminder"
+        tools:layout="@layout/fragment_add_edit_reminder" />
 
 </navigation>

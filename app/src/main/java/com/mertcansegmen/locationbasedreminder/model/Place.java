@@ -8,8 +8,10 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.Selectable;
+
 @Entity
-public class Place implements Parcelable {
+public class Place implements Parcelable, Selectable {
 
     @PrimaryKey(autoGenerate = true)
     private Long placeId;

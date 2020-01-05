@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder.util;
+package com.mertcansegmen.locationbasedreminder.ui.views;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.chip.Chip;
 import com.mertcansegmen.locationbasedreminder.R;
+import com.mertcansegmen.locationbasedreminder.util.Utils;
 
 public class OutlineChip extends Chip {
     public OutlineChip(Context context) {
@@ -41,12 +42,16 @@ public class OutlineChip extends Chip {
     }
 
     private void styleChip(Context context, int backgroundColor, int borderIconTextColor) {
-        setChipStartPadding(20);
         setTextStartPadding(3);
         setChipStrokeWidth(2);
+
         setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, borderIconTextColor)));
         setChipIconTintResource(borderIconTextColor);
         setChipStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(context, borderIconTextColor)));
+        if(isCloseIconVisible()) {
+            setCloseIconTint(ColorStateList.valueOf(ContextCompat.getColor(context, borderIconTextColor)));
+        }
+
         setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(context, backgroundColor)));
     }
 

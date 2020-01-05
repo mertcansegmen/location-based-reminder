@@ -8,9 +8,11 @@ import androidx.room.Ignore;
 import androidx.room.Junction;
 import androidx.room.Relation;
 
+import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.Selectable;
+
 import java.util.List;
 
-public class PlaceGroupWithPlaces implements Parcelable {
+public class PlaceGroupWithPlaces implements Parcelable, Selectable {
     @Embedded
     private PlaceGroup placeGroup;
 

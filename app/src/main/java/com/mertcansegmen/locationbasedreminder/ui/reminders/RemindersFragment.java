@@ -27,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
+import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminderFragment;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 
 public class RemindersFragment extends Fragment {
@@ -93,9 +94,9 @@ public class RemindersFragment extends Fragment {
     }
 
     private void setAddNoteButtonClickListener() {
-//        addReminderButton.setOnClickListener(v ->
-//                navController.navigate(R.id.action_remindersFragment_to_addEditReminderFragment)
-//        );
+        addReminderButton.setOnClickListener(v ->
+                navController.navigate(R.id.action_remindersFragment_to_addEditReminderFragment)
+        );
     }
 
     private void setOnAdapterItemClickListener() {
@@ -103,9 +104,9 @@ public class RemindersFragment extends Fragment {
     }
 
     private void navigateForEdit(ReminderWithNotePlacePlaceGroup reminder) {
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable(AddEditReminderFragment.BUNDLE_KEY_REMINDER, reminder);
-//        navController.navigate(R.id.action_remindersFragment_to_addEditReminderFragment, bundle);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AddEditReminderFragment.BUNDLE_KEY_REMINDER, reminder);
+        navController.navigate(R.id.action_remindersFragment_to_addEditReminderFragment, bundle);
     }
 
     /**
