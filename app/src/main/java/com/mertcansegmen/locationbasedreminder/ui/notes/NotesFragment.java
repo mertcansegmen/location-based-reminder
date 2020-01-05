@@ -145,14 +145,14 @@ public class NotesFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.notes_menu, menu);
+        inflater.inflate(R.menu.items_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.delete_all_notes:
+            case R.id.delete_all:
                 new MaterialAlertDialogBuilder(requireContext())
                         .setMessage(getString(R.string.msg_delete_all_notes))
                         .setPositiveButton(getText(R.string.ok), (dialog, which) -> viewModel.deleteAll())

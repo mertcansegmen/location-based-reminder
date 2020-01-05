@@ -171,9 +171,9 @@ public class AddEditReminderFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if(inEditMode()) {
-            inflater.inflate(R.menu.edit_reminder_menu, menu);
+            inflater.inflate(R.menu.edit_menu, menu);
         } else {
-            inflater.inflate(R.menu.add_reminder_menu, menu);
+            inflater.inflate(R.menu.add_menu, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -181,10 +181,10 @@ public class AddEditReminderFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.save_reminder:
+            case R.id.save:
                 saveReminder();
                 return true;
-            case R.id.delete_reminder:
+            case R.id.delete:
                 askToDeleteReminder();
                 return true;
             default:

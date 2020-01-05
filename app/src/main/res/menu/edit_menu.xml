@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/delete_note"
+        android:id="@+id/delete"
         android:icon="@drawable/ic_delete"
         android:title="@string/delete"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/add_reminder"
+        android:id="@+id/add_to_reminder"
         android:icon="@drawable/ic_add_reminder"
-        android:title="@string/add_reminder"
+        android:title="@string/add_to_reminder"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/save_note"
+        android:id="@+id/save"
         android:icon="@drawable/ic_save"
         android:title="@string/save"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>

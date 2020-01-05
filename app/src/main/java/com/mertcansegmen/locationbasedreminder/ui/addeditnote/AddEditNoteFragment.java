@@ -70,9 +70,9 @@ public class AddEditNoteFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if(inEditMode()) {
-            inflater.inflate(R.menu.edit_note_menu, menu);
+            inflater.inflate(R.menu.edit_menu, menu);
         } else {
-            inflater.inflate(R.menu.add_note_menu, menu);
+            inflater.inflate(R.menu.add_menu, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -80,10 +80,10 @@ public class AddEditNoteFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.save_note:
+            case R.id.save:
                 saveNote();
                 return true;
-            case R.id.delete_note:
+            case R.id.delete:
                 askToDeleteCurrentNote();
                 return true;
             default:

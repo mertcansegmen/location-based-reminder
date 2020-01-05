@@ -303,9 +303,9 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if(inEditMode()) {
-            inflater.inflate(R.menu.edit_place_menu, menu);
+            inflater.inflate(R.menu.edit_menu, menu);
         } else {
-            inflater.inflate(R.menu.add_place_menu, menu);
+            inflater.inflate(R.menu.add_menu, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -313,10 +313,10 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.save_place:
+            case R.id.save:
                 navigateToNamePlaceDialog();
                 return true;
-            case R.id.delete_place:
+            case R.id.delete:
                 askToDeletePlace();
                 return true;
             default:

@@ -8,6 +8,7 @@
     <string name="delete">Delete</string>
     <string name="name">Name</string>
     <string name="undo">UNDO</string>
+    <string name="add_to_reminder">Add to Reminder</string>
     <string name="delete_all">Delete All</string>
     <string name="location_permission_message">You need to grant location permission to use Location Based Reminder</string>
     <string name="grant_location_permission">Please grant location permissions</string>

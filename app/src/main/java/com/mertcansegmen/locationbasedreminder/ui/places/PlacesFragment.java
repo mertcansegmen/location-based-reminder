@@ -146,14 +146,14 @@ public class PlacesFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.places_menu, menu);
+        inflater.inflate(R.menu.items_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.delete_all_places:
+            case R.id.delete_all:
                 new MaterialAlertDialogBuilder(requireContext())
                         .setMessage(getString(R.string.msg_delete_all_places))
                         .setPositiveButton(getText(R.string.ok), (dialog, which) -> {

@@ -190,9 +190,9 @@ public class AddEditPlaceGroupFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if(inEditMode()) {
-            inflater.inflate(R.menu.edit_place_group_menu, menu);
+            inflater.inflate(R.menu.edit_menu, menu);
         } else {
-            inflater.inflate(R.menu.add_place_group_menu, menu);
+            inflater.inflate(R.menu.add_menu, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -200,10 +200,10 @@ public class AddEditPlaceGroupFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.save_place_group:
+            case R.id.save:
                 savePlaceGroup();
                 return true;
-            case R.id.delete_place_group:
+            case R.id.delete:
                 askToDeletePlaceGroup();
                 return true;
             default:
