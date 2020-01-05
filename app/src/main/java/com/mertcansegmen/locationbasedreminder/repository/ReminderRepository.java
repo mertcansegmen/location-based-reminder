@@ -41,51 +41,59 @@ public class ReminderRepository {
     public void insert(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup) {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            long noteId;
-            Long placeId = null;
-            Long placeGroupId = null;
+            database.runInTransaction(() -> {
+                long noteId;
+                Long placeId = null;
+                Long placeGroupId = null;
 
-            noteId = noteDao.insert(reminderWithNotePlacePlaceGroup.getNote());
-            if(reminderWithNotePlacePlaceGroup.getPlace() != null) {
-                placeId = reminderWithNotePlacePlaceGroup.getPlace().getPlaceId();
-            } else if(reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces() != null) {
-                placeGroupId = reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces().getPlaceGroup().getPlaceGroupId();
-            }
-            if(reminderWithNotePlacePlaceGroup.getReminder() == null) {
-                reminderWithNotePlacePlaceGroup.setReminder(new Reminder(noteId, placeId, placeGroupId, true));
-            }
-            reminderDao.insert(reminderWithNotePlacePlaceGroup.getReminder());
+                noteId = noteDao.insert(reminderWithNotePlacePlaceGroup.getNote());
+                if(reminderWithNotePlacePlaceGroup.getPlace() != null) {
+                    placeId = reminderWithNotePlacePlaceGroup.getPlace().getPlaceId();
+                } else if(reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces() != null) {
+                    placeGroupId = reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces().getPlaceGroup().getPlaceGroupId();
+                }
+                if(reminderWithNotePlacePlaceGroup.getReminder() == null) {
+                    reminderWithNotePlacePlaceGroup.setReminder(new Reminder(noteId, placeId, placeGroupId, true));
+                }
+                reminderDao.insert(reminderWithNotePlacePlaceGroup.getReminder());
+            });
         });
     }
 
     public void update(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup) {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            noteDao.update(reminderWithNotePlacePlaceGroup.getNote());
-            if(reminderWithNotePlacePlaceGroup.getPlace() != null) {
-                reminderWithNotePlacePlaceGroup.getReminder().setPlaceId(
-                        reminderWithNotePlacePlaceGroup.getPlace().getPlaceId());
-            } else if(reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces() != null){
-                reminderWithNotePlacePlaceGroup.getReminder().setPlaceGroupId(
-                        reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces().getPlaceGroup().getPlaceGroupId());
-            }
-            reminderDao.update(reminderWithNotePlacePlaceGroup.getReminder());
+            database.runInTransaction(() -> {
+                noteDao.update(reminderWithNotePlacePlaceGroup.getNote());
+                if(reminderWithNotePlacePlaceGroup.getPlace() != null) {
+                    reminderWithNotePlacePlaceGroup.getReminder().setPlaceId(
+                            reminderWithNotePlacePlaceGroup.getPlace().getPlaceId());
+                } else if(reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces() != null){
+                    reminderWithNotePlacePlaceGroup.getReminder().setPlaceGroupId(
+                            reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces().getPlaceGroup().getPlaceGroupId());
+                }
+                reminderDao.update(reminderWithNotePlacePlaceGroup.getReminder());
+            });
         });
     }
 
     public void delete(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup) {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            noteDao.delete(reminderWithNotePlacePlaceGroup.getNote());
-            reminderDao.delete(reminderWithNotePlacePlaceGroup.getReminder());
+            database.runInTransaction(() -> {
+                noteDao.delete(reminderWithNotePlacePlaceGroup.getNote());
+                reminderDao.delete(reminderWithNotePlacePlaceGroup.getReminder());
+            });
         });
     }
 
     public void deleteAll() {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            reminderDao.deleteAllReminderNotes();
-            reminderDao.deleteAllReminders();
+            database.runInTransaction(() -> {
+                reminderDao.deleteAllReminderNotes();
+                reminderDao.deleteAllReminders();
+            });
         });
     }
 
