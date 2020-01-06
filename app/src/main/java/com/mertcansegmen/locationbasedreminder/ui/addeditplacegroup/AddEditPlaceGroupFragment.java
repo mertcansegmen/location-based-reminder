@@ -82,8 +82,8 @@ public class AddEditPlaceGroupFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         // In order for view model to be shared, it has to be scoped to the activity. That causes
         // the last selected place or place group to stay in memory as long as the activity is
         // alive. That's why last selected place must be cleared when AddEditPlaceGroupFragment is
@@ -170,8 +170,8 @@ public class AddEditPlaceGroupFragment extends Fragment {
     private void navigateToPickPlaceDialog() {
         Bundle bundle = new Bundle();
         ArrayList<Place> selectedPlaces = new ArrayList<>(getPlacesFromChips());
-        bundle.putParcelableArrayList(PickPlaceDialog.BUNDLE_KEY_SELECTED_PLACES, selectedPlaces);
-        navController.navigate(R.id.action_addEditPlaceGroupFragment_to_pickPlaceDialog, bundle);
+        bundle.putParcelableArrayList(PickPlacesDialog.BUNDLE_KEY_SELECTED_PLACES, selectedPlaces);
+        navController.navigate(R.id.action_addEditPlaceGroupFragment_to_pickPlacesDialog, bundle);
     }
 
     /**

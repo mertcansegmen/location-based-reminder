@@ -23,7 +23,7 @@ import com.mertcansegmen.locationbasedreminder.ui.views.PlaceChip;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PickPlaceDialog extends DialogFragment {
+public class PickPlacesDialog extends DialogFragment {
 
     public static final String BUNDLE_KEY_SELECTED_PLACES = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_SELECTED_PLACES";
 
@@ -84,7 +84,7 @@ public class PickPlaceDialog extends DialogFragment {
 
     private void setCreateNewPlaceButtonClickListener() {
         createNewPlaceButton.setOnClickListener(v ->
-                navController.navigate(R.id.action_pickPlaceDialog_to_addEditPlaceFragment)
+                navController.navigate(R.id.action_pickPlacesDialog_to_addEditPlaceFragment)
         );
     }
 

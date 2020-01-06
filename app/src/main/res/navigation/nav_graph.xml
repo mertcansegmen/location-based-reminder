@@ -99,17 +99,17 @@
             android:name="placeGroupWithPlaces"
             app:argType="com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces" />
         <action
-            android:id="@+id/action_addEditPlaceGroupFragment_to_pickPlaceDialog"
-            app:destination="@id/pickPlaceDialog" />
+            android:id="@+id/action_addEditPlaceGroupFragment_to_pickPlacesDialog"
+            app:destination="@id/pickPlacesDialog" />
     </fragment>
 
     <dialog
-        android:id="@+id/pickPlaceDialog"
-        android:name="com.mertcansegmen.locationbasedreminder.ui.addeditplacegroup.PickPlaceDialog"
+        android:id="@+id/pickPlacesDialog"
+        android:name="com.mertcansegmen.locationbasedreminder.ui.addeditplacegroup.PickPlacesDialog"
         android:label="dialog_pick_places"
         tools:layout="@layout/dialog_pick_places">
         <action
-            android:id="@+id/action_pickPlaceDialog_to_addEditPlaceFragment"
+            android:id="@+id/action_pickPlacesDialog_to_addEditPlaceFragment"
             app:destination="@id/addEditPlaceFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -128,6 +128,24 @@
         android:id="@+id/addEditReminderFragment"
         android:name="com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminderFragment"
         android:label="Add Reminder"
-        tools:layout="@layout/fragment_add_edit_reminder" />
+        tools:layout="@layout/fragment_add_edit_reminder" >
+        <action
+            android:id="@+id/action_addEditReminderFragment_to_pickPlaceDialog"
+            app:destination="@id/pickPlaceDialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/pickPlaceDialog"
+        android:name="com.mertcansegmen.locationbasedreminder.ui.addeditreminder.PickPlaceDialog"
+        android:label="dialog_pick_places"
+        tools:layout="@layout/dialog_pick_place" >
+        <action
+            android:id="@+id/action_pickPlaceDialog_to_addEditPlaceFragment"
+            app:destination="@id/addEditPlaceFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </dialog>
 
 </navigation>

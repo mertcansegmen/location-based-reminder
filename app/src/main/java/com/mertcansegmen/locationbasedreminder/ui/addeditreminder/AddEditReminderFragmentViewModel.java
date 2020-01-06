@@ -55,4 +55,12 @@ public class AddEditReminderFragmentViewModel extends AndroidViewModel {
     public LiveData<Selectable> getSelected() {
         return selected;
     }
+
+    public LiveData<List<Place>> getAllPlaces() {
+        return allPlaces;
+    }
+
+    public LiveData<List<PlaceGroupWithPlaces>> getAllPlaceGroups() {
+        return allPlaceGroups;
+    }
 }

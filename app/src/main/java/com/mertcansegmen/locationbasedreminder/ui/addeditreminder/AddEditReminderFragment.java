@@ -1,6 +1,7 @@
 package com.mertcansegmen.locationbasedreminder.ui.addeditreminder;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,7 +65,7 @@ public class AddEditReminderFragment extends Fragment {
         selectPlaceButton = view.findViewById(R.id.btn_select_place);
         selectPlaceGroupButton = view.findViewById(R.id.btn_select_place_group);
 
-        viewModel = ViewModelProviders.of(this).get(AddEditReminderFragmentViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(AddEditReminderFragmentViewModel.class);
 
         setObserver();
         setAddPlaceButtonClickListener();
@@ -82,8 +83,8 @@ public class AddEditReminderFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         // In order for view model to be shared, it has to be scoped to the activity. That causes
         // the last selected place to stay in memory as long as the activity is alive. That's why
         // last selected place must be cleared when AddEditPlaceGroupFragment is closed.
@@ -142,13 +143,9 @@ public class AddEditReminderFragment extends Fragment {
     }
 
     private void setAddPlaceButtonClickListener() {
-        selectPlaceButton.setOnClickListener(v -> {
-            // TODO: navigate to select place/place group dialog
-            // Test data
-//            Place place = new Place("Shell", 41.297474, -72.926468, 600);
-//            place.setPlaceId(9L);
-//            viewModel.select(place);
-        });
+        selectPlaceButton.setOnClickListener(v ->
+            navController.navigate(R.id.action_addEditReminderFragment_to_pickPlaceDialog)
+        );
     }
 
     private void setAddPlaceGroupButtonClickListener() {
@@ -171,7 +168,7 @@ public class AddEditReminderFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if(inEditMode()) {
-            inflater.inflate(R.menu.edit_menu, menu);
+            inflater.inflate(R.menu.edit_reminder_menu, menu);
         } else {
             inflater.inflate(R.menu.add_menu, menu);
         }
