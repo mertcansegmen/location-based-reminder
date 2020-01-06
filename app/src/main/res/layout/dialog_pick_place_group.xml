@@ -19,7 +19,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pick_a_place"
+                android:text="@string/pick_a_place_group"
                 android:textSize="22sp"/>
 
             <View
@@ -32,7 +32,7 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/new_place" />
+                android:text="@string/new_place_group" />
 
         </LinearLayout>
 
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            tools:listitem="@layout/place_item"/>
+            tools:listitem="@layout/place_group_item"/>
 
     </LinearLayout>
 

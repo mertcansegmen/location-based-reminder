@@ -29,6 +29,7 @@
     <string name="msg_delete_reminder">Are you sure you want to delete this reminder?</string>
     <string name="provide_a_place">You have to add a place or a place group in order to create a reminder</string>
     <string name="pick_a_place">Pick a Place</string>
+    <string name="pick_a_place_group">Pick a Place Group</string>
 
     <!--Notes-->
     <string name="notes">Notes</string>
@@ -59,6 +60,7 @@
 
     <!--Place Groups-->
     <string name="place_groups">Place Groups</string>
+    <string name="new_place_group">New Place Group</string>
     <string name="msg_delete_place_group">Are you sure you want to delete this place group?</string>
     <string name="msg_delete_all_place_groups">Are you sure you want to delete all of your place groups?</string>
     <string name="msg_empty_place_group">No place added</string>
