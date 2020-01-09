@@ -40,7 +40,7 @@ public class ReminderRepository {
 
     public void insert(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup) {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        executor.execute(() ->
             database.runInTransaction(() -> {
                 long noteId;
                 Long placeId = null;
@@ -56,13 +56,13 @@ public class ReminderRepository {
                     reminderWithNotePlacePlaceGroup.setReminder(new Reminder(noteId, placeId, placeGroupId, true));
                 }
                 reminderDao.insert(reminderWithNotePlacePlaceGroup.getReminder());
-            });
-        });
+            })
+        );
     }
 
     public void update(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup) {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        executor.execute(() ->
             database.runInTransaction(() -> {
                 noteDao.update(reminderWithNotePlacePlaceGroup.getNote());
                 if(reminderWithNotePlacePlaceGroup.getPlace() != null) {
@@ -73,28 +73,35 @@ public class ReminderRepository {
                             reminderWithNotePlacePlaceGroup.getPlaceGroupWithPlaces().getPlaceGroup().getPlaceGroupId());
                 }
                 reminderDao.update(reminderWithNotePlacePlaceGroup.getReminder());
-            });
-        });
+            })
+        );
     }
 
     public void delete(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup) {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        executor.execute(() ->
             database.runInTransaction(() -> {
                 noteDao.delete(reminderWithNotePlacePlaceGroup.getNote());
                 reminderDao.delete(reminderWithNotePlacePlaceGroup.getReminder());
-            });
-        });
+            })
+        );
     }
 
     public void deleteAll() {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        executor.execute(() ->
             database.runInTransaction(() -> {
                 reminderDao.deleteAllReminderNotes();
                 reminderDao.deleteAllReminders();
-            });
-        });
+            })
+        );
+    }
+
+    public void setActive(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup, boolean active) {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() ->
+            reminderDao.setActive(reminderWithNotePlacePlaceGroup.getReminder().getReminderId(), active)
+        );
     }
 
     public LiveData<List<ReminderWithNotePlacePlaceGroup>> getAllRemindersWithNotePlacePlaceGroup() {

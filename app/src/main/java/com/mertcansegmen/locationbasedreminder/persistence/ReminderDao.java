@@ -31,6 +31,9 @@ public interface ReminderDao {
     @Query("DELETE FROM Note WHERE noteId IN (SELECT noteId FROM Reminder)")
     void deleteAllReminderNotes();
 
+    @Query("UPDATE Reminder SET isActive = :active WHERE reminderId = :id")
+    void setActive(long id, boolean active);
+
     @Transaction
     @Query("SELECT * FROM Reminder ORDER BY reminderId DESC")
     LiveData<List<ReminderWithNotePlacePlaceGroup>> getAllRemindersWithNotePlacePlaceGroup();

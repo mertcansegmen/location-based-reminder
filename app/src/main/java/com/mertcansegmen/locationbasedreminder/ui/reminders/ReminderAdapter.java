@@ -4,9 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +24,8 @@ import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
 public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup, ReminderAdapter.ReminderViewHolder> {
 
     private OnItemClickListener listener;
+
+    private ReminderAdapterViewModel viewModel;
 
     private static final DiffUtil.ItemCallback<ReminderWithNotePlacePlaceGroup> DIFF_CALLBACK
             = new DiffUtil.ItemCallback<ReminderWithNotePlacePlaceGroup>() {
@@ -83,6 +89,10 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
             // If the place or place group attached to reminder was removed
             holder.placeRemovedTextView.setVisibility(View.VISIBLE);
         }
+
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) ->
+            viewModel.setActive(getItem(position), isChecked)
+        );
     }
 
     private void addPlaceChip(Context context, ReminderWithNotePlacePlaceGroup currentReminder,
@@ -123,6 +133,8 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
             checkBox = itemView.findViewById(R.id.check_box);
             placeRemovedTextView = itemView.findViewById(R.id.txt_place_removed_error);
             placeGroupEmptyTextView = itemView.findViewById(R.id.txt_place_group_empty_error);
+
+            viewModel = ViewModelProviders.of((FragmentActivity) itemView.getContext()).get(ReminderAdapterViewModel.class);
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
