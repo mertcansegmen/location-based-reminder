@@ -149,20 +149,9 @@ public class AddEditReminderFragment extends Fragment {
     }
 
     private void setAddPlaceGroupButtonClickListener() {
-        selectPlaceGroupButton.setOnClickListener(v -> {
-            // TODO: navigate to select place/place group dialog
-            // Test data
-//            PlaceGroupWithPlaces placeGroupWithPlaces = new PlaceGroupWithPlaces();
-//            PlaceGroup placeGroup = new PlaceGroup("Gas Stations");
-//            placeGroup.setPlaceGroupId(3);
-//            placeGroupWithPlaces.setPlaceGroup(placeGroup);
-//            Place place1 = new Place("Food Lion", 42.421935, -71.065640, 100);
-//            place1.setPlaceId(1L);
-//            Place place2 = new Place("Falletti Foods", 42.360037, -71.087794, 300);
-//            place1.setPlaceId(2L);
-//            placeGroupWithPlaces.setPlaces(Arrays.asList(place1, place2));
-//            viewModel.select(placeGroupWithPlaces);
-        });
+        selectPlaceGroupButton.setOnClickListener(v ->
+            navController.navigate(R.id.action_addEditReminderFragment_to_pickPlaceGroupDialog)
+        );
     }
 
     @Override

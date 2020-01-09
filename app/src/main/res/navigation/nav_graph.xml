@@ -132,6 +132,9 @@
         <action
             android:id="@+id/action_addEditReminderFragment_to_pickPlaceDialog"
             app:destination="@id/pickPlaceDialog" />
+        <action
+            android:id="@+id/action_addEditReminderFragment_to_pickPlaceGroupDialog"
+            app:destination="@id/pickPlaceGroupDialog" />
     </fragment>
 
     <dialog
@@ -146,6 +149,20 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/pickPlaceGroupDialog"
+        android:name="com.mertcansegmen.locationbasedreminder.ui.addeditreminder.PickPlaceGroupDialog"
+        android:label="dialog_pick_place_group"
+        tools:layout="@layout/dialog_pick_place_group" >
+        <action
+            android:id="@+id/action_pickPlaceGroupDialog_to_addEditPlaceGroupFragment"
+            app:destination="@id/addEditPlaceGroupFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"  />
     </dialog>
 
 </navigation>

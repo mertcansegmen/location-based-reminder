@@ -1,9 +1,7 @@
 package com.mertcansegmen.locationbasedreminder.ui.addeditreminder;
 
 import android.content.res.Configuration;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +17,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
 import com.mertcansegmen.locationbasedreminder.R;
-import com.mertcansegmen.locationbasedreminder.ui.places.PlaceAdapter;
+import com.mertcansegmen.locationbasedreminder.ui.placegroups.PlaceGroupWithPlacesAdapter;
 
-public class PickPlaceDialog extends DialogFragment {
+public class PickPlaceGroupDialog extends DialogFragment {
 
-    private ImageButton createNewPlaceButton;
+    private ImageButton createNewPlaceGroupButton;
     private RecyclerView recyclerView;
-    private PlaceAdapter adapter;
+    private PlaceGroupWithPlacesAdapter adapter;
 
     private AddEditReminderFragmentViewModel viewModel;
 
@@ -36,10 +33,10 @@ public class PickPlaceDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_pick_place, container, false);
+        View view = inflater.inflate(R.layout.dialog_pick_place_group, container, false);
 
         recyclerView = view.findViewById(R.id.recycler_view);
-        createNewPlaceButton = view.findViewById(R.id.btn_create_new_place);
+        createNewPlaceGroupButton = view.findViewById(R.id.btn_create_new_place_group);
 
         viewModel = ViewModelProviders.of(requireActivity()).get(AddEditReminderFragmentViewModel.class);
 
@@ -59,15 +56,15 @@ public class PickPlaceDialog extends DialogFragment {
     }
 
     private void setObserver() {
-        viewModel.getAllPlaces().observe(this, places -> {
-            adapter.submitList(places);
+        viewModel.getAllPlaceGroups().observe(this, placeGroups -> {
+            adapter.submitList(placeGroups);
         });
     }
 
     private void configureRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
-        adapter = new PlaceAdapter();
+        adapter = new PlaceGroupWithPlacesAdapter();
         recyclerView.setAdapter(adapter);
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
@@ -75,15 +72,15 @@ public class PickPlaceDialog extends DialogFragment {
     }
 
     private void setOnAdapterItemClickListener() {
-        adapter.setOnItemClickListener(place -> {
-            viewModel.select(place);
+        adapter.setOnItemClickListener(placeGroup -> {
+            viewModel.select(placeGroup);
             dismiss();
         });
     }
 
     private void setCreateNewPlaceButtonClickListener() {
-        createNewPlaceButton.setOnClickListener(v ->
-                navController.navigate(R.id.action_pickPlaceDialog_to_addEditPlaceFragment)
+        createNewPlaceGroupButton.setOnClickListener(v ->
+                navController.navigate(R.id.action_pickPlaceGroupDialog_to_addEditPlaceGroupFragment)
         );
     }
 }
