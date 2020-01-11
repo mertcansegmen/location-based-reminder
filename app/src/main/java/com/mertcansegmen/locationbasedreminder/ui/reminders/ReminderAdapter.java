@@ -10,15 +10,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
 import com.mertcansegmen.locationbasedreminder.ui.services.ReminderService;
@@ -68,7 +67,7 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
     public void onBindViewHolder(@NonNull ReminderViewHolder holder, int position) {
         ReminderWithNotePlacePlaceGroup currentReminder = getItem(position);
 
-        holder.checkBox.setChecked(currentReminder.getReminder().isActive());
+        holder.switchMaterial.setChecked(currentReminder.getReminder().isActive());
 
         holder.titleTextView.setText(currentReminder.getNote().getTitle());
         holder.titleTextView.setVisibility(currentReminder.getNote().getTitle().isEmpty() ? View.GONE : View.VISIBLE);
@@ -93,12 +92,6 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
             // If the place or place group attached to reminder was removed
             holder.placeRemovedTextView.setVisibility(View.VISIBLE);
         }
-
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            viewModel.setActive(ReminderAdapter.this.getItem(position), isChecked);
-            Intent serviceIntent = new Intent(buttonView.getContext(), ReminderService.class);
-            ContextCompat.startForegroundService(buttonView.getContext(), serviceIntent);
-        });
     }
 
     private void addPlaceChip(Context context, ReminderWithNotePlacePlaceGroup currentReminder,
@@ -127,7 +120,7 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
         private TextView titleTextView;
         private TextView noteTextView;
         private ChipGroup chipGroup;
-        private MaterialCheckBox checkBox;
+        private SwitchMaterial switchMaterial;
         private TextView placeRemovedTextView;
         private TextView placeGroupEmptyTextView;
 
@@ -136,7 +129,7 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
             titleTextView = itemView.findViewById(R.id.txt_title);
             noteTextView = itemView.findViewById(R.id.txt_note);
             chipGroup = itemView.findViewById(R.id.chip_group);
-            checkBox = itemView.findViewById(R.id.check_box);
+            switchMaterial = itemView.findViewById(R.id.switch_material);
             placeRemovedTextView = itemView.findViewById(R.id.txt_place_removed_error);
             placeGroupEmptyTextView = itemView.findViewById(R.id.txt_place_group_empty_error);
 
@@ -147,6 +140,12 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
                 if(listener != null && position != RecyclerView.NO_POSITION) {
                     listener.onItemClicked(getItem(position));
                 }
+            });
+
+            switchMaterial.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                viewModel.setActive(ReminderAdapter.this.getItem(getAdapterPosition()), isChecked);
+                Intent serviceIntent = new Intent(buttonView.getContext(), ReminderService.class);
+                ContextCompat.startForegroundService(buttonView.getContext(), serviceIntent);
             });
         }
     }

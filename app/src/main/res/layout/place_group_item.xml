@@ -19,17 +19,32 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txt_place_group"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="12dp"
-            android:textSize="18sp"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-light"/>
+            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="12dp" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_place_groups"
+                android:tint="@color/colorCardBorder"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/txt_place_group"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-light"/>
+
+        </LinearLayout>
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
