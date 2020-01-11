@@ -1,6 +1,7 @@
 package com.mertcansegmen.locationbasedreminder.repository;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -22,20 +23,18 @@ public class ReminderRepository {
 
     private ReminderDao reminderDao;
     private NoteDao noteDao;
-    private PlaceDao placeDao;
-    private PlaceGroupDao placeGroupDao;
 
     private LiveData<List<ReminderWithNotePlacePlaceGroup>> allRemindersWithNotePlacePlaceGroup;
+    private LiveData<List<ReminderWithNotePlacePlaceGroup>> activeReminders;
 
     public ReminderRepository(Application application) {
         database = AppDatabase.getInstance(application);
 
         noteDao = database.noteDao();
-        placeDao = database.placeDao();
-        placeGroupDao = database.placeGroupDao();
         reminderDao = database.reminderDao();
 
         allRemindersWithNotePlacePlaceGroup = reminderDao.getAllRemindersWithNotePlacePlaceGroup();
+        activeReminders = reminderDao.getActiveReminders();
     }
 
     public void insert(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup) {
@@ -99,9 +98,14 @@ public class ReminderRepository {
 
     public void setActive(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup, boolean active) {
         Executor executor = Executors.newSingleThreadExecutor();
+        Log.i("Mert", "setActive: " + reminderWithNotePlacePlaceGroup);
         executor.execute(() ->
             reminderDao.setActive(reminderWithNotePlacePlaceGroup.getReminder().getReminderId(), active)
         );
+    }
+
+    public LiveData<List<ReminderWithNotePlacePlaceGroup>> getActiveReminders() {
+        return activeReminders;
     }
 
     public LiveData<List<ReminderWithNotePlacePlaceGroup>> getAllRemindersWithNotePlacePlaceGroup() {

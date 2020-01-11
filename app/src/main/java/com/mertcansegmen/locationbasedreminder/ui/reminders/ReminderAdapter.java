@@ -1,6 +1,7 @@
 package com.mertcansegmen.locationbasedreminder.ui.reminders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -19,6 +21,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.chip.ChipGroup;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
+import com.mertcansegmen.locationbasedreminder.ui.services.ReminderService;
 import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
 
 public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup, ReminderAdapter.ReminderViewHolder> {
@@ -40,6 +43,7 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
                                           @NonNull ReminderWithNotePlacePlaceGroup newItem) {
             return oldItem.getNote().getTitle().equals(newItem.getNote().getTitle()) &&
                     oldItem.getNote().getBody().equals(newItem.getNote().getBody()) &&
+                    oldItem.getReminder().isActive() == newItem.getReminder().isActive() &&
                     ((oldItem.getPlace() != null && newItem.getPlace() != null &&
                     oldItem.getPlace().getName().equals(newItem.getPlace().getName())) ||
                     (oldItem.getPlaceGroupWithPlaces() != null && newItem.getPlaceGroupWithPlaces() != null &&
@@ -64,7 +68,7 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
     public void onBindViewHolder(@NonNull ReminderViewHolder holder, int position) {
         ReminderWithNotePlacePlaceGroup currentReminder = getItem(position);
 
-        if(currentReminder.getReminder().isActive()) holder.checkBox.setChecked(true);
+        holder.checkBox.setChecked(currentReminder.getReminder().isActive());
 
         holder.titleTextView.setText(currentReminder.getNote().getTitle());
         holder.titleTextView.setVisibility(currentReminder.getNote().getTitle().isEmpty() ? View.GONE : View.VISIBLE);
@@ -90,9 +94,11 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
             holder.placeRemovedTextView.setVisibility(View.VISIBLE);
         }
 
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) ->
-            viewModel.setActive(getItem(position), isChecked)
-        );
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            viewModel.setActive(ReminderAdapter.this.getItem(position), isChecked);
+            Intent serviceIntent = new Intent(buttonView.getContext(), ReminderService.class);
+            ContextCompat.startForegroundService(buttonView.getContext(), serviceIntent);
+        });
     }
 
     private void addPlaceChip(Context context, ReminderWithNotePlacePlaceGroup currentReminder,

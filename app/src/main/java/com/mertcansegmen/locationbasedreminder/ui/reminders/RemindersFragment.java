@@ -2,7 +2,6 @@ package com.mertcansegmen.locationbasedreminder.ui.reminders;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,7 +78,6 @@ public class RemindersFragment extends Fragment {
         viewModel.getAllReminders().observe(this, reminders -> {
             emptyMessageLayout.setVisibility(reminders.isEmpty() ? View.VISIBLE : View.GONE);
             adapter.submitList(reminders);
-            Log.i("Mert", "setObserver: " + reminders);
         });
     }
 

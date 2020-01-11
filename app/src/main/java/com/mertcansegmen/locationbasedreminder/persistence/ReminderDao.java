@@ -38,4 +38,8 @@ public interface ReminderDao {
     @Query("SELECT * FROM Reminder ORDER BY reminderId DESC")
     LiveData<List<ReminderWithNotePlacePlaceGroup>> getAllRemindersWithNotePlacePlaceGroup();
 
+    @Transaction
+    @Query("SELECT * FROM Reminder WHERE isActive = 1")
+    LiveData<List<ReminderWithNotePlacePlaceGroup>> getActiveReminders();
+
 }

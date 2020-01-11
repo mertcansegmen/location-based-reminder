@@ -30,6 +30,9 @@
     <string name="provide_a_place">You have to add a place or a place group in order to create a reminder</string>
     <string name="pick_a_place">Pick a Place</string>
     <string name="pick_a_place_group">Pick a Place Group</string>
+    <string name="location_reminder_on">Location reminder is on</string>
+    <string name="youve_arrived_to">You\'ve arrived to %s!</string>
+    <string name="no_reminder_enabled">No reminder enabled</string>
 
     <!--Notes-->
     <string name="notes">Notes</string>
