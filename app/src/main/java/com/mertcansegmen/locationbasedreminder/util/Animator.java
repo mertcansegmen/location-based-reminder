@@ -12,7 +12,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class Animator {
 
     public static void animateFloatingActionButton(FloatingActionButton button) {
-        ScaleAnimation disappearAnim = new ScaleAnimation(0,1,0,1, 90, 90);
+        ScaleAnimation disappearAnim = new ScaleAnimation(0,1,0,1,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         disappearAnim.setFillBefore(true);
         disappearAnim.setFillAfter(true);
         disappearAnim.setFillEnabled(true);
@@ -26,7 +27,8 @@ public class Animator {
         disappearAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation animation) {
-                ScaleAnimation appearAnim = new ScaleAnimation(0,1,0,1, 90, 90);
+                ScaleAnimation appearAnim = new ScaleAnimation(0,1,0,1,
+                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 appearAnim.setFillBefore(true);
                 appearAnim.setFillAfter(true);
                 appearAnim.setFillEnabled(true);

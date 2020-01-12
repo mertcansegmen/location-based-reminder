@@ -97,10 +97,13 @@ public class ReminderRepository {
     }
 
     public void setActive(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup, boolean active) {
+        setActive(reminderWithNotePlacePlaceGroup.getReminder().getReminderId(), active);
+    }
+
+    public void setActive(long reminderId, boolean active) {
         Executor executor = Executors.newSingleThreadExecutor();
-        Log.i("Mert", "setActive: " + reminderWithNotePlacePlaceGroup);
         executor.execute(() ->
-            reminderDao.setActive(reminderWithNotePlacePlaceGroup.getReminder().getReminderId(), active)
+                reminderDao.setActive(reminderId, active)
         );
     }
 

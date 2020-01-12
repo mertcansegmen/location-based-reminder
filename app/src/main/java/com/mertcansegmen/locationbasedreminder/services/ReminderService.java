@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder.ui.services;
+package com.mertcansegmen.locationbasedreminder.services;
 
 import android.Manifest;
 import android.app.Notification;
@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -30,6 +31,9 @@ import java.util.List;
 import static com.mertcansegmen.locationbasedreminder.ui.App.CHANNEL_ID;
 
 public class ReminderService extends Service implements LocationListener {
+
+    public static final String ACTION_RESET = "com.mertcansegmen.locationbasedreminder.ACTION_RESET";
+    public static final String EXTRA_REMINDER_ID = "com.mertcansegmen.locationbasedreminder.EXTRA_REMINDER_ID";
 
     private List<ReminderWithNotePlacePlaceGroup> reminders;
 
@@ -49,14 +53,12 @@ public class ReminderService extends Service implements LocationListener {
     }
 
     private Notification createForegroundNotification() {
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+        PendingIntent mainActivityPendingIntent = createMainActivityIntent();
 
         return new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentText(getString(R.string.location_reminder_on))
                 .setShowWhen(false)
-                .setContentIntent(pendingIntent)
+                .setContentIntent(mainActivityPendingIntent)
                 .setSmallIcon(R.drawable.ic_reminders)
                 .build();
     }
@@ -72,7 +74,9 @@ public class ReminderService extends Service implements LocationListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startLocationListener();
+        if(reminders != null && !reminders.isEmpty()) {
+            startLocationListener();
+        }
 
         return START_STICKY;
     }
@@ -105,7 +109,8 @@ public class ReminderService extends Service implements LocationListener {
     public void onLocationChanged(Location location) {
         if(reminders != null && !reminders.isEmpty()) {
             for(ReminderWithNotePlacePlaceGroup reminder : reminders) {
-                if(reminderHasNoPlaceOrPlaceGroup(reminder)) continue;
+                // Continue if reminder has no place or place group
+                if(reminder.getPlace() == null && reminder.getPlaceGroupWithPlaces() == null) continue;
 
                 // Reminder set to a place
                 if(reminder.getPlace() != null) {
@@ -130,18 +135,41 @@ public class ReminderService extends Service implements LocationListener {
         // Turn place object into location object
         Location reminderLocation = placeToLocation(reminderPlace);
 
-        // Check if current location is inside the radius of the reminder place
+        // Check if current location is inside the radius of the reminders place
         if(currentLocation.distanceTo(reminderLocation) < reminderPlace.getRadius()) {
+            String noteTitle = reminder.getNote().getTitle();
+            String noteBody = reminder.getNote().getBody();
+            String reminderTitle = getString(R.string.youve_arrived_to, reminderPlace.getName());
+            String reminderText = noteTitle.equals("") ? noteBody : noteTitle + ":\n" + noteBody;
+
+            PendingIntent mainActivityPendingIntent = createMainActivityIntent();
+            PendingIntent resetReminderPendingIntent = createResetPendingIntent(reminder);
+
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_reminders_ringing)
-                    .setContentTitle(getString(R.string.youve_arrived_to, reminderPlace.getName()))
-                    .setContentText(reminder.getNote().getBody())
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                    .setContentTitle(reminderTitle)
+                    .setContentText(reminderText)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(reminderText))
+                    .setContentIntent(mainActivityPendingIntent)
+                    .addAction(R.drawable.ic_reminders, getString(R.string.reset), resetReminderPendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_MAX);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
             notificationManager.notify((int) reminder.getReminder().getReminderId(), builder.build());
 
             repository.setActive(reminder, false);
         }
+    }
+
+    private PendingIntent createResetPendingIntent(ReminderWithNotePlacePlaceGroup reminder) {
+        Intent resetReminderIntent = new Intent(this, NotificationBroadcastReceiver.class);
+        resetReminderIntent.setAction(ACTION_RESET);
+        resetReminderIntent.putExtra(EXTRA_REMINDER_ID, reminder.getReminder().getReminderId());
+        return PendingIntent.getBroadcast(this, (int) reminder.getReminder().getReminderId(), resetReminderIntent, 0);
+    }
+
+    private PendingIntent createMainActivityIntent() {
+        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        return PendingIntent.getActivity(this,999999, mainActivityIntent, 0);
     }
 
     /**
@@ -152,10 +180,6 @@ public class ReminderService extends Service implements LocationListener {
         location.setLatitude(place.getLatitude());
         location.setLongitude(place.getLongitude());
         return location;
-    }
-
-    private boolean reminderHasNoPlaceOrPlaceGroup(ReminderWithNotePlacePlaceGroup reminder) {
-        return reminder.getPlace() == null && reminder.getPlaceGroupWithPlaces() == null;
     }
 
     @Override

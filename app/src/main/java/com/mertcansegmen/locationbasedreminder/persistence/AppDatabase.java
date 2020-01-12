@@ -153,12 +153,12 @@ public abstract class AppDatabase extends RoomDatabase {
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(21, 6));
                 placeGroupDao.insert(new PlaceGroupPlaceCrossRef(22, 6));
 
-                reminderDao.insert(new Reminder(note1Id, null, placeGroup6Id, true));
-                reminderDao.insert(new Reminder(note2Id, place23Id, null, true));
-                reminderDao.insert(new Reminder(note3Id, place24Id, null, true));
-                reminderDao.insert(new Reminder(note4Id, null, placeGroup1Id, true));
-                reminderDao.insert(new Reminder(note5Id, null, placeGroup5Id, true));
-                reminderDao.insert(new Reminder(note6Id, place25Id, null, true));
+                reminderDao.insert(new Reminder(note1Id, null, placeGroup6Id, false));
+                reminderDao.insert(new Reminder(note2Id, place23Id, null, false));
+                reminderDao.insert(new Reminder(note3Id, place24Id, null, false));
+                reminderDao.insert(new Reminder(note4Id, null, placeGroup1Id, false));
+                reminderDao.insert(new Reminder(note5Id, null, placeGroup5Id, false));
+                reminderDao.insert(new Reminder(note6Id, place25Id, null, false));
             });
         }
     };

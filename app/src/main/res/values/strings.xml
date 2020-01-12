@@ -33,6 +33,7 @@
     <string name="location_reminder_on">Location reminder is on</string>
     <string name="youve_arrived_to">You\'ve arrived to %s!</string>
     <string name="no_reminder_enabled">No reminder enabled</string>
+    <string name="reset">RESET</string>
 
     <!--Notes-->
     <string name="notes">Notes</string>
