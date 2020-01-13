@@ -18,7 +18,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
-import com.mertcansegmen.locationbasedreminder.ui.views.PlaceChip;
+import com.mertcansegmen.locationbasedreminder.ui.views.ColorfulChip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +101,7 @@ public class PickPlacesDialog extends DialogFragment {
     }
 
     private void addChip(Place place) {
-        PlaceChip chip = new PlaceChip(requireContext());
+        ColorfulChip chip = new ColorfulChip(requireContext());
         chip.setPlace(place);
         chip.setText(place.getName());
         chip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_places));
@@ -114,7 +114,7 @@ public class PickPlacesDialog extends DialogFragment {
         });
     }
 
-    private void removeChip(PlaceChip chip) {
+    private void removeChip(ColorfulChip chip) {
         chipGroup.removeView(chip);
         Animator.removeViewWithFadeAnimation(chip);
         if(chipGroup.getChildCount() == 0) {

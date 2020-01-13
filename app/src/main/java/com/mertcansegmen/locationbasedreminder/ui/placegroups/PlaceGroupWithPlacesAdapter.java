@@ -14,7 +14,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
-import com.mertcansegmen.locationbasedreminder.ui.views.PlaceChip;
+import com.mertcansegmen.locationbasedreminder.ui.views.ColorfulChip;
 
 public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlaces,
         PlaceGroupWithPlacesAdapter.PlaceGroupWithPlacesViewHolder> {
@@ -55,7 +55,7 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
 
         holder.chipGroup.removeAllViews();
         for(final Place place : currentPlaceGroupWithPlaces.getPlaces()) {
-            PlaceChip chip = new PlaceChip(holder.placeGroupTextView.getContext());
+            ColorfulChip chip = new ColorfulChip(holder.placeGroupTextView.getContext());
             chip.setPlace(place);
             chip.setText(place.getName());
             chip.setEnsureMinTouchTargetSize(false);

@@ -1,7 +1,6 @@
 package com.mertcansegmen.locationbasedreminder.ui.addeditreminder;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,15 +24,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.model.Place;
-import com.mertcansegmen.locationbasedreminder.model.PlaceGroup;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
-import com.mertcansegmen.locationbasedreminder.util.Utils;
-
-import java.util.Arrays;
+import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 
 public class AddEditReminderFragment extends Fragment {
 
@@ -191,7 +187,7 @@ public class AddEditReminderFragment extends Fragment {
         if(inEditMode()) updateCurrentReminder(noteTitle, noteBody, placeOrPlaceGroup);
         else insertNewReminder(noteTitle, noteBody, placeOrPlaceGroup);
 
-        Utils.closeKeyboard(requireActivity());
+        ConfigUtils.closeKeyboard(requireActivity());
         navController.popBackStack();
     }
 
@@ -220,7 +216,7 @@ public class AddEditReminderFragment extends Fragment {
                 .setMessage(getString(R.string.msg_delete_reminder))
                 .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
                     deleteReminder();
-                    Utils.closeKeyboard(requireActivity());
+                    ConfigUtils.closeKeyboard(requireActivity());
                     navController.popBackStack();
                 })
                 .setNegativeButton(getString(R.string.cancel), null)

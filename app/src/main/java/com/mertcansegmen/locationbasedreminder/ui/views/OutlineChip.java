@@ -2,13 +2,14 @@ package com.mertcansegmen.locationbasedreminder.ui.views;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.AttributeSet;
 
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.chip.Chip;
 import com.mertcansegmen.locationbasedreminder.R;
-import com.mertcansegmen.locationbasedreminder.util.Utils;
+import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 
 public class OutlineChip extends Chip {
     public OutlineChip(Context context) {
@@ -27,7 +28,7 @@ public class OutlineChip extends Chip {
     }
 
     private void configureChip(Context context) {
-        if(Utils.isDarkModeEnabled(context))
+        if(ConfigUtils.isDarkModeEnabled(context))
             setLightChip(context);
         else
             setDarkChip(context);

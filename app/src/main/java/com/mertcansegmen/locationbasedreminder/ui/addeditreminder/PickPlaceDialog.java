@@ -59,9 +59,9 @@ public class PickPlaceDialog extends DialogFragment {
     }
 
     private void setObserver() {
-        viewModel.getAllPlaces().observe(this, places -> {
-            adapter.submitList(places);
-        });
+        viewModel.getAllPlaces().observe(this, places ->
+            adapter.submitList(places)
+        );
     }
 
     private void configureRecyclerView() {

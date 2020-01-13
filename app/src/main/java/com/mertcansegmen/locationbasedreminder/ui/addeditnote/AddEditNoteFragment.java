@@ -21,7 +21,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
-import com.mertcansegmen.locationbasedreminder.util.Utils;
+import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 
 public class AddEditNoteFragment extends Fragment {
 
@@ -100,7 +100,7 @@ public class AddEditNoteFragment extends Fragment {
         if(inEditMode()) updateCurrentNote(noteTitle, noteBody);
         else insertNewNote(noteTitle, noteBody);
 
-        Utils.closeKeyboard(requireActivity());
+        ConfigUtils.closeKeyboard(requireActivity());
         navController.popBackStack();
     }
 
@@ -122,7 +122,7 @@ public class AddEditNoteFragment extends Fragment {
                 .setMessage(getString(R.string.msg_delete_note))
                 .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
                     deleteCurrentNote();
-                    Utils.closeKeyboard(requireActivity());
+                    ConfigUtils.closeKeyboard(requireActivity());
                     navController.popBackStack();
                 })
                 .setNegativeButton(getString(R.string.cancel), null)

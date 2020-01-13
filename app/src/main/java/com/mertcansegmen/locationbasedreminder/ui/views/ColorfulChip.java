@@ -2,6 +2,7 @@ package com.mertcansegmen.locationbasedreminder.ui.views;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.AttributeSet;
 
 import androidx.core.content.ContextCompat;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class PlaceChip extends Chip {
+public class ColorfulChip extends Chip {
 
     private Place place;
 
@@ -75,17 +76,17 @@ public class PlaceChip extends Chip {
             R.color.colorChipBlueGray100
     );
 
-    public PlaceChip(Context context) {
+    public ColorfulChip(Context context) {
         super(context);
         configureChip(context);
     }
 
-    public PlaceChip(Context context, AttributeSet attrs) {
+    public ColorfulChip(Context context, AttributeSet attrs) {
         super(context, attrs);
         configureChip(context);
     }
 
-    public PlaceChip(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ColorfulChip(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         configureChip(context);
     }

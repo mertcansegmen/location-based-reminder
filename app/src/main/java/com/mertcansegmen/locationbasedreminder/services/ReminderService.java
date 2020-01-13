@@ -147,7 +147,7 @@ public class ReminderService extends Service implements LocationListener {
                     .addAction(R.drawable.ic_reminders, getString(R.string.reset), resetReminderPendingIntent)
                     .setPriority(NotificationCompat.PRIORITY_MAX);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.notify((int) reminder.getReminder().getReminderId(), builder.build());
+            notificationManager.notify(reminder.getReminder().getReminderId().intValue(), builder.build());
 
             repository.setActive(reminder, false);
         }
@@ -157,7 +157,7 @@ public class ReminderService extends Service implements LocationListener {
         Intent resetReminderIntent = new Intent(this, NotificationBroadcastReceiver.class);
         resetReminderIntent.setAction(ACTION_RESET);
         resetReminderIntent.putExtra(EXTRA_REMINDER_ID, reminder.getReminder().getReminderId());
-        return PendingIntent.getBroadcast(this, (int) reminder.getReminder().getReminderId(), resetReminderIntent, 0);
+        return PendingIntent.getBroadcast(this, reminder.getReminder().getReminderId().intValue(), resetReminderIntent, 0);
     }
 
     private PendingIntent createMainActivityPendingIntent() {

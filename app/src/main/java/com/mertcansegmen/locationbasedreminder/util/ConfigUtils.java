@@ -6,7 +6,7 @@ import android.content.res.Configuration;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-public class Utils {
+public class ConfigUtils {
 
     public static void closeKeyboard(Activity activity) {
         View view = activity.getCurrentFocus();
@@ -23,5 +23,12 @@ public class Utils {
         int nightModeFlags = context.getResources().getConfiguration().uiMode &
                 Configuration.UI_MODE_NIGHT_MASK;
         return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    /**
+     * @return true if phone is in landscape mode, false otherwise.
+     */
+    public static boolean inLandscapeMode(Context context) {
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 }

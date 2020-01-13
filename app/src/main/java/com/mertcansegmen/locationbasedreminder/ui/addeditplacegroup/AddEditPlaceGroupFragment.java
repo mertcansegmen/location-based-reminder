@@ -31,8 +31,8 @@ import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
-import com.mertcansegmen.locationbasedreminder.ui.views.PlaceChip;
-import com.mertcansegmen.locationbasedreminder.util.Utils;
+import com.mertcansegmen.locationbasedreminder.ui.views.ColorfulChip;
+import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,7 +139,7 @@ public class AddEditPlaceGroupFragment extends Fragment {
     }
 
     private void addChip(Place place) {
-        PlaceChip chip = new PlaceChip(requireContext());
+        ColorfulChip chip = new ColorfulChip(requireContext());
         chip.setPlace(place);
         chip.setText(place.getName());
         chip.setCloseIconVisible(true);
@@ -152,7 +152,7 @@ public class AddEditPlaceGroupFragment extends Fragment {
         chip.setOnCloseIconClickListener(v -> removeChip(chip));
     }
 
-    private void removeChip(PlaceChip chip) {
+    private void removeChip(ColorfulChip chip) {
         chipGroup.removeView(chip);
         Animator.removeViewWithFadeAnimation(chip);
     }
@@ -181,8 +181,8 @@ public class AddEditPlaceGroupFragment extends Fragment {
     private List<Place> getPlacesFromChips() {
         ArrayList<Place> places = new ArrayList<>();
         for(int i = 0; i < chipGroup.getChildCount(); i++) {
-            if(chipGroup.getChildAt(i) instanceof PlaceChip)
-                places.add(((PlaceChip) chipGroup.getChildAt(i)).getPlace());
+            if(chipGroup.getChildAt(i) instanceof ColorfulChip)
+                places.add(((ColorfulChip) chipGroup.getChildAt(i)).getPlace());
         }
         return places;
     }
@@ -223,7 +223,7 @@ public class AddEditPlaceGroupFragment extends Fragment {
         if(inEditMode()) updateCurrentPlaceGroup(placeGroupName, places);
         else insertNewPlaceGroup(placeGroupName, places);
 
-        Utils.closeKeyboard(requireActivity());
+        ConfigUtils.closeKeyboard(requireActivity());
         navController.popBackStack();
     }
 
@@ -245,7 +245,7 @@ public class AddEditPlaceGroupFragment extends Fragment {
                 .setMessage(getString(R.string.msg_delete_place_group))
                 .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
                     deletePlaceGroup();
-                    Utils.closeKeyboard(requireActivity());
+                    ConfigUtils.closeKeyboard(requireActivity());
                     navController.popBackStack();
                 })
                 .setNegativeButton(getString(R.string.cancel), null)

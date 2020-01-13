@@ -1,6 +1,5 @@
 package com.mertcansegmen.locationbasedreminder.ui;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mertcansegmen.locationbasedreminder.R;
+import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 
 public abstract class ListingFragment extends BaseFragment {
 
@@ -37,7 +37,7 @@ public abstract class ListingFragment extends BaseFragment {
     private void configureRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
-        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if(ConfigUtils.inLandscapeMode(requireContext())) {
             recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         }
         initAdapter();
