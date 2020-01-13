@@ -95,6 +95,8 @@ public class ColorfulChip extends Chip {
         setRandomChipColor(context);
         setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorBlack)));
         setTextStartPadding(3);
+        setClickable(false);
+        setRippleColor(ColorStateList.valueOf(Color.TRANSPARENT));
     }
 
     private void setRandomChipColor(Context context) {

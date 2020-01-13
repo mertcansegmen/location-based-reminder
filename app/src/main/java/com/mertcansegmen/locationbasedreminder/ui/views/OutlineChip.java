@@ -45,6 +45,8 @@ public class OutlineChip extends Chip {
     private void styleChip(Context context, int backgroundColor, int borderIconTextColor) {
         setTextStartPadding(3);
         setChipStrokeWidth(2);
+        setClickable(false);
+        setRippleColor(ColorStateList.valueOf(Color.TRANSPARENT));
 
         setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, borderIconTextColor)));
         setChipIconTintResource(borderIconTextColor);
