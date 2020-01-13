@@ -13,7 +13,6 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -53,7 +52,7 @@ public class ReminderService extends Service implements LocationListener {
     }
 
     private Notification createForegroundNotification() {
-        PendingIntent mainActivityPendingIntent = createMainActivityIntent();
+        PendingIntent mainActivityPendingIntent = createMainActivityPendingIntent();
 
         return new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentText(getString(R.string.location_reminder_on))
@@ -79,12 +78,6 @@ public class ReminderService extends Service implements LocationListener {
         }
 
         return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(this, getString(R.string.no_reminder_enabled), Toast.LENGTH_SHORT).show();
     }
 
     @Nullable
@@ -142,7 +135,7 @@ public class ReminderService extends Service implements LocationListener {
             String reminderTitle = getString(R.string.youve_arrived_to, reminderPlace.getName());
             String reminderText = noteTitle.equals("") ? noteBody : noteTitle + ":\n" + noteBody;
 
-            PendingIntent mainActivityPendingIntent = createMainActivityIntent();
+            PendingIntent mainActivityPendingIntent = createMainActivityPendingIntent();
             PendingIntent resetReminderPendingIntent = createResetPendingIntent(reminder);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -167,7 +160,7 @@ public class ReminderService extends Service implements LocationListener {
         return PendingIntent.getBroadcast(this, (int) reminder.getReminder().getReminderId(), resetReminderIntent, 0);
     }
 
-    private PendingIntent createMainActivityIntent() {
+    private PendingIntent createMainActivityPendingIntent() {
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         return PendingIntent.getActivity(this,999999, mainActivityIntent, 0);
     }
