@@ -1,5 +1,6 @@
 package com.mertcansegmen.locationbasedreminder.ui;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mertcansegmen.locationbasedreminder.R;
@@ -35,12 +35,13 @@ public abstract class ListingFragment extends BaseFragment {
     }
 
     private void configureRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
-        if(ConfigUtils.inLandscapeMode(requireContext())) {
-            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
-        }
         initAdapter();
+        // Set column count 2 if phone is in landscape mode, set it 1 if its in portraid mode.
+        int columnCount = ConfigUtils.inLandscapeMode(requireContext())? 2 : 1;
+        int spacingInDp = 10;
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), columnCount));
+        recyclerView.addItemDecoration(new SpacingItemDecoration(columnCount, spacingInDp));
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(getAdapter());
     }
 
@@ -114,7 +115,35 @@ public abstract class ListingFragment extends BaseFragment {
     }
 
     /**
-     * Implement what happens when user selects option "Delete All" in here.
+     * Implement what happens when user selects the option "Delete All" in here.
      */
     protected abstract void onDeleteAllOptionSelected();
+
+    /**
+     * ItemDecoration for proper spacing between items in recycler view.
+     */
+    public class SpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int columnCount;
+        private int spacingInPx;
+
+        SpacingItemDecoration(int columnCount, int spacingInDp) {
+            this.columnCount = columnCount;
+            this.spacingInPx = Math.round(spacingInDp * getResources().getDisplayMetrics().density); // convert dp to px
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % columnCount; // item column
+
+            outRect.left = spacingInPx - column * spacingInPx / columnCount;
+            outRect.right = (column + 1) * spacingInPx / columnCount;
+
+            if (position < columnCount) { // top edge
+                outRect.top = spacingInPx;
+            }
+            outRect.bottom = spacingInPx; // item bottom
+        }
+    }
 }
