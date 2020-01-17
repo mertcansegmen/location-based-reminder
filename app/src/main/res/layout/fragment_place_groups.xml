@@ -44,15 +44,16 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_add_place_group"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
+        app:icon="@drawable/ic_add_place_group"
+        android:text="@string/new_place_group_caps"
         android:src="@drawable/ic_add_place_group"
-        android:layout_gravity="end|bottom"/>
+        android:layout_gravity="bottom|center"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

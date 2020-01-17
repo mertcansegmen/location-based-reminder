@@ -24,7 +24,6 @@ import com.mertcansegmen.locationbasedreminder.util.Animator;
 public class PlaceGroupsFragment extends ListingFragment {
 
     private PlaceGroupWithPlacesAdapter adapter;
-    private FloatingActionButton addPlaceGroupButton;
 
     private PlaceGroupsFragmentViewModel viewModel;
 
@@ -36,9 +35,6 @@ public class PlaceGroupsFragment extends ListingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        addPlaceGroupButton = view.findViewById(R.id.btn_add_place_group);
-        Animator.animateFloatingActionButton(addPlaceGroupButton);
 
         initViewModel();
         initObserver();
@@ -59,7 +55,7 @@ public class PlaceGroupsFragment extends ListingFragment {
     }
 
     private void setAddButtonClickListener() {
-        addPlaceGroupButton.setOnClickListener(v ->
+        fab.setOnClickListener(v ->
                 navController.navigate(R.id.action_placeGroupsFragment_to_addEditPlaceGroupFragment)
         );
     }
@@ -93,7 +89,7 @@ public class PlaceGroupsFragment extends ListingFragment {
 
         Snackbar.make(viewHolder.itemView, getString(R.string.place_group_deleted), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.undo), v -> viewModel.insert(deletedPlaceGroup))
-                .setAnchorView(addPlaceGroupButton)
+                .setAnchorView(fab)
                 .show();
     }
 

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mertcansegmen.locationbasedreminder.R;
@@ -22,7 +23,6 @@ import com.mertcansegmen.locationbasedreminder.util.Animator;
 public class RemindersFragment extends ListingFragment {
 
     private ReminderAdapter adapter;
-    private FloatingActionButton addReminderButton;
 
     private RemindersFragmentViewModel viewModel;
 
@@ -34,9 +34,6 @@ public class RemindersFragment extends ListingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        addReminderButton = view.findViewById(R.id.btn_add_reminder);
-        Animator.animateFloatingActionButton(addReminderButton);
 
         initViewModel();
         initObserver();
@@ -56,7 +53,7 @@ public class RemindersFragment extends ListingFragment {
     }
 
     private void setAddButtonClickListener() {
-        addReminderButton.setOnClickListener(v ->
+        fab.setOnClickListener(v ->
                 navController.navigate(R.id.action_remindersFragment_to_addEditReminderFragment)
         );
     }
@@ -90,7 +87,7 @@ public class RemindersFragment extends ListingFragment {
 
         Snackbar.make(viewHolder.itemView, getString(R.string.note_deleted), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.undo), v -> viewModel.insert(deletedReminder))
-                .setAnchorView(addReminderButton)
+                .setAnchorView(fab)
                 .show();
     }
 

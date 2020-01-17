@@ -43,15 +43,15 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_add_reminder"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:srcCompat="@drawable/ic_add_reminder"
         android:clickable="true"
         android:focusable="true"
-        android:layout_gravity="end|bottom" />
+        app:icon="@drawable/ic_add_reminder"
+        android:text="@string/new_reminder_caps"
+        android:layout_gravity="bottom|center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

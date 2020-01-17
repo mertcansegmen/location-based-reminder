@@ -23,7 +23,6 @@ import com.mertcansegmen.locationbasedreminder.util.Animator;
 public class NotesFragment extends ListingFragment {
 
     private NoteAdapter adapter;
-    private FloatingActionButton addNoteButton;
 
     private NotesFragmentViewModel viewModel;
 
@@ -35,9 +34,6 @@ public class NotesFragment extends ListingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        addNoteButton = view.findViewById(R.id.btn_add_note);
-        Animator.animateFloatingActionButton(addNoteButton);
 
         initViewModel();
         initObserver();
@@ -57,7 +53,7 @@ public class NotesFragment extends ListingFragment {
     }
 
     private void setAddButtonClickListener() {
-        addNoteButton.setOnClickListener(v ->
+        fab.setOnClickListener(v ->
                 navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment)
         );
     }
@@ -91,7 +87,7 @@ public class NotesFragment extends ListingFragment {
 
         Snackbar.make(viewHolder.itemView, getString(R.string.note_deleted), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.undo), v -> viewModel.insert(deletedNote))
-                .setAnchorView(addNoteButton)
+                .setAnchorView(fab)
                 .show();
     }
 

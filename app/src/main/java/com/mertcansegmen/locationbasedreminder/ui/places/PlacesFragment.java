@@ -23,7 +23,6 @@ import com.mertcansegmen.locationbasedreminder.util.Animator;
 public class PlacesFragment extends ListingFragment {
 
     private PlaceAdapter adapter;
-    private FloatingActionButton addPlaceButton;
 
     private PlacesFragmentViewModel viewModel;
 
@@ -35,9 +34,6 @@ public class PlacesFragment extends ListingFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        addPlaceButton = view.findViewById(R.id.btn_add_place);
-        Animator.animateFloatingActionButton(addPlaceButton);
 
         initViewModel();
         initObserver();
@@ -58,7 +54,7 @@ public class PlacesFragment extends ListingFragment {
     }
 
     private void setAddButtonClickListener() {
-        addPlaceButton.setOnClickListener(v ->
+        fab.setOnClickListener(v ->
                 navController.navigate(R.id.action_placesFragment_to_addEditPlaceFragment)
         );
     }
@@ -92,7 +88,7 @@ public class PlacesFragment extends ListingFragment {
 
         Snackbar.make(viewHolder.itemView, getString(R.string.place_deleted), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.undo), v -> viewModel.insert(deletedPlace))
-                .setAnchorView(addPlaceButton)
+                .setAnchorView(fab)
                 .show();
     }
 

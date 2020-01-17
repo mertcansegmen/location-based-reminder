@@ -1,10 +1,6 @@
 package com.mertcansegmen.locationbasedreminder.ui;
 
-import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,8 +13,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.util.AdapterDataObserver;
+import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 import com.mertcansegmen.locationbasedreminder.util.SpacingItemDecoration;
 
@@ -26,6 +24,7 @@ public abstract class ListingFragment extends BaseFragment {
 
     protected LinearLayout emptyMessageLayout;
     private RecyclerView recyclerView;
+    protected ExtendedFloatingActionButton fab;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -33,6 +32,9 @@ public abstract class ListingFragment extends BaseFragment {
 
         emptyMessageLayout = view.findViewById(R.id.empty_msg_layout);
         recyclerView = view.findViewById(R.id.recycler_view);
+        fab = view.findViewById(R.id.fab);
+
+        Animator.animateBounce(fab);
 
         configureRecyclerView();
     }
@@ -40,7 +42,7 @@ public abstract class ListingFragment extends BaseFragment {
     private void configureRecyclerView() {
         initAdapter();
         // Set column count 2 if phone is in landscape mode, set it 1 if it's in portrait mode.
-        int columnCount = ConfigUtils.inLandscapeMode(requireContext())? 2 : 1;
+        int columnCount = ConfigUtils.inLandscapeMode(requireContext()) ? 2 : 1;
         int spacingInDp = 10;
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), columnCount));
         recyclerView.addItemDecoration(new SpacingItemDecoration(columnCount, spacingInDp, getContext()));
@@ -52,6 +54,9 @@ public abstract class ListingFragment extends BaseFragment {
 
         // Set ItemTouchHelper for swipe actions
         setItemTouchHelper();
+
+        // Set ScrollListener
+        setRecyclerViewScrollListener();
     }
 
     /**
@@ -64,6 +69,29 @@ public abstract class ListingFragment extends BaseFragment {
      * @return recycler view adapter.
      */
     protected abstract RecyclerView.Adapter getAdapter();
+
+    /**
+     * Adds a scroll listener to recycler view that makes floating action button shrink when
+     * scrolled down, and extend when scrolled up.
+     */
+    private void setRecyclerViewScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx,int dy){
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy >0) { // Scroll Down
+                    if (fab.isExtended()) {
+                        fab.shrink();
+                    }
+                } else if (dy <0) { // Scroll Up
+                    if (!fab.isExtended()) {
+                        fab.extend();
+                    }
+                }
+            }
+        });
+    }
 
     /**
      * Creates new ItemTouchHelper for swipe actions and attaches it to recycler view.
@@ -99,7 +127,6 @@ public abstract class ListingFragment extends BaseFragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.i("Mert", "onOptionsItemSelected: " + item);
         switch (item.getItemId()) {
             case R.id.delete_all:
                 onDeleteAllOptionSelected();

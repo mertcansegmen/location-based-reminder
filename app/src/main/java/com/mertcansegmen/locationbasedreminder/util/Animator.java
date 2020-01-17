@@ -1,17 +1,14 @@
 package com.mertcansegmen.locationbasedreminder.util;
 
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.ScaleAnimation;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 public class Animator {
 
-    public static void animateFloatingActionButton(FloatingActionButton button) {
+    public static void animateBounce(View view) {
         ScaleAnimation disappearAnim = new ScaleAnimation(0,1,0,1,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         disappearAnim.setFillBefore(true);
@@ -34,7 +31,7 @@ public class Animator {
                 appearAnim.setFillEnabled(true);
                 appearAnim.setDuration(300);
                 appearAnim.setInterpolator(new OvershootInterpolator());
-                button.startAnimation(appearAnim);
+                view.startAnimation(appearAnim);
             }
 
             @Override
@@ -43,7 +40,7 @@ public class Animator {
             public void onAnimationRepeat(Animation animation) {}
 
         });
-        button.startAnimation(disappearAnim);
+        view.startAnimation(disappearAnim);
     }
 
     public static void removeViewWithFadeAnimation(View view) {
