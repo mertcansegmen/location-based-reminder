@@ -34,6 +34,8 @@
     <string name="youve_arrived_to">You\'ve arrived to %s!</string>
     <string name="no_reminder_enabled">No reminder enabled</string>
     <string name="reset">RESET</string>
+    <string name="msg_empty_places_dialog">You haven\'t added any places yet, click the + button add your first place!</string>
+    <string name="msg_empty_places_groups_dialog">You haven\'t added any places yet, click the + button add your first place group!</string>
 
     <!--Notes-->
     <string name="notes">Notes</string>

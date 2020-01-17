@@ -2,6 +2,7 @@ package com.mertcansegmen.locationbasedreminder.ui.reminders;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,9 +143,13 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
             });
 
             switchMaterial.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                viewModel.setActive(ReminderAdapter.this.getItem(getAdapterPosition()), isChecked);
-                Intent serviceIntent = new Intent(buttonView.getContext(), ReminderService.class);
-                ContextCompat.startForegroundService(buttonView.getContext(), serviceIntent);
+                boolean isActive = getItem(getAdapterPosition()).getReminder().isActive();
+
+                if(isChecked && !isActive || !isChecked && isActive) {
+                    viewModel.setActive(getItem(getAdapterPosition()), isChecked);
+                    Intent serviceIntent = new Intent(buttonView.getContext(), ReminderService.class);
+                    ContextCompat.startForegroundService(buttonView.getContext(), serviceIntent);
+                }
             });
         }
     }

@@ -1,7 +1,10 @@
 package com.mertcansegmen.locationbasedreminder.ui;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,7 +18,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mertcansegmen.locationbasedreminder.R;
+import com.mertcansegmen.locationbasedreminder.util.AdapterDataObserver;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
+import com.mertcansegmen.locationbasedreminder.util.SpacingItemDecoration;
 
 public abstract class ListingFragment extends BaseFragment {
 
@@ -30,41 +35,30 @@ public abstract class ListingFragment extends BaseFragment {
         recyclerView = view.findViewById(R.id.recycler_view);
 
         configureRecyclerView();
-        registerAdapterDataObserver();
-        setItemTouchHelper();
     }
 
     private void configureRecyclerView() {
         initAdapter();
-        // Set column count 2 if phone is in landscape mode, set it 1 if its in portraid mode.
+        // Set column count 2 if phone is in landscape mode, set it 1 if it's in portrait mode.
         int columnCount = ConfigUtils.inLandscapeMode(requireContext())? 2 : 1;
         int spacingInDp = 10;
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), columnCount));
-        recyclerView.addItemDecoration(new SpacingItemDecoration(columnCount, spacingInDp));
+        recyclerView.addItemDecoration(new SpacingItemDecoration(columnCount, spacingInDp, getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(getAdapter());
+
+        // Register the custom DataObserver
+        getAdapter().registerAdapterDataObserver(new AdapterDataObserver(recyclerView));
+
+        // Set ItemTouchHelper for swipe actions
+        setItemTouchHelper();
     }
 
     /**
-     * Subclasses must override this method and initialize their adapter in it because adapter is
-     * needed for configuring recycler view in this class.
+     * Concrete subclasses must override this method and initialize their adapter in it because
+     * adapter is needed for configuring recycler view.
      */
     protected abstract void initAdapter();
-
-    /**
-     * Registers data observer for the adapter. This is needed for recycler view to go top when a
-     * new item is added. Without this, new item will be inserted off of the screen.
-     */
-    private void registerAdapterDataObserver() {
-        getAdapter().registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                // Scroll only if inserted items position is 0, so it will only scroll to top when
-                // a new item is inserted, not when item was deleted and re-inserted.
-                if(positionStart == 0) recyclerView.scrollToPosition(0);
-            }
-        });
-    }
 
     /**
      * @return recycler view adapter.
@@ -92,8 +86,8 @@ public abstract class ListingFragment extends BaseFragment {
     /**
      * Implement what happens when user swipes an item from the recycler view in here.
      *
-     * @param viewHolder view holder of the swiped item.
-     * @param direction  swipe direction.
+     * @param viewHolder view holder of the swiped item
+     * @param direction  swipe direction
      */
     protected abstract void onAdapterItemSwiped(RecyclerView.ViewHolder viewHolder, int direction);
 
@@ -105,6 +99,7 @@ public abstract class ListingFragment extends BaseFragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.i("Mert", "onOptionsItemSelected: " + item);
         switch (item.getItemId()) {
             case R.id.delete_all:
                 onDeleteAllOptionSelected();
@@ -118,32 +113,4 @@ public abstract class ListingFragment extends BaseFragment {
      * Implement what happens when user selects the option "Delete All" in here.
      */
     protected abstract void onDeleteAllOptionSelected();
-
-    /**
-     * ItemDecoration for proper spacing between items in recycler view.
-     */
-    public class SpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int columnCount;
-        private int spacingInPx;
-
-        SpacingItemDecoration(int columnCount, int spacingInDp) {
-            this.columnCount = columnCount;
-            this.spacingInPx = Math.round(spacingInDp * getResources().getDisplayMetrics().density); // convert dp to px
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % columnCount; // item column
-
-            outRect.left = spacingInPx - column * spacingInPx / columnCount;
-            outRect.right = (column + 1) * spacingInPx / columnCount;
-
-            if (position < columnCount) { // top edge
-                outRect.top = spacingInPx;
-            }
-            outRect.bottom = spacingInPx; // item bottom
-        }
-    }
 }
