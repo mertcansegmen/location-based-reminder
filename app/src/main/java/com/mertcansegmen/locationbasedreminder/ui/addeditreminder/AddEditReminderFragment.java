@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -60,6 +61,8 @@ public class AddEditReminderFragment extends Fragment {
         chipGroup = view.findViewById(R.id.chip_group);
         selectPlaceButton = view.findViewById(R.id.btn_select_place);
         selectPlaceGroupButton = view.findViewById(R.id.btn_select_place_group);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewModel = ViewModelProviders.of(requireActivity()).get(AddEditReminderFragmentViewModel.class);
 
@@ -168,6 +171,9 @@ public class AddEditReminderFragment extends Fragment {
                 return true;
             case R.id.delete:
                 askToDeleteReminder();
+                return true;
+            case android.R.id.home:
+                navController.popBackStack();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

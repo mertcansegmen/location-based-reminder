@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -62,6 +63,8 @@ public class AddEditPlaceGroupFragment extends Fragment {
         placeGroupNameEditText = view.findViewById(R.id.txt_place_group_name);
         chipGroup = view.findViewById(R.id.chip_group);
         scrollView = view.findViewById(R.id.scroll_view);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewModel = ViewModelProviders.of(requireActivity()).get(AddEditPlaceGroupFragmentViewModel.class);
 
@@ -205,6 +208,9 @@ public class AddEditPlaceGroupFragment extends Fragment {
                 return true;
             case R.id.delete:
                 askToDeletePlaceGroup();
+                return true;
+            case android.R.id.home:
+                navController.popBackStack();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

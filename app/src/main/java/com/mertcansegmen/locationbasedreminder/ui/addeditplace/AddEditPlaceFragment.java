@@ -17,6 +17,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -87,6 +88,8 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         mapView = view.findViewById(R.id.map_view);
         radiusSeekBar = view.findViewById(R.id.seekbar_radius);
         radiusTextView = view.findViewById(R.id.txt_radius);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewModel = ViewModelProviders.of(this).get(AddEditPlaceFragmentViewModel.class);
 
@@ -318,6 +321,9 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
                 return true;
             case R.id.delete:
                 askToDeletePlace();
+                return true;
+            case android.R.id.home:
+                navController.popBackStack();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

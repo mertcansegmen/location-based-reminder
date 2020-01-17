@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -43,6 +44,8 @@ public class AddEditNoteFragment extends Fragment {
 
         titleEditText = view.findViewById(R.id.txt_title);
         noteEditText = view.findViewById(R.id.txt_note);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewModel = ViewModelProviders.of(this).get(AddEditNoteFragmentViewModel.class);
 
@@ -85,6 +88,9 @@ public class AddEditNoteFragment extends Fragment {
                 return true;
             case R.id.delete:
                 askToDeleteCurrentNote();
+                return true;
+            case android.R.id.home:
+                navController.popBackStack();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
