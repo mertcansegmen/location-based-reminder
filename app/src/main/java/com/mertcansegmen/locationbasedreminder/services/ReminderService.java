@@ -27,7 +27,7 @@ import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 
 import java.util.List;
 
-import static com.mertcansegmen.locationbasedreminder.ui.App.CHANNEL_ID;
+import static com.mertcansegmen.locationbasedreminder.App.CHANNEL_ID;
 
 public class ReminderService extends Service implements LocationListener {
 

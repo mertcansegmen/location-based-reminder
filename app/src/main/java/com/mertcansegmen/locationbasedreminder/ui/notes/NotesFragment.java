@@ -20,6 +20,8 @@ import com.mertcansegmen.locationbasedreminder.ui.ListingFragment;
 import com.mertcansegmen.locationbasedreminder.ui.addeditnote.AddEditNoteFragment;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 
+import timber.log.Timber;
+
 public class NotesFragment extends ListingFragment {
 
     private NoteAdapter adapter;

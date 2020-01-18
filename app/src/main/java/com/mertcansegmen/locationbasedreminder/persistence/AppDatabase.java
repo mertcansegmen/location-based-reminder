@@ -42,10 +42,16 @@ public abstract class AppDatabase extends RoomDatabase {
                     .addCallback(roomCallBack)
                     .build();
         }
-    return instance;
+        return instance;
     }
 
     private static RoomDatabase.Callback roomCallBack = new RoomDatabase.Callback() {
+//        @Override
+//        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+//            super.onOpen(db);
+//            onCreate(db);
+//        }
+
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
@@ -96,6 +102,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                 "Eggs"));
                 long note5Id = noteDao.insert(new Note("Buy a graduation gift for Sarah"));
                 long note6Id = noteDao.insert(new Note("Return book to library"));
+                long note7Id = noteDao.insert(new Note("Withdraw money"));
 
                 long place1Id = placeDao.insert(new Place("Food Lion", 42.421935, -71.065640, 100));
                 long place2Id = placeDao.insert(new Place("Falletti Foods", 42.360037, -71.087794, 300));
@@ -122,6 +129,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 long place23Id = placeDao.insert(new Place("Quinn's House", 41.221928, -73.074861, 200));
                 long place24Id = placeDao.insert(new Place("Home", 41.221928, -73.074861, 200));
                 long place25Id = placeDao.insert(new Place("School", 41.221928, -73.074861, 150));
+                long place26Id = placeDao.insert(new Place("ATM", 47.221928, -73.074861, 130));
 
                 long placeGroup1Id = placeGroupDao.insert(new PlaceGroup("Grocery Stores"));
                 long placeGroup2Id = placeGroupDao.insert(new PlaceGroup("Clothing Stores"));
@@ -159,6 +167,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 reminderDao.insert(new Reminder(note4Id, null, placeGroup1Id, false));
                 reminderDao.insert(new Reminder(note5Id, null, placeGroup5Id, false));
                 reminderDao.insert(new Reminder(note6Id, place25Id, null, false));
+                reminderDao.insert(new Reminder(note7Id, place26Id, null, false));
             });
         }
     };

@@ -91,13 +91,13 @@ public class AddEditReminderFragment extends Fragment {
     }
 
     private void setObserver() {
-        viewModel.getSelected().observe(this, placeOrPlaceGroup -> {
-            if(placeOrPlaceGroup == null) {
+        viewModel.getSelected().observe(this, selected -> {
+            if(selected == null) {
                 noPlaceTextView.setVisibility(View.VISIBLE);
                 return;
             }
 
-            addChip(placeOrPlaceGroup);
+            addChip(selected);
             noPlaceTextView.setVisibility(View.GONE);
         });
     }
@@ -116,19 +116,14 @@ public class AddEditReminderFragment extends Fragment {
         }
     }
 
-    private void addChip(Selectable placeOrPlaceGroup) {
-        if(placeOrPlaceGroup == null) return;
+    private void addChip(Selectable selectable) {
+        if(selectable == null) return;
 
         chipGroup.removeAllViews();
 
         OutlineChip chip = new OutlineChip(requireContext());
-        if(placeOrPlaceGroup instanceof Place) {
-            chip.setText(((Place)placeOrPlaceGroup).getName());
-            chip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_places));
-        } else if(placeOrPlaceGroup instanceof PlaceGroupWithPlaces) {
-            chip.setText(((PlaceGroupWithPlaces)placeOrPlaceGroup).getPlaceGroup().getName());
-            chip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_place_groups_small));
-        }
+        chip.setText(selectable.getDisplayText());
+        chip.setChipIcon(requireContext().getResources().getDrawable(selectable.getDisplayIcon()));
         chip.setCloseIconVisible(true);
 
         chip.setOnCloseIconClickListener(v -> {
@@ -183,37 +178,36 @@ public class AddEditReminderFragment extends Fragment {
     private void saveReminder() {
         String noteTitle = titleEditText.getText().toString().trim();
         String noteBody = noteEditText.getText().toString().trim();
-        Selectable placeOrPlaceGroup = viewModel.getSelected().getValue();
+        Selectable selectable = viewModel.getSelected().getValue();
 
-        if(placeOrPlaceGroup == null) {
+        if(selectable == null) {
             Toast.makeText(requireContext(), R.string.provide_a_place, Toast.LENGTH_LONG).show();
             return;
         }
 
-        if(inEditMode()) updateCurrentReminder(noteTitle, noteBody, placeOrPlaceGroup);
-        else insertNewReminder(noteTitle, noteBody, placeOrPlaceGroup);
+        if(inEditMode()) updateCurrentReminder(noteTitle, noteBody, selectable);
+        else insertNewReminder(noteTitle, noteBody, selectable);
 
         ConfigUtils.closeKeyboard(requireActivity());
         navController.popBackStack();
     }
 
-    private void insertNewReminder(String title, String body, Selectable placeOrPlaceGroup) {
+    private void insertNewReminder(String title, String body, Selectable selectable) {
         ReminderWithNotePlacePlaceGroup reminder = new ReminderWithNotePlacePlaceGroup();
         reminder.setNote(new Note(title, body));
-        reminder.setPlace(placeOrPlaceGroup instanceof Place ?
-                (Place) placeOrPlaceGroup : null);
-        reminder.setPlaceGroupWithPlaces(placeOrPlaceGroup instanceof PlaceGroupWithPlaces ?
-                (PlaceGroupWithPlaces) placeOrPlaceGroup : null);
+        reminder.setPlace(selectable instanceof Place ? (Place) selectable : null);
+        reminder.setPlaceGroupWithPlaces(selectable instanceof PlaceGroupWithPlaces ?
+                (PlaceGroupWithPlaces) selectable : null);
         viewModel.insert(reminder);
     }
 
-    private void updateCurrentReminder(String title, String body, Selectable placeOrPlaceGroup) {
+    private void updateCurrentReminder(String title, String body, Selectable selectable) {
         currentReminder.getNote().setTitle(title);
         currentReminder.getNote().setBody(body);
-        currentReminder.setPlace(placeOrPlaceGroup instanceof Place ?
-                (Place) placeOrPlaceGroup : null);
-        currentReminder.setPlaceGroupWithPlaces(placeOrPlaceGroup instanceof PlaceGroupWithPlaces ?
-                (PlaceGroupWithPlaces) placeOrPlaceGroup : null);
+        currentReminder.setPlace(selectable instanceof Place ?
+                (Place) selectable : null);
+        currentReminder.setPlaceGroupWithPlaces(selectable instanceof PlaceGroupWithPlaces ?
+                (PlaceGroupWithPlaces) selectable : null);
         viewModel.update(currentReminder);
     }
 

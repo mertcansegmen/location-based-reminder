@@ -1,11 +1,11 @@
-package com.mertcansegmen.locationbasedreminder.ui;
+package com.mertcansegmen.locationbasedreminder;
 
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 
-import com.mertcansegmen.locationbasedreminder.R;
+import timber.log.Timber;
 
 public class App extends Application {
     public static final String CHANNEL_ID = "com.mertcansegmen.locationbasedreminder.CHANNEL_ID";
@@ -13,7 +13,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        
+
+        initTimber();
         createNotificationChannel();
     }
 
@@ -27,6 +28,12 @@ public class App extends Application {
 
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(serviceChannel);
+        }
+    }
+
+    private void initTimber() {
+        if(BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
         }
     }
 }

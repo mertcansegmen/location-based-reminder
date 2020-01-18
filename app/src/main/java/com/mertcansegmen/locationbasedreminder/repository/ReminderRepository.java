@@ -1,7 +1,6 @@
 package com.mertcansegmen.locationbasedreminder.repository;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -9,8 +8,6 @@ import com.mertcansegmen.locationbasedreminder.model.Reminder;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
 import com.mertcansegmen.locationbasedreminder.persistence.AppDatabase;
 import com.mertcansegmen.locationbasedreminder.persistence.NoteDao;
-import com.mertcansegmen.locationbasedreminder.persistence.PlaceDao;
-import com.mertcansegmen.locationbasedreminder.persistence.PlaceGroupDao;
 import com.mertcansegmen.locationbasedreminder.persistence.ReminderDao;
 
 import java.util.List;
