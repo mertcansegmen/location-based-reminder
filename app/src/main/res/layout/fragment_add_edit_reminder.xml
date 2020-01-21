@@ -66,37 +66,6 @@
             android:layout_height="wrap_content"
             android:text="@string/not_selected_place_yet" />
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="32dp"-->
-<!--            android:orientation="horizontal" >-->
-
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/btn_select_place"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginEnd="4dp"-->
-<!--                android:textSize="12sp"-->
-<!--                android:layout_weight="1"-->
-<!--                app:iconGravity="textStart"-->
-<!--                app:icon="@drawable/ic_add"-->
-<!--                android:text="@string/place"/>-->
-
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/btn_select_place_group"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="4dp"-->
-<!--                android:textSize="12sp"-->
-<!--                android:layout_weight="1"-->
-<!--                app:iconGravity="textStart"-->
-<!--                app:icon="@drawable/ic_add"-->
-<!--                android:text="@string/place_group"/>-->
-
-
-<!--        </LinearLayout>-->
-
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

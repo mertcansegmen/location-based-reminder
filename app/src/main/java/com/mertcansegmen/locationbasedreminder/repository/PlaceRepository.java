@@ -16,6 +16,7 @@ import java.util.concurrent.Executors;
 public class PlaceRepository extends BaseRepository<Place> {
 
     public PlaceRepository(Application application) {
+        super();
         AppDatabase database = AppDatabase.getInstance(application);
         dao = database.placeDao();
         allItems = dao.getAll();

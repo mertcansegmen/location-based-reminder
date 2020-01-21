@@ -10,7 +10,8 @@
     <string name="undo">UNDO</string>
     <string name="add_to_reminder">Add to Reminder</string>
     <string name="delete_all">Delete All</string>
-    <string name="location_permission_message">You need to grant location permission to use Location Based Reminder</string>
+    <string name="location_permission_allow_all_the_time">You need to allow location permission all the time to use Location Based Reminder</string>
+    <string name="location_permission_allow_location">You need to grant location permission to use Location Based Reminder</string>
     <string name="grant_location_permission">Please grant location permissions</string>
 
     <!--Reminders-->
@@ -36,6 +37,7 @@
     <string name="reset">RESET</string>
     <string name="msg_empty_places_dialog">You haven\'t added any places yet, click the + button add your first place!</string>
     <string name="msg_empty_places_groups_dialog">You haven\'t added any places yet, click the + button add your first place group!</string>
+    <string name="new_reminder_caps">NEW REMINDER</string>
 
     <!--Notes-->
     <string name="notes">Notes</string>
@@ -48,6 +50,7 @@
     <string name="msg_delete_note">Are you sure you want to delete this note?</string>
     <string name="msg_delete_all_notes">Are you sure you want to delete all of your notes?</string>
     <string name="msg_empty_notes">You haven\'t added any notes yet, click the button down below and add your first note!</string>
+    <string name="new_note_caps">NEW NOTE</string>
 
     <!--Places-->
     <string name="places">Places</string>
@@ -63,6 +66,7 @@
     <string name="cannot_connect_play_services">Can not connect to play services</string>
     <string name="google_services_not_available">Google services are not available</string>
     <string name="marker_snippet">If you set a reminder here, you will be notified when you are \nwithin %d meters of this location</string>
+    <string name="new_place_caps">NEW PLACE</string>
 
     <!--Place Groups-->
     <string name="place_groups">Place Groups</string>
@@ -76,12 +80,9 @@
     <string name="pick_places">Pick Places</string>
     <string name="msg_no_available_place">There is no available place to add.</string>
     <string name="create_new_place">Create New Place</string>
+    <string name="new_place_group_caps">NEW PLACE GROUP</string>
 
     <!--Settings-->
     <string name="settings">Settings</string>
-    <string name="new_reminder_caps">NEW REMINDER</string>
-    <string name="new_place_caps">NEW PLACE</string>
-    <string name="new_place_group_caps">NEW PLACE GROUP</string>
-    <string name="new_note_caps">NEW NOTE</string>
 
 </resources>

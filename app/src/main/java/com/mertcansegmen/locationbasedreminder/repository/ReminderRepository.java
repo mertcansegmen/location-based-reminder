@@ -24,8 +24,11 @@ public class ReminderRepository extends BaseRepository {
     private LiveData<List<ReminderWithNotePlacePlaceGroup>> allRemindersWithNotePlacePlaceGroup;
     private LiveData<List<ReminderWithNotePlacePlaceGroup>> activeReminders;
 
+    private Executor executor;
+
     public ReminderRepository(Application application) {
         database = AppDatabase.getInstance(application);
+        executor = Executors.newSingleThreadExecutor();
 
         noteDao = database.noteDao();
         reminderDao = database.reminderDao();
@@ -35,7 +38,6 @@ public class ReminderRepository extends BaseRepository {
     }
 
     public void insert(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup) {
-        Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() ->
             database.runInTransaction(() -> {
                 long noteId;
@@ -57,7 +59,6 @@ public class ReminderRepository extends BaseRepository {
     }
 
     public void update(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup) {
-        Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() ->
             database.runInTransaction(() -> {
                 noteDao.update(reminderWithNotePlacePlaceGroup.getNote());
@@ -74,7 +75,6 @@ public class ReminderRepository extends BaseRepository {
     }
 
     public void delete(ReminderWithNotePlacePlaceGroup reminderWithNotePlacePlaceGroup) {
-        Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() ->
             database.runInTransaction(() -> {
                 noteDao.delete(reminderWithNotePlacePlaceGroup.getNote());
@@ -84,7 +84,6 @@ public class ReminderRepository extends BaseRepository {
     }
 
     public void deleteAll() {
-        Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() ->
             database.runInTransaction(() -> {
                 reminderDao.deleteAllReminderNotes();
@@ -98,7 +97,6 @@ public class ReminderRepository extends BaseRepository {
     }
 
     public void setActive(long reminderId, boolean active) {
-        Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() ->
                 reminderDao.setActive(reminderId, active)
         );

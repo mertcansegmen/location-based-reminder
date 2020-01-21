@@ -13,28 +13,20 @@ public abstract class BaseRepository<T> {
     protected BaseDao<T> dao;
     protected LiveData<List<T>> allItems;
 
-    public void insert(T obj) {
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> dao.insert(obj));
+    private Executor executor;
+
+    public BaseRepository() {
+        executor = Executors.newSingleThreadExecutor();
     }
 
-    public void update(T obj) {
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> dao.update(obj));
-    }
+    public void insert(T obj) { executor.execute(() -> dao.insert(obj)); }
 
-    public void delete(T obj) {
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> dao.delete(obj));
-    }
+    public void update(T obj) { executor.execute(() -> dao.update(obj)); }
 
-    public void deleteAll() {
-        Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> dao.deleteAll());
-    }
+    public void delete(T obj) { executor.execute(() -> dao.delete(obj)); }
 
-    public LiveData<List<T>> getAll() {
-        return allItems;
-    }
+    public void deleteAll() { executor.execute(() -> dao.deleteAll()); }
+
+    public LiveData<List<T>> getAll() { return allItems; }
 
 }

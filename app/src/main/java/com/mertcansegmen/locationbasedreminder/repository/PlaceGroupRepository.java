@@ -21,14 +21,18 @@ public class PlaceGroupRepository {
     private PlaceGroupDao placeGroupDao;
     private LiveData<List<PlaceGroupWithPlaces>> allPlaceGroupsWithPlaces;
 
+    private Executor executor;
+
     public PlaceGroupRepository(Application application) {
         database = AppDatabase.getInstance(application);
+        executor = Executors.newSingleThreadExecutor();
+
         placeGroupDao = database.placeGroupDao();
+
         allPlaceGroupsWithPlaces = placeGroupDao.getAllPlaceGroupsWithPlaces();
     }
 
     public void insert(PlaceGroupWithPlaces placeGroupWithPlaces) {
-        Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() ->
             database.runInTransaction(() -> {
                 long placeGroupId = placeGroupDao.insert(placeGroupWithPlaces.getPlaceGroup());
@@ -40,7 +44,6 @@ public class PlaceGroupRepository {
     }
 
     public void update(PlaceGroupWithPlaces placeGroupWithPlaces) {
-        Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() ->
             database.runInTransaction(() -> {
                 placeGroupDao.deletePlaceGroupRefs(placeGroupWithPlaces.getPlaceGroup().getPlaceGroupId());
@@ -54,7 +57,6 @@ public class PlaceGroupRepository {
     }
 
     public void delete(PlaceGroupWithPlaces placeGroupWithPlaces) {
-        Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() ->
             database.runInTransaction(() -> {
                 placeGroupDao.delete(placeGroupWithPlaces.getPlaceGroup());
@@ -64,7 +66,6 @@ public class PlaceGroupRepository {
     }
 
     public void deleteAll() {
-        Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() ->
             database.runInTransaction(() -> {
                 placeGroupDao.deleteAllPlaceGroups();
