@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -13,13 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.ui.ListingFragment;
 import com.mertcansegmen.locationbasedreminder.ui.addeditplacegroup.AddEditPlaceGroupFragment;
-import com.mertcansegmen.locationbasedreminder.util.Animator;
+import com.mertcansegmen.locationbasedreminder.viewmodel.PlaceGroupsFragmentViewModel;
 
 public class PlaceGroupsFragment extends ListingFragment {
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.ui.ListingDialog;
 import com.mertcansegmen.locationbasedreminder.ui.places.PlaceAdapter;
+import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditReminderFragmentViewModel;
 
 public class PickPlaceDialog extends ListingDialog {
 

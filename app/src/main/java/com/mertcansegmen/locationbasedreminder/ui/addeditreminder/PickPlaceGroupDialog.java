@@ -9,12 +9,12 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.ui.ListingDialog;
 import com.mertcansegmen.locationbasedreminder.ui.placegroups.PlaceGroupWithPlacesAdapter;
+import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditReminderFragmentViewModel;
 
 public class PickPlaceGroupDialog extends ListingDialog {
 

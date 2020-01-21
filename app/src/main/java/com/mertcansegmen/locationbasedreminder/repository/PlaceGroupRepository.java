@@ -29,19 +29,19 @@ public class PlaceGroupRepository {
 
     public void insert(PlaceGroupWithPlaces placeGroupWithPlaces) {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        executor.execute(() ->
             database.runInTransaction(() -> {
                 long placeGroupId = placeGroupDao.insert(placeGroupWithPlaces.getPlaceGroup());
                 for(Place place : placeGroupWithPlaces.getPlaces()) {
                     placeGroupDao.insert(new PlaceGroupPlaceCrossRef(place.getPlaceId(), placeGroupId));
                 }
-            });
-        });
+            })
+        );
     }
 
     public void update(PlaceGroupWithPlaces placeGroupWithPlaces) {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        executor.execute(() ->
             database.runInTransaction(() -> {
                 placeGroupDao.deletePlaceGroupRefs(placeGroupWithPlaces.getPlaceGroup().getPlaceGroupId());
                 placeGroupDao.update(placeGroupWithPlaces.getPlaceGroup());
@@ -49,31 +49,31 @@ public class PlaceGroupRepository {
                     placeGroupDao.insert(new PlaceGroupPlaceCrossRef(place.getPlaceId(),
                             placeGroupWithPlaces.getPlaceGroup().getPlaceGroupId()));
                 }
-            });
-        });
+            })
+        );
     }
 
     public void delete(PlaceGroupWithPlaces placeGroupWithPlaces) {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        executor.execute(() ->
             database.runInTransaction(() -> {
                 placeGroupDao.delete(placeGroupWithPlaces.getPlaceGroup());
                 placeGroupDao.deletePlaceGroupRefs(placeGroupWithPlaces.getPlaceGroup().getPlaceGroupId());
-            });
-        });
+            })
+        );
     }
 
     public void deleteAll() {
         Executor executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
+        executor.execute(() ->
             database.runInTransaction(() -> {
                 placeGroupDao.deleteAllPlaceGroups();
                 placeGroupDao.deleteAllPlaceGroupRefs();
-            });
-        });
+            })
+        );
     }
 
-    public LiveData<List<PlaceGroupWithPlaces>> getAllPlaceGroupsWithPlaces() {
+    public LiveData<List<PlaceGroupWithPlaces>> getAll() {
         return allPlaceGroupsWithPlaces;
     }
 }

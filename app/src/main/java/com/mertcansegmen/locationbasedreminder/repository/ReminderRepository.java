@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class ReminderRepository {
+public class ReminderRepository extends BaseRepository {
 
     private AppDatabase database;
 

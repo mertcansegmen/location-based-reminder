@@ -51,9 +51,9 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <service android:name=".services.ReminderService" />
+        <service android:name=".service.ReminderService" />
 
-        <receiver android:name=".services.NotificationBroadcastReceiver" />
+        <receiver android:name=".service.NotificationBroadcastReceiver" />
 
     </application>
 

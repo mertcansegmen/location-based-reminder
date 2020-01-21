@@ -19,6 +19,7 @@ import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.ui.views.ColorfulChip;
+import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditPlaceGroupFragmentViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

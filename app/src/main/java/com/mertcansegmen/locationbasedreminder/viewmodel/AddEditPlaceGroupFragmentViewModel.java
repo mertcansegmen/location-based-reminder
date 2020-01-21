@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder.ui.addeditplacegroup;
+package com.mertcansegmen.locationbasedreminder.viewmodel;
 
 import android.app.Application;
 
@@ -26,7 +26,7 @@ public class AddEditPlaceGroupFragmentViewModel extends AndroidViewModel {
         super(application);
         placeGroupRepository = new PlaceGroupRepository(application);
         placeRepository = new PlaceRepository(application);
-        allPlaces = placeRepository.getAllPlaces();
+        allPlaces = placeRepository.getAll();
     }
 
     public void insert(PlaceGroupWithPlaces placeGroupWithPlaces) {

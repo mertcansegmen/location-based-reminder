@@ -7,20 +7,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.ui.ListingFragment;
 import com.mertcansegmen.locationbasedreminder.ui.addeditnote.AddEditNoteFragment;
-import com.mertcansegmen.locationbasedreminder.util.Animator;
-
-import timber.log.Timber;
+import com.mertcansegmen.locationbasedreminder.viewmodel.NotesFragmentViewModel;
 
 public class NotesFragment extends ListingFragment {
 
@@ -48,7 +44,7 @@ public class NotesFragment extends ListingFragment {
     }
 
     private void initObserver() {
-        viewModel.getAllNotes().observe(this, notes -> {
+        viewModel.getAll().observe(this, notes -> {
             emptyMessageLayout.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
             adapter.submitList(notes);
         });
@@ -56,7 +52,7 @@ public class NotesFragment extends ListingFragment {
 
     private void setAddButtonClickListener() {
         fab.setOnClickListener(v ->
-                navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment)
+            navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment)
         );
     }
 

@@ -8,17 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.ui.ListingFragment;
 import com.mertcansegmen.locationbasedreminder.ui.addeditplace.AddEditPlaceFragment;
-import com.mertcansegmen.locationbasedreminder.util.Animator;
+import com.mertcansegmen.locationbasedreminder.viewmodel.PlacesFragmentViewModel;
 
 public class PlacesFragment extends ListingFragment {
 
@@ -46,7 +44,7 @@ public class PlacesFragment extends ListingFragment {
     }
 
     private void initObserver() {
-        viewModel.getAllPlaces().observe(this, places -> {
+        viewModel.getAll().observe(this, places -> {
             emptyMessageLayout.setVisibility(places.isEmpty() ? View.VISIBLE : View.GONE);
 
             adapter.submitList(places);

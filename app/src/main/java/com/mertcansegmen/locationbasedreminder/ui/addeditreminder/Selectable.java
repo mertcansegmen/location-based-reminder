@@ -1,7 +1,7 @@
 package com.mertcansegmen.locationbasedreminder.ui.addeditreminder;
 
 /**
- * Interface representing objects that can be selected as a location for a reminder.
+ * Interface representing objects that can be selected for a reminder.
  */
 public interface Selectable {
 

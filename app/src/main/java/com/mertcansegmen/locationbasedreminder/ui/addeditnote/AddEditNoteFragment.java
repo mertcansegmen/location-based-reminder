@@ -23,6 +23,7 @@ import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
+import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditNoteFragmentViewModel;
 
 public class AddEditNoteFragment extends Fragment {
 

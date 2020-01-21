@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder.ui.reminders;
+package com.mertcansegmen.locationbasedreminder.viewmodel;
 
 import android.app.Application;
 

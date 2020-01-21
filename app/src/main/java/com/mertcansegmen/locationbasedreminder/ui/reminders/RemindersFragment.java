@@ -11,14 +11,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
 import com.mertcansegmen.locationbasedreminder.ui.ListingFragment;
 import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminderFragment;
-import com.mertcansegmen.locationbasedreminder.util.Animator;
+import com.mertcansegmen.locationbasedreminder.viewmodel.RemindersFragmentViewModel;
 
 public class RemindersFragment extends ListingFragment {
 

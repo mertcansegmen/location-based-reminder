@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder.ui.addeditreminder;
+package com.mertcansegmen.locationbasedreminder.viewmodel;
 
 import android.app.Application;
 
@@ -9,11 +9,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
-import com.mertcansegmen.locationbasedreminder.model.Reminder;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
 import com.mertcansegmen.locationbasedreminder.repository.PlaceGroupRepository;
 import com.mertcansegmen.locationbasedreminder.repository.PlaceRepository;
 import com.mertcansegmen.locationbasedreminder.repository.ReminderRepository;
+import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.Selectable;
 
 import java.util.List;
 
@@ -32,8 +32,8 @@ public class AddEditReminderFragmentViewModel extends AndroidViewModel {
         reminderRepository = new ReminderRepository(application);
         placeGroupRepository = new PlaceGroupRepository(application);
         placeRepository = new PlaceRepository(application);
-        allPlaces = placeRepository.getAllPlaces();
-        allPlaceGroups = placeGroupRepository.getAllPlaceGroupsWithPlaces();
+        allPlaces = placeRepository.getAll();
+        allPlaceGroups = placeGroupRepository.getAll();
     }
 
     public void insert(ReminderWithNotePlacePlaceGroup reminder) {

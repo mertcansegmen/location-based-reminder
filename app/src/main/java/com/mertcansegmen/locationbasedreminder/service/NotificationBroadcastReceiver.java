@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder.services;
+package com.mertcansegmen.locationbasedreminder.service;
 
 import android.app.Application;
 import android.app.NotificationManager;

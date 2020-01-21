@@ -12,7 +12,7 @@ import com.mertcansegmen.locationbasedreminder.model.Place;
 import java.util.List;
 
 @Dao
-public interface PlaceDao {
+public interface PlaceDao extends BaseDao<Place> {
 
     @Insert
     long insert(Place place);
@@ -24,8 +24,8 @@ public interface PlaceDao {
     void delete(Place place);
 
     @Query("DELETE FROM Place")
-    void deleteAllPlaces();
+    void deleteAll();
 
     @Query("SELECT * FROM Place ORDER BY placeId DESC")
-    LiveData<List<Place>> getAllPlaces();
+    LiveData<List<Place>> getAll();
 }

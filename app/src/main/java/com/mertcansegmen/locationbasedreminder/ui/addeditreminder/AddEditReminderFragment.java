@@ -31,6 +31,7 @@ import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
+import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditReminderFragmentViewModel;
 
 public class AddEditReminderFragment extends Fragment {
 
@@ -137,15 +138,19 @@ public class AddEditReminderFragment extends Fragment {
     }
 
     private void setAddPlaceButtonClickListener() {
-        selectPlaceButton.setOnClickListener(v ->
-            navController.navigate(R.id.action_addEditReminderFragment_to_pickPlaceDialog)
-        );
+        selectPlaceButton.setOnClickListener(v -> {
+            navController.navigate(R.id.action_addEditReminderFragment_to_pickPlaceDialog);
+
+            selectPlaceButton.toggle(); // Prevent toggle
+        });
     }
 
     private void setAddPlaceGroupButtonClickListener() {
-        selectPlaceGroupButton.setOnClickListener(v ->
-            navController.navigate(R.id.action_addEditReminderFragment_to_pickPlaceGroupDialog)
-        );
+        selectPlaceGroupButton.setOnClickListener(v -> {
+            navController.navigate(R.id.action_addEditReminderFragment_to_pickPlaceGroupDialog);
+
+            selectPlaceGroupButton.toggle(); // Prevent toggle
+        });
     }
 
     @Override

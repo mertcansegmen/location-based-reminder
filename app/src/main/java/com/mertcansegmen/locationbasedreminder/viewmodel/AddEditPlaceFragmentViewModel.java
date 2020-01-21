@@ -1,17 +1,14 @@
-package com.mertcansegmen.locationbasedreminder.ui.addeditplace;
+package com.mertcansegmen.locationbasedreminder.viewmodel;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.repository.PlaceRepository;
 
-public class AddEditPlaceFragmentViewModel extends AndroidViewModel {
-
-    private PlaceRepository repository;
+public class AddEditPlaceFragmentViewModel extends BaseViewModel<Place> {
 
     private LatLng lastKnownScreenLocation;
     private Float lastKnownZoom;
@@ -20,10 +17,7 @@ public class AddEditPlaceFragmentViewModel extends AndroidViewModel {
     public AddEditPlaceFragmentViewModel(@NonNull Application application) {
         super(application);
         repository = new PlaceRepository(application);
-    }
-
-    public void delete(Place place) {
-        repository.delete(place);
+        allItems = repository.getAll();
     }
 
     public LatLng getLastKnownScreenLocation() {

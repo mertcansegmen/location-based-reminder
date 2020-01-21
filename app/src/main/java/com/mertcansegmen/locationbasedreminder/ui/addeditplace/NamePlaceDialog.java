@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
+import com.mertcansegmen.locationbasedreminder.viewmodel.NamePlaceDialogViewModel;
 
 public class NamePlaceDialog extends DialogFragment {
 

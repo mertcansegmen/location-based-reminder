@@ -19,8 +19,9 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
-import com.mertcansegmen.locationbasedreminder.services.ReminderService;
+import com.mertcansegmen.locationbasedreminder.service.ReminderService;
 import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
+import com.mertcansegmen.locationbasedreminder.viewmodel.ReminderAdapterViewModel;
 
 public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup, ReminderAdapter.ReminderViewHolder> {
 

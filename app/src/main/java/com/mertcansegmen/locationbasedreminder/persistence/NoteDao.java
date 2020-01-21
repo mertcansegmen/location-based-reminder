@@ -12,7 +12,7 @@ import com.mertcansegmen.locationbasedreminder.model.Note;
 import java.util.List;
 
 @Dao
-public interface NoteDao {
+public interface NoteDao extends BaseDao<Note>{
 
     @Insert
     long insert(Note note);
@@ -24,8 +24,8 @@ public interface NoteDao {
     void delete(Note note);
 
     @Query("DELETE FROM Note WHERE noteId NOT IN (SELECT noteId FROM Reminder)")
-    void deleteAllNotes();
+    void deleteAll();
 
     @Query("SELECT * FROM Note WHERE noteId NOT IN (SELECT noteId FROM Reminder) ORDER BY noteId DESC")
-    LiveData<List<Note>> getAllNotes();
+    LiveData<List<Note>> getAll();
 }

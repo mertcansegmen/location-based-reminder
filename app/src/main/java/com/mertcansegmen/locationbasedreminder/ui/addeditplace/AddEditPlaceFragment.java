@@ -56,6 +56,7 @@ import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.util.DevicePrefs;
+import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditPlaceFragmentViewModel;
 
 public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
