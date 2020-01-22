@@ -1,5 +1,6 @@
 package com.mertcansegmen.locationbasedreminder.ui.addeditreminder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
@@ -27,6 +29,7 @@ import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
+import com.mertcansegmen.locationbasedreminder.service.ReminderService;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
@@ -36,6 +39,9 @@ import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditReminderFragment
 public class AddEditReminderFragment extends Fragment {
 
     public static final String BUNDLE_KEY_REMINDER = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_REMINDER";
+    public static final String BUNDLE_KEY_NOTE_RETRIEVED = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_NOTE_RETRIEVED";
+    public static final String BUNDLE_KEY_PLACE_RETRIEVED = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_PLACE_RETRIEVED";
+    public static final String BUNDLE_KEY_PLACE_GROUP_RETRIEVED = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_PLACE_GROUP_RETRIEVED";
 
     private TextInputEditText titleEditText;
     private TextInputEditText noteEditText;
@@ -71,6 +77,7 @@ public class AddEditReminderFragment extends Fragment {
         setAddPlaceButtonClickListener();
         setAddPlaceGroupButtonClickListener();
         retrieveReminder();
+        retrieveReminderExtras();
 
         return view;
     }
@@ -117,6 +124,27 @@ public class AddEditReminderFragment extends Fragment {
         }
     }
 
+    private void retrieveReminderExtras() {
+        if(getArguments() != null) {
+            boolean noteRetrieved = getArguments().getParcelable(BUNDLE_KEY_NOTE_RETRIEVED) != null;
+            boolean placeRetrieved = getArguments().getParcelable(BUNDLE_KEY_PLACE_RETRIEVED) != null;
+            boolean placeGroupRetrieved = getArguments().getParcelable(BUNDLE_KEY_PLACE_GROUP_RETRIEVED) != null;
+
+            if(noteRetrieved) {
+                Note note = getArguments().getParcelable(BUNDLE_KEY_NOTE_RETRIEVED);
+                titleEditText.setText(note.getTitle());
+                noteEditText.setText(note.getBody());
+            } else if(placeRetrieved) {
+                Place place = getArguments().getParcelable(BUNDLE_KEY_PLACE_RETRIEVED);
+                viewModel.select(place);
+            } else if(placeGroupRetrieved) {
+                PlaceGroupWithPlaces placeGroup = getArguments().getParcelable(BUNDLE_KEY_PLACE_GROUP_RETRIEVED);
+                viewModel.select(placeGroup);
+            }
+        }
+    }
+
+
     private void addChip(Selectable selectable) {
         if(selectable == null) return;
 
@@ -130,11 +158,11 @@ public class AddEditReminderFragment extends Fragment {
         chip.setOnCloseIconClickListener(v -> {
             viewModel.select(null);
             chipGroup.removeView(v);
-            Animator.removeViewWithFadeAnimation(v);
+            Animator.fadeOut(v);
         });
 
         chipGroup.addView(chip);
-        Animator.addViewWithFadeAnimation(chip);
+        Animator.fadeIn(chip);
     }
 
     private void setAddPlaceButtonClickListener() {
@@ -193,8 +221,15 @@ public class AddEditReminderFragment extends Fragment {
         if(inEditMode()) updateCurrentReminder(noteTitle, noteBody, selectable);
         else insertNewReminder(noteTitle, noteBody, selectable);
 
+        startReminderService();
+
         ConfigUtils.closeKeyboard(requireActivity());
         navController.popBackStack();
+    }
+
+    private void startReminderService() {
+        Intent serviceIntent = new Intent(requireContext(), ReminderService.class);
+        ContextCompat.startForegroundService(requireContext(), serviceIntent);
     }
 
     private void insertNewReminder(String title, String body, Selectable selectable) {

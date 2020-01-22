@@ -22,6 +22,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
+import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminderFragment;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditNoteFragmentViewModel;
 
@@ -90,6 +91,9 @@ public class AddEditNoteFragment extends Fragment {
             case R.id.delete:
                 askToDeleteCurrentNote();
                 return true;
+            case R.id.add_to_reminder:
+                addToReminder();
+                return true;
             case android.R.id.home:
                 navController.popBackStack();
                 return true;
@@ -138,6 +142,12 @@ public class AddEditNoteFragment extends Fragment {
 
     private void deleteCurrentNote() {
         viewModel.delete(currentNote);
+    }
+
+    private void addToReminder() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AddEditReminderFragment.BUNDLE_KEY_NOTE_RETRIEVED, currentNote);
+        navController.navigate(R.id.action_addEditNoteFragment_to_addEditReminderFragment, bundle);
     }
 
     private boolean inEditMode() {

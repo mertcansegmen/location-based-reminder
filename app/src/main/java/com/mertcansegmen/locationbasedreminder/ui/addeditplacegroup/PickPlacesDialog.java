@@ -107,7 +107,7 @@ public class PickPlacesDialog extends DialogFragment {
         chip.setText(place.getName());
         chip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_places));
         chipGroup.addView(chip);
-        Animator.addViewWithFadeAnimation(chip);
+        Animator.fadeIn(chip);
 
         chip.setOnClickListener(v -> {
             viewModel.selectPlace(place);
@@ -117,7 +117,7 @@ public class PickPlacesDialog extends DialogFragment {
 
     private void removeChip(ColorfulChip chip) {
         chipGroup.removeView(chip);
-        Animator.removeViewWithFadeAnimation(chip);
+        Animator.fadeOut(chip);
         if(chipGroup.getChildCount() == 0) {
             showNoPlaceMessage();
         }

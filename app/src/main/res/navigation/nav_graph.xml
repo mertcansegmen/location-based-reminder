@@ -78,6 +78,13 @@
         <argument
             android:name="note"
             app:argType="com.mertcansegmen.locationbasedreminder.model.Note"/>
+        <action
+            android:id="@+id/action_addEditNoteFragment_to_addEditReminderFragment"
+            app:destination="@id/addEditReminderFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -88,6 +95,13 @@
         <action
             android:id="@+id/action_addEditPlaceFragment_to_namePlaceDialog"
             app:destination="@id/namePlaceDialog" />
+        <action
+            android:id="@+id/action_addEditPlaceFragment_to_addEditReminderFragment"
+            app:destination="@id/addEditReminderFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -101,6 +115,13 @@
         <action
             android:id="@+id/action_addEditPlaceGroupFragment_to_pickPlacesDialog"
             app:destination="@id/pickPlacesDialog" />
+        <action
+            android:id="@+id/action_addEditPlaceGroupFragment_to_addEditReminderFragment"
+            app:destination="@id/addEditReminderFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <dialog

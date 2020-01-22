@@ -55,6 +55,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
+import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminderFragment;
 import com.mertcansegmen.locationbasedreminder.util.DevicePrefs;
 import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditPlaceFragmentViewModel;
 
@@ -323,6 +324,9 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
             case R.id.delete:
                 askToDeletePlace();
                 return true;
+            case R.id.add_to_reminder:
+                addToReminder();
+                return true;
             case android.R.id.home:
                 navController.popBackStack();
                 return true;
@@ -363,6 +367,12 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     private void deleteCurrentPlace() {
         viewModel.delete(currentPlace);
+    }
+
+    private void addToReminder() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AddEditReminderFragment.BUNDLE_KEY_PLACE_RETRIEVED, currentPlace);
+        navController.navigate(R.id.action_addEditPlaceFragment_to_addEditReminderFragment, bundle);
     }
 
     private boolean inEditMode() {

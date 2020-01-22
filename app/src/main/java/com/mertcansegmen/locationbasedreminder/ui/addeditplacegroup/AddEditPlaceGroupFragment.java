@@ -30,6 +30,7 @@ import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroup;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
+import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminderFragment;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
 import com.mertcansegmen.locationbasedreminder.ui.views.ColorfulChip;
@@ -151,14 +152,14 @@ public class AddEditPlaceGroupFragment extends Fragment {
         chip.setChipIcon(requireContext().getResources().getDrawable(R.drawable.ic_places));
 
         chipGroup.addView(chip, chipGroup.getChildCount() - 1);
-        Animator.addViewWithFadeAnimation(chip);
+        Animator.fadeIn(chip);
 
         chip.setOnCloseIconClickListener(v -> removeChip(chip));
     }
 
     private void removeChip(ColorfulChip chip) {
         chipGroup.removeView(chip);
-        Animator.removeViewWithFadeAnimation(chip);
+        Animator.fadeOut(chip);
     }
 
     private void createAddPlaceChip() {
@@ -209,6 +210,9 @@ public class AddEditPlaceGroupFragment extends Fragment {
                 return true;
             case R.id.delete:
                 askToDeletePlaceGroup();
+                return true;
+            case R.id.add_to_reminder:
+                addToReminder();
                 return true;
             case android.R.id.home:
                 navController.popBackStack();
@@ -261,6 +265,12 @@ public class AddEditPlaceGroupFragment extends Fragment {
 
     private void deletePlaceGroup() {
         viewModel.delete(currentPlaceGroup);
+    }
+
+    private void addToReminder() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AddEditReminderFragment.BUNDLE_KEY_PLACE_GROUP_RETRIEVED, currentPlaceGroup);
+        navController.navigate(R.id.action_addEditPlaceGroupFragment_to_addEditReminderFragment, bundle);
     }
 
     private boolean inEditMode() {

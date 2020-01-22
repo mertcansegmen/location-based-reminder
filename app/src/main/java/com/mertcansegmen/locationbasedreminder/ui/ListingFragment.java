@@ -34,8 +34,6 @@ public abstract class ListingFragment extends BaseFragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         fab = view.findViewById(R.id.fab);
 
-        Animator.animateBounce(fab);
-
         configureRecyclerView();
     }
 
