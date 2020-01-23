@@ -99,4 +99,9 @@ public class PlaceGroupsFragment extends ListingFragment {
                 .setNegativeButton(getString(R.string.cancel), null)
                 .show();
     }
+
+    @Override
+    protected void navigateSettings() {
+        navController.navigate(R.id.action_placeGroupsFragment_to_settingsFragment);
+    }
 }

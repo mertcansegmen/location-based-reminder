@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.util.AdapterDataObserver;
-import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 import com.mertcansegmen.locationbasedreminder.util.SpacingItemDecoration;
 
@@ -78,11 +77,11 @@ public abstract class ListingFragment extends BaseFragment {
             public void onScrolled(RecyclerView recyclerView, int dx,int dy){
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dy >0) { // Scroll Down
+                if (dy > 0) { // Scroll Down
                     if (fab.isExtended()) {
                         fab.shrink();
                     }
-                } else if (dy <0) { // Scroll Up
+                } else if (dy < 0) { // Scroll Up
                     if (!fab.isExtended()) {
                         fab.extend();
                     }
@@ -119,7 +118,7 @@ public abstract class ListingFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.items_menu, menu);
+        inflater.inflate(R.menu.listing_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -128,6 +127,9 @@ public abstract class ListingFragment extends BaseFragment {
         switch (item.getItemId()) {
             case R.id.delete_all:
                 onDeleteAllOptionSelected();
+                return true;
+            case R.id.settings:
+                navigateSettings();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -138,4 +140,9 @@ public abstract class ListingFragment extends BaseFragment {
      * Implement what happens when user selects the option "Delete All" in here.
      */
     protected abstract void onDeleteAllOptionSelected();
+
+    /**
+     * Concrete subclasses must navigate to settings fragment here.
+     */
+    protected abstract void navigateSettings();
 }

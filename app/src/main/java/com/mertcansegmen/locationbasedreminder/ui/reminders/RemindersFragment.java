@@ -97,4 +97,9 @@ public class RemindersFragment extends ListingFragment {
                 .setNegativeButton(getString(R.string.cancel), null)
                 .show();
     }
+
+    @Override
+    protected void navigateSettings() {
+        navController.navigate(R.id.action_remindersFragment_to_settingsFragment);
+    }
 }

@@ -1,13 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="settings" />
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:weightSum="8" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/default_range"
+                android:textSize="18sp"
+                android:layout_weight="5" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_default_range"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:startIconDrawable="@drawable/ic_place_radius"
+                android:layout_weight="3" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_default_range"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:textSize="18sp"
+            android:text="@string/rate_us" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_height="wrap_content"
+            android:text="@string/rate_us_body" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_rate_us"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_play_store"
+            android:padding="0dp"
+            app:iconGravity="textStart"
+            android:text="@string/rate_us_button" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="18sp"
+            android:text="@string/feedback" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_height="wrap_content"
+            android:text="@string/feedback_body" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_send_feedback"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:layout_marginTop="8dp"
+            android:padding="0dp"
+            app:icon="@drawable/ic_email"
+            app:iconGravity="textStart"
+            android:text="@string/feedback_button" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="18sp"
+            android:text="@string/contribute" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/contribute_body" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_see_on_github"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="0dp"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_github"
+            app:iconGravity="textStart"
+            android:text="@string/contribute_button" />
+
+        <TextView
+            android:id="@+id/txt_app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name_and_version"
+            android:textSize="18sp"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/ic_icon_big"
+            android:drawablePadding="8dp" />
+
+    </LinearLayout>
+
+</ScrollView>
