@@ -95,5 +95,8 @@
     <string name="contribute_body">Location Based Reminders is an open-source project for the Android platform. You can contribute to this project on GitHub.</string>
     <string name="contribute_button">See project on Github</string>
     <string name="app_name_and_version">Location Based Reminder\n v%s</string>
+    <string name="feedback_subject">Location Based Reminder Feedback</string>
+    <string name="email">Email</string>
+    <string name="enter_valid_range">Please enter a value between 10 and 1000</string>
 
 </resources>

@@ -11,44 +11,61 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp"
-            android:gravity="center"
-            android:weightSum="8" >
+            android:layout_height="wrap_content" >
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/layout_default_range"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/default_range"
-                android:textSize="18sp"
-                android:layout_weight="5" />
+                android:orientation="horizontal"
+                android:layout_marginTop="24dp"
+                android:weightSum="8"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_default_range"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:startIconDrawable="@drawable/ic_place_radius"
-                android:layout_weight="3" >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_default_range"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:inputType="number" />
+                    android:text="@string/default_range"
+                    android:textSize="18sp"
+                    android:layout_weight="5" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_layout_default_range"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:startIconDrawable="@drawable/ic_place_radius"
+                    android:layout_weight="3" >
 
-        </LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_default_range"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="92dp"
+                android:text="@string/save"
+                app:layout_constraintTop_toTopOf="@+id/layout_default_range"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="32dp"
             android:textSize="18sp"
             android:text="@string/rate_us" />
 

@@ -63,8 +63,8 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     public static final String BUNDLE_KEY_PLACE = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_PLACE";
     private static final String BUNDLE_KEY_MAP_VIEW = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_MAP_VIEW";
-    private static final String PREF_KEY_RADIUS = "com.mertcansegmen.locationbasedreminder.PREF_KEY_RADIUS";
-    private static final int DEFAULT_RADIUS = 100;
+    public static final String PREF_KEY_DEFAULT_RANGE = "com.mertcansegmen.locationbasedreminder.PREF_KEY_DEFAULT_RANGE";
+    public static final int DEFAULT_RANGE = 100;
     private static final float DEFAULT_ZOOM = 15F;
 
     private TextView radiusTextView;
@@ -161,7 +161,7 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
                 goToLocation(currentPlace.getLatitude(), currentPlace.getLongitude(), DEFAULT_ZOOM);
                 viewModel.setRadius(currentPlace.getRadius());
             } else {
-                viewModel.setRadius(DevicePrefs.getPrefs(requireContext(), PREF_KEY_RADIUS, DEFAULT_RADIUS));
+                viewModel.setRadius(DevicePrefs.getPrefs(requireContext(), PREF_KEY_DEFAULT_RANGE, DEFAULT_RANGE));
             }
         } else {
             // Map restarted due to configuration change such as screen rotation, language change etc..
