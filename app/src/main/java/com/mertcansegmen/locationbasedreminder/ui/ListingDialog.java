@@ -12,12 +12,12 @@ import androidx.fragment.app.DialogFragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.util.AdapterDataObserver;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
-import com.mertcansegmen.locationbasedreminder.util.SpacingItemDecoration;
 
 public abstract class ListingDialog extends DialogFragment {
 
@@ -51,11 +51,7 @@ public abstract class ListingDialog extends DialogFragment {
 
     private void configureRecyclerView() {
         initAdapter();
-        // Set column count 2 if phone is in landscape mode, set it 1 if it's in portrait mode.
-        int columnCount = ConfigUtils.inLandscapeMode(requireContext())? 2 : 1;
-        int spacingInDp = 10;
-        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), columnCount));
-        recyclerView.addItemDecoration(new SpacingItemDecoration(columnCount, spacingInDp, getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(getAdapter());
 

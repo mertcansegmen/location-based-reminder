@@ -34,17 +34,17 @@ public class PlaceGroupsFragment extends ListingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initViewModel();
-        initObserver();
         setAddButtonClickListener();
         setAdapterItemClickListener();
     }
 
-    private void initViewModel() {
+    @Override
+    protected void initViewModel() {
         viewModel = ViewModelProviders.of(this).get(PlaceGroupsFragmentViewModel.class);
     }
 
-    private void initObserver() {
+    @Override
+    protected void initListObserver() {
         viewModel.getAllPlaceGroupsWithPlaces().observe(this, placeGroupsWithPlaces -> {
             emptyMessageLayout.setVisibility(placeGroupsWithPlaces.isEmpty() ? View.VISIBLE : View.GONE);
 

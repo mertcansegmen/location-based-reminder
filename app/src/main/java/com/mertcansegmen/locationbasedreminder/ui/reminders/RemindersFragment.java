@@ -33,17 +33,17 @@ public class RemindersFragment extends ListingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initViewModel();
-        initObserver();
         setAddButtonClickListener();
         setAdapterItemClickListener();
     }
 
-    private void initViewModel() {
+    @Override
+    protected void initViewModel() {
         viewModel = ViewModelProviders.of(this).get(RemindersFragmentViewModel.class);
     }
 
-    private void initObserver() {
+    @Override
+    protected void initListObserver() {
         viewModel.getAllReminders().observe(this, reminders -> {
             emptyMessageLayout.setVisibility(reminders.isEmpty() ? View.VISIBLE : View.GONE);
             adapter.submitList(reminders);

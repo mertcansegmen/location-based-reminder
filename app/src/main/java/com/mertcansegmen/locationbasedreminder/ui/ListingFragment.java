@@ -9,17 +9,21 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.util.AdapterDataObserver;
-import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
-import com.mertcansegmen.locationbasedreminder.util.SpacingItemDecoration;
+import com.mertcansegmen.locationbasedreminder.util.DevicePrefs;
 
 public abstract class ListingFragment extends BaseFragment {
+
+    private static final String PREF_KEY_LISTING_LAYOUT = "com.mertcansegmen.locationbasedreminder.PREF_KEY_LISTING_LAYOUT";
+    private static final int GRID_LAYOUT = 0;
+    private static final int LINEAR_LAYOUT = 1;
 
     protected LinearLayout emptyMessageLayout;
     private RecyclerView recyclerView;
@@ -33,18 +37,21 @@ public abstract class ListingFragment extends BaseFragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         fab = view.findViewById(R.id.fab);
 
+        initViewModel();
         configureRecyclerView();
     }
 
+    protected abstract void initViewModel();
+
     private void configureRecyclerView() {
         initAdapter();
-        // Set column count 2 if phone is in landscape mode, set it 1 if it's in portrait mode.
-        int columnCount = ConfigUtils.inLandscapeMode(requireContext()) ? 2 : 1;
-        int spacingInDp = 10;
-        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), columnCount));
-        recyclerView.addItemDecoration(new SpacingItemDecoration(columnCount, spacingInDp, getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(getAdapter());
+        if(getLayoutPref() == GRID_LAYOUT) {
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        } else if(getLayoutPref() == LINEAR_LAYOUT) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        }
 
         // Register the custom DataObserver
         getAdapter().registerAdapterDataObserver(new AdapterDataObserver(recyclerView));
@@ -54,6 +61,8 @@ public abstract class ListingFragment extends BaseFragment {
 
         // Set ScrollListener
         setRecyclerViewScrollListener();
+
+        initListObserver();
     }
 
     /**
@@ -66,6 +75,8 @@ public abstract class ListingFragment extends BaseFragment {
      * @return recycler view adapter.
      */
     protected abstract RecyclerView.Adapter getAdapter();
+
+    protected abstract void initListObserver();
 
     /**
      * Adds a scroll listener to recycler view that makes floating action button shrink when
@@ -119,6 +130,9 @@ public abstract class ListingFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.listing_menu, menu);
+
+        configureLayoutMenuItemIcon(menu.getItem(1));
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -130,6 +144,11 @@ public abstract class ListingFragment extends BaseFragment {
                 return true;
             case R.id.settings:
                 navigateSettings();
+                return true;
+            case R.id.layout:
+                swapRecyclerViewLayout();
+                configureLayoutMenuItemIcon(item);
+                configureRecyclerView();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -145,4 +164,21 @@ public abstract class ListingFragment extends BaseFragment {
      * Concrete subclasses must navigate to settings fragment here.
      */
     protected abstract void navigateSettings();
+
+    private void swapRecyclerViewLayout() {
+        DevicePrefs.setPrefs(requireContext(), PREF_KEY_LISTING_LAYOUT,
+                getLayoutPref() == GRID_LAYOUT ? LINEAR_LAYOUT : GRID_LAYOUT);
+    }
+
+    private void configureLayoutMenuItemIcon(MenuItem menuItem) {
+        if(getLayoutPref() == GRID_LAYOUT) {
+            menuItem.setIcon(R.drawable.ic_linear_layout);
+        } else if(getLayoutPref() == LINEAR_LAYOUT) {
+            menuItem.setIcon(R.drawable.ic_grid_layout);
+        }
+    }
+
+    private int getLayoutPref() {
+        return DevicePrefs.getPrefs(requireContext(), PREF_KEY_LISTING_LAYOUT, LINEAR_LAYOUT);
+    }
 }

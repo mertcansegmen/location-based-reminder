@@ -98,5 +98,6 @@
     <string name="feedback_subject">Location Based Reminder Feedback</string>
     <string name="email">Email</string>
     <string name="enter_valid_range">Please enter a value between 10 and 1000</string>
+    <string name="change_layout">Change Layout</string>
 
 </resources>

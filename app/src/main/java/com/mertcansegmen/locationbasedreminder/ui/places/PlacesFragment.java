@@ -33,17 +33,17 @@ public class PlacesFragment extends ListingFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initViewModel();
-        initObserver();
         setAddButtonClickListener();
         setAdapterItemClickListener();
     }
 
-    private void initViewModel() {
+    @Override
+    protected void initViewModel() {
         viewModel = ViewModelProviders.of(this).get(PlacesFragmentViewModel.class);
     }
 
-    private void initObserver() {
+    @Override
+    protected void initListObserver() {
         viewModel.getAll().observe(this, places -> {
             emptyMessageLayout.setVisibility(places.isEmpty() ? View.VISIBLE : View.GONE);
 

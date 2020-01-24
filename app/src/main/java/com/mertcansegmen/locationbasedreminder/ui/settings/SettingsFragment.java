@@ -29,7 +29,7 @@ import static com.mertcansegmen.locationbasedreminder.ui.addeditplace.AddEditPla
 
 public class SettingsFragment extends BaseFragment {
 
-    private static final String PLAY_STORE_URL = "market://details?id=com.mertcansegmen.whenwillidie";
+    private static final String PLAY_STORE_URL = "market://details?id=com.mertcansegmen.locationbasedreminder";
     private static final String GITHUB_URL = "https://github.com/mertcansegmen/location-based-reminder";
     private static final String EMAIL_ADDRESS = "mertcan.segmen@gmail.com";
 
