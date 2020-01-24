@@ -46,8 +46,9 @@ public class PlacesFragment extends ListingFragment {
     protected void initListObserver() {
         viewModel.getAll().observe(this, places -> {
             emptyMessageLayout.setVisibility(places.isEmpty() ? View.VISIBLE : View.GONE);
-
             adapter.submitList(places);
+
+            swipeRefreshLayout.setRefreshing(false);
         });
     }
 

@@ -47,8 +47,9 @@ public class PlaceGroupsFragment extends ListingFragment {
     protected void initListObserver() {
         viewModel.getAllPlaceGroupsWithPlaces().observe(this, placeGroupsWithPlaces -> {
             emptyMessageLayout.setVisibility(placeGroupsWithPlaces.isEmpty() ? View.VISIBLE : View.GONE);
-
             adapter.submitList(placeGroupsWithPlaces);
+
+            swipeRefreshLayout.setRefreshing(false);
         });
     }
 

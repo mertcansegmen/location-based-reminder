@@ -47,6 +47,8 @@ public class NotesFragment extends ListingFragment {
         viewModel.getAll().observe(this, notes -> {
             emptyMessageLayout.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
             adapter.submitList(notes);
+
+            swipeRefreshLayout.setRefreshing(false);
         });
     }
 

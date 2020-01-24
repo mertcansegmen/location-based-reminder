@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.mertcansegmen.locationbasedreminder.R;
@@ -25,6 +26,7 @@ public abstract class ListingFragment extends BaseFragment {
     private static final int GRID_LAYOUT = 0;
     private static final int LINEAR_LAYOUT = 1;
 
+    protected SwipeRefreshLayout swipeRefreshLayout;
     protected LinearLayout emptyMessageLayout;
     private RecyclerView recyclerView;
     protected ExtendedFloatingActionButton fab;
@@ -33,12 +35,14 @@ public abstract class ListingFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         emptyMessageLayout = view.findViewById(R.id.empty_msg_layout);
         recyclerView = view.findViewById(R.id.recycler_view);
         fab = view.findViewById(R.id.fab);
 
         initViewModel();
         configureRecyclerView();
+        setSwipeRefreshListener();
     }
 
     protected abstract void initViewModel();
@@ -126,6 +130,10 @@ public abstract class ListingFragment extends BaseFragment {
      * @param direction  swipe direction
      */
     protected abstract void onAdapterItemSwiped(RecyclerView.ViewHolder viewHolder, int direction);
+
+    private void setSwipeRefreshListener() {
+        swipeRefreshLayout.setOnRefreshListener(() -> initListObserver());
+    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {

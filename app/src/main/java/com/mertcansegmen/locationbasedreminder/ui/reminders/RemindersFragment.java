@@ -47,6 +47,8 @@ public class RemindersFragment extends ListingFragment {
         viewModel.getAllReminders().observe(this, reminders -> {
             emptyMessageLayout.setVisibility(reminders.isEmpty() ? View.VISIBLE : View.GONE);
             adapter.submitList(reminders);
+
+            swipeRefreshLayout.setRefreshing(false);
         });
     }
 
