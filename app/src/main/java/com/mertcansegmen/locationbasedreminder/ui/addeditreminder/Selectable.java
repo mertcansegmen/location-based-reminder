@@ -1,9 +1,14 @@
 package com.mertcansegmen.locationbasedreminder.ui.addeditreminder;
 
+import android.view.View;
+
 /**
  * Interface representing objects that can be selected for a reminder.
  */
 public interface Selectable {
+
+    int PLACE = 0;
+    int PLACE_GROUP = 1;
 
     /**
      * @return the id of the selectable object
@@ -22,4 +27,8 @@ public interface Selectable {
      */
     int getDisplayIcon();
 
+    /**
+     * @return the type of the selectable object
+     */
+    int getType();
 }

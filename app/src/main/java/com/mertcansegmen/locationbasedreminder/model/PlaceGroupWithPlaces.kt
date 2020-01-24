@@ -30,4 +30,8 @@ data class PlaceGroupWithPlaces(
     override fun getDisplayIcon(): Int {
         return R.drawable.ic_place_groups_small
     }
+
+    override fun getType(): Int {
+        return Selectable.PLACE_GROUP
+    }
 }

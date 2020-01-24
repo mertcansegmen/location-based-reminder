@@ -235,8 +235,8 @@ public class AddEditReminderFragment extends Fragment {
     private void insertNewReminder(String title, String body, Selectable selectable) {
         ReminderWithNotePlacePlaceGroup reminder = new ReminderWithNotePlacePlaceGroup();
         reminder.setNote(new Note(title, body));
-        reminder.setPlace(selectable instanceof Place ? (Place) selectable : null);
-        reminder.setPlaceGroupWithPlaces(selectable instanceof PlaceGroupWithPlaces ?
+        reminder.setPlace(selectable.getType() == Selectable.PLACE ? (Place) selectable : null);
+        reminder.setPlaceGroupWithPlaces(selectable.getType() == Selectable.PLACE_GROUP ?
                 (PlaceGroupWithPlaces) selectable : null);
         viewModel.insert(reminder);
     }
@@ -244,9 +244,9 @@ public class AddEditReminderFragment extends Fragment {
     private void updateCurrentReminder(String title, String body, Selectable selectable) {
         currentReminder.getNote().setTitle(title);
         currentReminder.getNote().setBody(body);
-        currentReminder.setPlace(selectable instanceof Place ?
+        currentReminder.setPlace(selectable.getType() == Selectable.PLACE ?
                 (Place) selectable : null);
-        currentReminder.setPlaceGroupWithPlaces(selectable instanceof PlaceGroupWithPlaces ?
+        currentReminder.setPlaceGroupWithPlaces(selectable.getType() == Selectable.PLACE_GROUP ?
                 (PlaceGroupWithPlaces) selectable : null);
         viewModel.update(currentReminder);
     }

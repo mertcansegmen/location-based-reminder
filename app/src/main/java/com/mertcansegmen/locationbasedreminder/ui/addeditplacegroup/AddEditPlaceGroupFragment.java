@@ -104,8 +104,8 @@ public class AddEditPlaceGroupFragment extends Fragment {
     }
 
     /**
-     * Scroll to bottom on create in case of chips doesn't fit screen, because add place chip is at
-     * the bottom.
+     * Scroll to bottom on create just in case chips won't fit in screen, because add place chip is
+     * at the bottom.
      */
     private void scrollToBottom() {
         scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));

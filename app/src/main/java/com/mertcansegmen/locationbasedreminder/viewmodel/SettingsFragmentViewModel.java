@@ -1,4 +1,4 @@
-package com.mertcansegmen.locationbasedreminder.ui.settings;
+package com.mertcansegmen.locationbasedreminder.viewmodel;
 
 import android.app.Application;
 
@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.mertcansegmen.locationbasedreminder.R;
+import com.mertcansegmen.locationbasedreminder.ui.settings.SettingsFormState;
 import com.mertcansegmen.locationbasedreminder.util.DevicePrefs;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +29,7 @@ public class SettingsFragmentViewModel extends AndroidViewModel {
      *
      * @param newRange range value retrieved from default range edit text
      */
-    void rangeValueChanged(String newRange) {
+    public void rangeValueChanged(String newRange) {
         if(isRangeValueValid(newRange)){
             // Range value is valid
             if(getSavedRange() == Integer.parseInt(newRange)) {
@@ -57,11 +58,11 @@ public class SettingsFragmentViewModel extends AndroidViewModel {
     /**
      * @return default range saved in shared preferences
      */
-    int getSavedRange() {
+    public int getSavedRange() {
         return DevicePrefs.getPrefs(getApplication(), PREF_KEY_DEFAULT_RANGE, DEFAULT_RANGE);
     }
 
-    LiveData<SettingsFormState> getSettingsFormState() {
+    public LiveData<SettingsFormState> getSettingsFormState() {
         return settingsFormState;
     }
 }

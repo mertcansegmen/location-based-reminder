@@ -32,4 +32,8 @@ data class Place(
     override fun getDisplayIcon(): Int {
         return R.drawable.ic_places
     }
+
+    override fun getType(): Int {
+        return Selectable.PLACE
+    }
 }

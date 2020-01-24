@@ -24,6 +24,7 @@ import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.ui.BaseFragment;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 import com.mertcansegmen.locationbasedreminder.util.DevicePrefs;
+import com.mertcansegmen.locationbasedreminder.viewmodel.SettingsFragmentViewModel;
 
 import static com.mertcansegmen.locationbasedreminder.ui.addeditplace.AddEditPlaceFragment.PREF_KEY_DEFAULT_RANGE;
 

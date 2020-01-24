@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,8 +30,7 @@ public class PickPlacesDialog extends DialogFragment {
     public static final String BUNDLE_KEY_SELECTED_PLACES = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_SELECTED_PLACES";
 
     private ChipGroup chipGroup;
-    private MaterialButton okButton;
-    private MaterialButton createNewPlaceButton;
+    private ImageButton createNewPlaceButton;
 
     private List<Place> selectedPlaces;
 
@@ -44,14 +44,12 @@ public class PickPlacesDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_pick_places, container, false);
 
         chipGroup = view.findViewById(R.id.chip_group);
-        okButton = view.findViewById(R.id.btn_ok);
         createNewPlaceButton = view.findViewById(R.id.btn_create_new_place);
 
         viewModel = ViewModelProviders.of(requireActivity()).get(AddEditPlaceGroupFragmentViewModel.class);
 
         setObserver();
         retrievePlaces();
-        setOkButtonClickListener();
         setCreateNewPlaceButtonClickListener();
 
         return view;
@@ -77,10 +75,6 @@ public class PickPlacesDialog extends DialogFragment {
         if(getArguments() != null) {
             selectedPlaces = getArguments().getParcelableArrayList(BUNDLE_KEY_SELECTED_PLACES);
         }
-    }
-
-    private void setOkButtonClickListener() {
-        okButton.setOnClickListener(v -> dismiss());
     }
 
     private void setCreateNewPlaceButtonClickListener() {
