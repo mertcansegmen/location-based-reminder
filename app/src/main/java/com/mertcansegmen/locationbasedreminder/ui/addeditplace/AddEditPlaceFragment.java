@@ -60,6 +60,8 @@ import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminde
 import com.mertcansegmen.locationbasedreminder.util.DevicePrefs;
 import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditPlaceFragmentViewModel;
 
+import timber.log.Timber;
+
 public class AddEditPlaceFragment extends AddEditFragment implements OnMapReadyCallback, LocationListener {
 
     public static final String BUNDLE_KEY_PLACE = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_PLACE";
@@ -299,8 +301,8 @@ public class AddEditPlaceFragment extends AddEditFragment implements OnMapReadyC
                 Toast.makeText(requireContext(), R.string.grant_location_permission, Toast.LENGTH_SHORT).show();
             }
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, this);
     }
 
     @Override
@@ -348,6 +350,7 @@ public class AddEditPlaceFragment extends AddEditFragment implements OnMapReadyC
 
     @Override
     public void onLocationChanged(Location location) {
+        Timber.i("x");
         if(location != null && isFirstMapStart() && !inEditMode()) {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM);
@@ -375,6 +378,7 @@ public class AddEditPlaceFragment extends AddEditFragment implements OnMapReadyC
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+        locationManager.removeUpdates(this);
     }
 
     @Override

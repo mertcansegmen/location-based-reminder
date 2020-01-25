@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Looper;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -26,6 +27,9 @@ import com.mertcansegmen.locationbasedreminder.repository.ReminderRepository;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static com.mertcansegmen.locationbasedreminder.App.CHANNEL_ID;
 
@@ -73,17 +77,29 @@ public class ReminderService extends Service implements LocationListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(reminders != null && !reminders.isEmpty()) {
-            startLocationListener();
-        }
+
+        startLocationListenerWithTimeOut();
 
         return START_STICKY;
     }
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    /**
+     * Starts location listener after 3 seconds. When location listener starts, it checks for active
+     * reminders in database. If listener starts immediately, it won't see the previously set
+     * reminder since db operations are being executed asynchronously.
+     */
+    private void startLocationListenerWithTimeOut() {
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(reminders != null && !reminders.isEmpty()) {
+                startLocationListener();
+            }
+        });
     }
 
     private void startLocationListener() {
@@ -94,8 +110,8 @@ public class ReminderService extends Service implements LocationListener {
                 Toast.makeText(getApplicationContext(), R.string.grant_location_permission, Toast.LENGTH_SHORT).show();
             }
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, this, Looper.getMainLooper());
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, this, Looper.getMainLooper());
     }
 
     @Override
@@ -120,6 +136,8 @@ public class ReminderService extends Service implements LocationListener {
                     }
                 }
             }
+        } else {
+            locationManager.removeUpdates(this);
         }
     }
 
@@ -188,5 +206,11 @@ public class ReminderService extends Service implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }
