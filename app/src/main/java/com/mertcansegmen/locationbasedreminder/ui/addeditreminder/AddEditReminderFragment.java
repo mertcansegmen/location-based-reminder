@@ -30,13 +30,14 @@ import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceGroup;
 import com.mertcansegmen.locationbasedreminder.service.ReminderService;
+import com.mertcansegmen.locationbasedreminder.ui.AddEditFragment;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditReminderFragmentViewModel;
 
-public class AddEditReminderFragment extends Fragment {
+public class AddEditReminderFragment extends AddEditFragment {
 
     public static final String BUNDLE_KEY_REMINDER = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_REMINDER";
     public static final String BUNDLE_KEY_NOTE_RETRIEVED = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_NOTE_RETRIEVED";
@@ -54,39 +55,35 @@ public class AddEditReminderFragment extends Fragment {
 
     private AddEditReminderFragmentViewModel viewModel;
 
-    private NavController navController;
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_edit_reminder, container, false);
-        setHasOptionsMenu(true);
-
-        titleEditText = view.findViewById(R.id.txt_title);
-        noteEditText = view.findViewById(R.id.txt_note);
-        noPlaceTextView = view.findViewById(R.id.txt_no_place);
-        chipGroup = view.findViewById(R.id.chip_group);
-        selectPlaceButton = view.findViewById(R.id.btn_select_place);
-        selectPlaceGroupButton = view.findViewById(R.id.btn_select_place_group);
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        viewModel = ViewModelProviders.of(requireActivity()).get(AddEditReminderFragmentViewModel.class);
-
-        setObserver();
-        setAddPlaceButtonClickListener();
-        setAddPlaceGroupButtonClickListener();
-        retrieveReminder();
-        retrieveReminderExtras();
-
-        return view;
+    protected View inflateFragment(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_add_edit_reminder, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        navController = Navigation.findNavController(view);
+        initViews(view);
+        initViewModel();
+        setObserver();
+        setAddPlaceButtonClickListener();
+        setAddPlaceGroupButtonClickListener();
+        retrieveReminder();
+        retrieveReminderExtras();
+    }
+
+    private void initViews(View view) {
+        titleEditText = view.findViewById(R.id.txt_title);
+        noteEditText = view.findViewById(R.id.txt_note);
+        noPlaceTextView = view.findViewById(R.id.txt_no_place);
+        chipGroup = view.findViewById(R.id.chip_group);
+        selectPlaceButton = view.findViewById(R.id.btn_select_place);
+        selectPlaceGroupButton = view.findViewById(R.id.btn_select_place_group);
+    }
+
+    private void initViewModel() {
+        viewModel = ViewModelProviders.of(requireActivity()).get(AddEditReminderFragmentViewModel.class);
     }
 
     @Override
@@ -188,25 +185,16 @@ public class AddEditReminderFragment extends Fragment {
         } else {
             inflater.inflate(R.menu.add_menu, menu);
         }
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.save:
-                saveReminder();
-                return true;
-            case R.id.delete:
-                askToDeleteReminder();
-                return true;
-            case android.R.id.home:
-                navController.popBackStack();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+    protected void saveMenuItemClicked() { saveReminder(); }
+
+    @Override
+    protected void deleteItem() { deleteReminder(); }
+
+    @Override
+    protected void addToReminderMenuItemClicked() { } // ignore for reminders
 
     private void saveReminder() {
         String noteTitle = titleEditText.getText().toString().trim();
@@ -251,23 +239,12 @@ public class AddEditReminderFragment extends Fragment {
         viewModel.update(currentReminder);
     }
 
-    private void askToDeleteReminder() {
-        new MaterialAlertDialogBuilder(requireContext())
-                .setMessage(getString(R.string.msg_delete_reminder))
-                .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
-                    deleteReminder();
-                    ConfigUtils.closeKeyboard(requireActivity());
-                    navController.popBackStack();
-                })
-                .setNegativeButton(getString(R.string.cancel), null)
-                .show();
-    }
-
     private void deleteReminder() {
         viewModel.delete(currentReminder);
     }
 
-    private boolean inEditMode() {
+    @Override
+    protected boolean inEditMode() {
         return currentReminder != null;
     }
 }

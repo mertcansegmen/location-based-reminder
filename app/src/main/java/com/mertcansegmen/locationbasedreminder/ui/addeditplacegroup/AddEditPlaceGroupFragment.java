@@ -29,6 +29,7 @@ import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroup;
 import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
+import com.mertcansegmen.locationbasedreminder.ui.AddEditFragment;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminderFragment;
 import com.mertcansegmen.locationbasedreminder.util.Animator;
@@ -40,7 +41,7 @@ import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditPlaceGroupFragme
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddEditPlaceGroupFragment extends Fragment {
+public class AddEditPlaceGroupFragment extends AddEditFragment {
 
     public static final String BUNDLE_KEY_PLACE_GROUP = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_PLACE_GROUP";
 
@@ -53,37 +54,33 @@ public class AddEditPlaceGroupFragment extends Fragment {
 
     private AddEditPlaceGroupFragmentViewModel viewModel;
 
-    private NavController navController;
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_edit_place_group, container, false);
-        setHasOptionsMenu(true);
-
-        placeGroupNameEditTextLayout = view.findViewById(R.id.txt_place_group_name_layout);
-        placeGroupNameEditText = view.findViewById(R.id.txt_place_group_name);
-        chipGroup = view.findViewById(R.id.chip_group);
-        scrollView = view.findViewById(R.id.scroll_view);
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        viewModel = ViewModelProviders.of(requireActivity()).get(AddEditPlaceGroupFragmentViewModel.class);
-
-        setObserver();
-        createAddPlaceChip();
-        retrievePlaceGroup();
-        scrollToBottom();
-        setTextChangedListener();
-
-        return view;
+    protected View inflateFragment(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_add_edit_place_group, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        navController = Navigation.findNavController(view);
+        initViews(view);
+        initViewModel();
+        setObserver();
+        createAddPlaceChip();
+        retrievePlaceGroup();
+        scrollToBottom();
+        setTextChangedListener();
+    }
+
+    private void initViews(View view) {
+        placeGroupNameEditTextLayout = view.findViewById(R.id.txt_place_group_name_layout);
+        placeGroupNameEditText = view.findViewById(R.id.txt_place_group_name);
+        chipGroup = view.findViewById(R.id.chip_group);
+        scrollView = view.findViewById(R.id.scroll_view);
+    }
+
+    private void initViewModel() {
+        viewModel = ViewModelProviders.of(requireActivity()).get(AddEditPlaceGroupFragmentViewModel.class);
     }
 
     @Override
@@ -193,34 +190,13 @@ public class AddEditPlaceGroupFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        if(inEditMode()) {
-            inflater.inflate(R.menu.edit_menu, menu);
-        } else {
-            inflater.inflate(R.menu.add_menu, menu);
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+    protected void saveMenuItemClicked() { savePlaceGroup(); }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.save:
-                savePlaceGroup();
-                return true;
-            case R.id.delete:
-                askToDeletePlaceGroup();
-                return true;
-            case R.id.add_to_reminder:
-                addToReminder();
-                return true;
-            case android.R.id.home:
-                navController.popBackStack();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+    protected void addToReminderMenuItemClicked() { addToReminder(); }
+
+    @Override
+    protected void deleteItem() { deletePlaceGroup(); }
 
     private void savePlaceGroup() {
         String placeGroupName = placeGroupNameEditText.getText().toString().trim();
@@ -251,18 +227,6 @@ public class AddEditPlaceGroupFragment extends Fragment {
         viewModel.update(currentPlaceGroup);
     }
 
-    private void askToDeletePlaceGroup() {
-        new MaterialAlertDialogBuilder(requireContext())
-                .setMessage(getString(R.string.msg_delete_place_group))
-                .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
-                    deletePlaceGroup();
-                    ConfigUtils.closeKeyboard(requireActivity());
-                    navController.popBackStack();
-                })
-                .setNegativeButton(getString(R.string.cancel), null)
-                .show();
-    }
-
     private void deletePlaceGroup() {
         viewModel.delete(currentPlaceGroup);
     }
@@ -273,7 +237,8 @@ public class AddEditPlaceGroupFragment extends Fragment {
         navController.navigate(R.id.action_addEditPlaceGroupFragment_to_addEditReminderFragment, bundle);
     }
 
-    private boolean inEditMode() {
+    @Override
+    protected boolean inEditMode() {
         return currentPlaceGroup != null;
     }
 }

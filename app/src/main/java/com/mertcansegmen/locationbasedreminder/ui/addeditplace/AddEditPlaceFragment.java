@@ -54,12 +54,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
+import com.mertcansegmen.locationbasedreminder.ui.AddEditFragment;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminderFragment;
 import com.mertcansegmen.locationbasedreminder.util.DevicePrefs;
 import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditPlaceFragmentViewModel;
 
-public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback, LocationListener {
+public class AddEditPlaceFragment extends AddEditFragment implements OnMapReadyCallback, LocationListener {
 
     public static final String BUNDLE_KEY_PLACE = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_PLACE";
     private static final String BUNDLE_KEY_MAP_VIEW = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_MAP_VIEW";
@@ -80,21 +81,17 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
 
     private AddEditPlaceFragmentViewModel viewModel;
 
-    private NavController navController;
+    @Override
+    protected View inflateFragment(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_add_edit_place, container, false);
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_edit_place, container, false);
-        setHasOptionsMenu(true);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        mapView = view.findViewById(R.id.map_view);
-        radiusSeekBar = view.findViewById(R.id.seekbar_radius);
-        radiusTextView = view.findViewById(R.id.txt_radius);
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        viewModel = ViewModelProviders.of(this).get(AddEditPlaceFragmentViewModel.class);
-
+        initViews(view);
+        initViewModel();
         retrievePlace();
 
         if(isGoogleServicesAvailable()) {
@@ -102,15 +99,16 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         } else {
             Toast.makeText(requireContext(), getString(R.string.google_services_not_available), Toast.LENGTH_SHORT).show();
         }
-
-        return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void initViews(View view) {
+        mapView = view.findViewById(R.id.map_view);
+        radiusSeekBar = view.findViewById(R.id.seekbar_radius);
+        radiusTextView = view.findViewById(R.id.txt_radius);
+    }
 
-        navController = Navigation.findNavController(view);
+    private void initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(AddEditPlaceFragmentViewModel.class);
     }
 
     private void retrievePlace() {
@@ -306,34 +304,13 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        if(inEditMode()) {
-            inflater.inflate(R.menu.edit_menu, menu);
-        } else {
-            inflater.inflate(R.menu.add_menu, menu);
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+    protected void saveMenuItemClicked() { navigateToNamePlaceDialog(); }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.save:
-                navigateToNamePlaceDialog();
-                return true;
-            case R.id.delete:
-                askToDeletePlace();
-                return true;
-            case R.id.add_to_reminder:
-                addToReminder();
-                return true;
-            case android.R.id.home:
-                navController.popBackStack();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+    protected void addToReminderMenuItemClicked() { addToReminder(); }
+
+    @Override
+    protected void deleteItem() { deleteCurrentPlace(); }
 
     private void navigateToNamePlaceDialog() {
         prepareCurrentPlace();
@@ -354,17 +331,6 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         currentPlace.setRadius(viewModel.getRadius());
     }
 
-    private void askToDeletePlace() {
-        new MaterialAlertDialogBuilder(requireContext())
-                .setMessage(getString(R.string.msg_delete_place))
-                .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
-                    deleteCurrentPlace();
-                    navController.popBackStack();
-                })
-                .setNegativeButton(getString(R.string.cancel), null)
-                .show();
-    }
-
     private void deleteCurrentPlace() {
         viewModel.delete(currentPlace);
     }
@@ -375,7 +341,8 @@ public class AddEditPlaceFragment extends Fragment implements OnMapReadyCallback
         navController.navigate(R.id.action_addEditPlaceFragment_to_addEditReminderFragment, bundle);
     }
 
-    private boolean inEditMode() {
+    @Override
+    protected boolean inEditMode() {
         return currentPlace != null;
     }
 

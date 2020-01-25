@@ -21,12 +21,13 @@ import android.widget.EditText;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
+import com.mertcansegmen.locationbasedreminder.ui.AddEditFragment;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminderFragment;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditNoteFragmentViewModel;
 
-public class AddEditNoteFragment extends Fragment {
+public class AddEditNoteFragment extends AddEditFragment {
 
     public static final String BUNDLE_KEY_NOTE = "com.mertcansegmen.locationbasedreminder.BUNDLE_KEY_NOTE";
 
@@ -37,30 +38,27 @@ public class AddEditNoteFragment extends Fragment {
 
     private AddEditNoteFragmentViewModel viewModel;
 
-    private NavController navController;
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_edit_note, container, false);
-        setHasOptionsMenu(true);
-
-        titleEditText = view.findViewById(R.id.txt_title);
-        noteEditText = view.findViewById(R.id.txt_note);
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        viewModel = ViewModelProviders.of(this).get(AddEditNoteFragmentViewModel.class);
-
-        retrieveNote();
-
-        return view;
+    protected View inflateFragment(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_add_edit_note, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        navController = Navigation.findNavController(view);
+        initViews(view);
+        initViewModel();
+        retrieveNote();
+    }
+
+    private void initViews(View view) {
+        titleEditText = view.findViewById(R.id.txt_title);
+        noteEditText = view.findViewById(R.id.txt_note);
+    }
+
+    private void initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(AddEditNoteFragmentViewModel.class);
     }
 
     private void retrieveNote() {
@@ -73,34 +71,13 @@ public class AddEditNoteFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        if(inEditMode()) {
-            inflater.inflate(R.menu.edit_menu, menu);
-        } else {
-            inflater.inflate(R.menu.add_menu, menu);
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+    protected void saveMenuItemClicked() { saveNote(); }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.save:
-                saveNote();
-                return true;
-            case R.id.delete:
-                askToDeleteCurrentNote();
-                return true;
-            case R.id.add_to_reminder:
-                addToReminder();
-                return true;
-            case android.R.id.home:
-                navController.popBackStack();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+    protected void addToReminderMenuItemClicked() { addToReminder(); }
+
+    @Override
+    protected void deleteItem() { deleteCurrentNote(); }
 
     private void saveNote() {
         String noteTitle = titleEditText.getText().toString().trim();
@@ -128,18 +105,6 @@ public class AddEditNoteFragment extends Fragment {
         viewModel.insert(newNote);
     }
 
-    private void askToDeleteCurrentNote() {
-        new MaterialAlertDialogBuilder(requireContext())
-                .setMessage(getString(R.string.msg_delete_note))
-                .setPositiveButton(getText(R.string.ok), (dialog, which) -> {
-                    deleteCurrentNote();
-                    ConfigUtils.closeKeyboard(requireActivity());
-                    navController.popBackStack();
-                })
-                .setNegativeButton(getString(R.string.cancel), null)
-                .show();
-    }
-
     private void deleteCurrentNote() {
         viewModel.delete(currentNote);
     }
@@ -150,7 +115,8 @@ public class AddEditNoteFragment extends Fragment {
         navController.navigate(R.id.action_addEditNoteFragment_to_addEditReminderFragment, bundle);
     }
 
-    private boolean inEditMode() {
+    @Override
+    protected boolean inEditMode() {
         return currentNote != null;
     }
 }
