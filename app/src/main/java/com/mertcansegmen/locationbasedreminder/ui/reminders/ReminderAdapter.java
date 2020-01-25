@@ -34,20 +34,32 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
         @Override
         public boolean areItemsTheSame(@NonNull ReminderWithNotePlacePlaceGroup oldItem,
                                        @NonNull ReminderWithNotePlacePlaceGroup newItem) {
-            return oldItem.getReminder().getReminderId() == newItem.getReminder().getReminderId();
+            return oldItem.getReminder().getReminderId().equals(newItem.getReminder().getReminderId());
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull ReminderWithNotePlacePlaceGroup oldItem,
                                           @NonNull ReminderWithNotePlacePlaceGroup newItem) {
-            return oldItem.getNote().getTitle().equals(newItem.getNote().getTitle()) &&
-                    oldItem.getNote().getBody().equals(newItem.getNote().getBody()) &&
-                    oldItem.getReminder().isActive() == newItem.getReminder().isActive() &&
-                    ((oldItem.getPlace() != null && newItem.getPlace() != null &&
-                    oldItem.getPlace().getName().equals(newItem.getPlace().getName())) ||
-                    (oldItem.getPlaceGroupWithPlaces() != null && newItem.getPlaceGroupWithPlaces() != null &&
-                    oldItem.getPlaceGroupWithPlaces().getPlaceGroup().getName()
-                                    .equals(newItem.getPlaceGroupWithPlaces().getPlaceGroup().getName())));
+            // Check if old and new reminder has no place or place group.
+            boolean bothPlaceNull = oldItem.getPlace() == null && newItem.getPlace() == null;
+            boolean bothPlaceGroupNull = oldItem.getPlaceGroupWithPlaces() == null &&
+                    newItem.getPlaceGroupWithPlaces() == null;
+            boolean noPlaceAttached = bothPlaceNull && bothPlaceGroupNull;
+
+            boolean bothActive = oldItem.getReminder().isActive() == newItem.getReminder().isActive();
+            boolean sameTitle = oldItem.getNote().getTitle().equals(newItem.getNote().getTitle());
+            boolean sameBody = oldItem.getNote().getBody().equals(newItem.getNote().getBody());
+            boolean samePlace = false, samePlaceGroup = false;
+            if(!noPlaceAttached) {
+                if(oldItem.getPlace() != null || newItem.getPlace() != null) {
+                    samePlace = oldItem.getPlace().getName().equals(newItem.getPlace().getName());
+                } else if(oldItem.getPlaceGroupWithPlaces() != null || newItem.getPlaceGroupWithPlaces() != null){
+                    samePlaceGroup = oldItem.getPlaceGroupWithPlaces().getPlaceGroup().getName()
+                            .equals(newItem.getPlaceGroupWithPlaces().getPlaceGroup().getName());
+                }
+            }
+
+            return sameTitle && sameBody && bothActive && (noPlaceAttached || samePlace || samePlaceGroup);
         }
     };
 

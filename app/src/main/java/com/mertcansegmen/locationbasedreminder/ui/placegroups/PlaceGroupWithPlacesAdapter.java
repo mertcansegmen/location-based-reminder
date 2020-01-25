@@ -24,7 +24,7 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
     private static final DiffUtil.ItemCallback<PlaceGroupWithPlaces> DIFF_CALLBACK = new DiffUtil.ItemCallback<PlaceGroupWithPlaces>() {
         @Override
         public boolean areItemsTheSame(@NonNull PlaceGroupWithPlaces oldItem, @NonNull PlaceGroupWithPlaces newItem) {
-            return oldItem.getPlaceGroup().getPlaceGroupId() == newItem.getPlaceGroup().getPlaceGroupId();
+            return oldItem.getPlaceGroup().getPlaceGroupId().equals(newItem.getPlaceGroup().getPlaceGroupId());
         }
 
         @Override
