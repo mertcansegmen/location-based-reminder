@@ -40,8 +40,8 @@
     <string name="msg_delete_item">Silmek istediğinize emin misiniz?</string>
     <string name="msg_empty_notes">Henüz hiç not eklemediniz. Aşağıdaki butona basarak ilk notunuzu ekleyin!</string>
     <string name="msg_empty_place_group">Mekan eklenmedi</string>
-    <string name="msg_empty_place_groups">Henüz hiç mekan grubu eklemediniz. Aşağıdaki butona basarak ilk notunuzu ekleyin!</string>
-    <string name="msg_empty_places">Henüz hiç mekan eklemediniz. Aşağıdaki butona basarak ilk notunuzu ekleyin!</string>
+    <string name="msg_empty_place_groups">Henüz hiç mekan grubu eklemediniz. Aşağıdaki butona basarak ilk mekan grubunuzu ekleyin!</string>
+    <string name="msg_empty_places">Henüz hiç mekan eklemediniz. Aşağıdaki butona basarak ilk mekanınızı ekleyin!</string>
     <string name="msg_empty_places_dialog">Henüz hiç mekan eklemediniz, + butonuna basarak ilk mekanınızı ekleyin!</string>
     <string name="msg_empty_places_groups_dialog">Henüz hiç mekan grubu eklemediniz, + butona basarak ilk mekan grubunuzu ekleyin!</string>
     <string name="msg_no_available_place">Eklemek için mevcut mekan bulunamadı.</string>
@@ -86,4 +86,6 @@
     <string name="undo">Geri Al</string>
     <string name="youve_arrived_to">%s\'e ulaştınız!</string>
     <string name="msg_empty_reminders">Henüz hiç hatırlatıcı eklemediniz. Aşağıdaki butona basarak ilk hatırlatıcınızı ekleyin!</string>
+    <string name="reminder_deactivated_empty_place_group">Bir hatırlatıcı, ona bağlı mekan grubu hiç bir mekana sahip olmadığı için devre dışı bırakıldı</string>
+    <string name="reminder_deactivated_place_removed">Bir hatırlatıcı, ona bağlı mekan ya da mekan grubu silindiği için devre dışı bırakıldı</string>
 </resources>

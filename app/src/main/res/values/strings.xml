@@ -96,5 +96,7 @@
     <string name="feedback_subject">Location Based Reminder Feedback</string>
     <string name="email">Email</string>
     <string name="enter_valid_range">Please enter a value between 10 and 1000</string>
+    <string name="reminder_deactivated_place_removed">A reminder is deactivated because it\'s place or place group was removed</string>
+    <string name="reminder_deactivated_empty_place_group">A reminder is deactivated because it\'s place group does not contain any place</string>
 
 </resources>

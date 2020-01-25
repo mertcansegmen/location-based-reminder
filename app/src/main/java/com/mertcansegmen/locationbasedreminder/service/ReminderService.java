@@ -69,7 +69,9 @@ public class ReminderService extends Service implements LocationListener {
     private void setObserver() {
         repository.getActiveReminders().observeForever(reminders -> {
             // If there is no active reminder, stop service
-            if (reminders == null || reminders.isEmpty()) stopSelf();
+            if (reminders == null || reminders.isEmpty()) {
+                stopSelf();
+            }
 
             this.reminders = reminders;
         });
@@ -115,29 +117,43 @@ public class ReminderService extends Service implements LocationListener {
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(Location currentLocation) {
+        testLocationUpdates();
         if(reminders != null && !reminders.isEmpty()) {
             for(ReminderWithNotePlacePlaceGroup reminder : reminders) {
-                // Continue if reminder has no place or place group
-                if(reminder.getPlace() == null && reminder.getPlaceGroupWithPlaces() == null) continue;
+                // If reminder has no place or place group, inform user and deactivate reminder
+                if(reminder.getPlace() == null && reminder.getPlaceGroupWithPlaces() == null) {
+                    Toast.makeText(this,
+                            getString(R.string.reminder_deactivated_place_removed),
+                            Toast.LENGTH_LONG).show();
+                    repository.setActive(reminder, false);
+                    continue;
+                }
 
                 // Reminder set to a place
                 if(reminder.getPlace() != null) {
-                    showReminderNotificationIfArrived(reminder, reminder.getPlace(), location);
+                    showReminderNotificationIfArrived(reminder, reminder.getPlace(), currentLocation);
                 }
                 // Reminder set to a place group
                 if(reminder.getPlaceGroupWithPlaces() != null) {
-                    // Continue if place group doesn't contain any place
-                    if(reminder.getPlaceGroupWithPlaces().getPlaces().isEmpty()) continue;
+                    // If place group doesn't contain any place, inform user and deactivate reminder
+                    if(reminder.getPlaceGroupWithPlaces().getPlaces().isEmpty()) {
+                        Toast.makeText(this,
+                                getString(R.string.reminder_deactivated_empty_place_group),
+                                Toast.LENGTH_LONG).show();
+                        repository.setActive(reminder, false);
+                        continue;
+                    }
 
                     // Check for every place in place group
                     for(Place place : reminder.getPlaceGroupWithPlaces().getPlaces()) {
-                        showReminderNotificationIfArrived(reminder, place, location);
+                        showReminderNotificationIfArrived(reminder, place, currentLocation);
                     }
                 }
             }
         } else {
             locationManager.removeUpdates(this);
+            stopSelf();
         }
     }
 
@@ -212,5 +228,15 @@ public class ReminderService extends Service implements LocationListener {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    int i;
+    Toast t;
+
+    private void testLocationUpdates() {
+        if(t != null) t.cancel();
+        t = Toast.makeText(this, "" + i, Toast.LENGTH_SHORT);
+        t.show();
+        i++;
     }
 }
