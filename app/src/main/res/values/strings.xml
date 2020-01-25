@@ -7,7 +7,7 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="name">Name</string>
-    <string name="undo">UNDO</string>
+    <string name="undo">Undo</string>
     <string name="add_to_reminder">Add to Reminder</string>
     <string name="delete_all">Delete All</string>
     <string name="msg_delete_item">Are you sure you want to delete this?</string>
@@ -34,10 +34,10 @@
     <string name="pick_a_place_group">Pick a Place Group</string>
     <string name="location_reminder_on">Location reminder is on</string>
     <string name="youve_arrived_to">You\'ve arrived to %s!</string>
-    <string name="no_reminder_enabled">No reminder enabled</string>
     <string name="reset">RESET</string>
-    <string name="msg_empty_places_dialog">You haven\'t added any places yet, click the + button add your first place!</string>
-    <string name="msg_empty_places_groups_dialog">You haven\'t added any places yet, click the + button add your first place group!</string>
+    <string name="msg_empty_reminders">You haven\'t added any reminder yet, click the button down below and add your first reminder!</string>
+    <string name="msg_empty_places_dialog">You haven\'t added any place yet, click the + button add your first place!</string>
+    <string name="msg_empty_places_groups_dialog">You haven\'t added any place group yet, click the + button add your first place group!</string>
     <string name="new_reminder_caps">NEW REMINDER</string>
 
     <!--Notes-->
@@ -49,7 +49,7 @@
     <string name="edit_note">Edit Note</string>
     <string name="note_deleted">Note deleted</string>
     <string name="msg_delete_all_notes">Are you sure you want to delete all of your notes?</string>
-    <string name="msg_empty_notes">You haven\'t added any notes yet, click the button down below and add your first note!</string>
+    <string name="msg_empty_notes">You haven\'t added any note yet, click the button down below and add your first note!</string>
     <string name="new_note_caps">NEW NOTE</string>
 
     <!--Places-->
@@ -61,7 +61,7 @@
     <string name="error_empty_place_name">Place name can not be empty</string>
     <string name="radius_text">%dm</string>
     <string name="msg_delete_all_places">Are you sure you want to delete all of your places?</string>
-    <string name="msg_empty_places">You haven\'t added any places yet, click the button down below and add your first place!</string>
+    <string name="msg_empty_places">You haven\'t added any place yet, click the button down below and add your first place!</string>
     <string name="cannot_connect_play_services">Can not connect to play services</string>
     <string name="google_services_not_available">Google services are not available</string>
     <string name="marker_snippet">If you set a reminder here, you will be notified when you are \nwithin %d meters of this location</string>
@@ -72,7 +72,7 @@
     <string name="new_place_group">New Place Group</string>
     <string name="msg_delete_all_place_groups">Are you sure you want to delete all of your place groups?</string>
     <string name="msg_empty_place_group">No place added</string>
-    <string name="msg_empty_place_groups">You haven\'t added any place groups yet, click the button down below and add your first place group!</string>
+    <string name="msg_empty_place_groups">You haven\'t added any place group yet, click the button down below and add your first place group!</string>
     <string name="error_empty_place_group_name">Place group name can not be empty</string>
     <string name="place_group_deleted">Place group deleted</string>
     <string name="pick_places">Pick Places</string>
