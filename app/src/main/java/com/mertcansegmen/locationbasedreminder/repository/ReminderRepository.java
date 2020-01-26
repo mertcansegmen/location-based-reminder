@@ -102,6 +102,10 @@ public class ReminderRepository extends BaseRepository {
         );
     }
 
+    public int getActiveReminderCount() {
+        return activeReminders.getValue() == null ? 0 : activeReminders.getValue().size();
+    }
+
     public LiveData<List<ReminderWithNotePlacePlaceGroup>> getActiveReminders() {
         return activeReminders;
     }

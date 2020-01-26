@@ -35,9 +35,13 @@ import static com.mertcansegmen.locationbasedreminder.App.CHANNEL_ID;
 
 public class ReminderService extends Service implements LocationListener {
 
+    public static final String REMINDER_SERVICE_DESTROYED = "com.mertcansegmen.locationbasedreminder.REMINDER_SERVICE_DESTROYED";
+
     public static final String ACTION_RESET = "com.mertcansegmen.locationbasedreminder.ACTION_RESET";
     public static final String EXTRA_REMINDER_ID = "com.mertcansegmen.locationbasedreminder.EXTRA_REMINDER_ID";
+
     private static final int REQUEST_CODE_MAIN_ACTIVITY = 999999;
+
     private static final int NOTIFICATION_ID_FOREGROUND = 999999;
 
     private List<ReminderWithNotePlacePlaceGroup> reminders;
@@ -55,6 +59,12 @@ public class ReminderService extends Service implements LocationListener {
         startForeground(NOTIFICATION_ID_FOREGROUND, createForegroundNotification());
 
         initObserver();
+    }
+
+    @Override
+    public void onDestroy() {
+        Intent intent = new Intent(REMINDER_SERVICE_DESTROYED);
+        sendBroadcast(intent);
     }
 
     private Notification createForegroundNotification() {
@@ -190,7 +200,7 @@ public class ReminderService extends Service implements LocationListener {
     }
 
     private PendingIntent createResetPendingIntent(ReminderWithNotePlacePlaceGroup reminder) {
-        Intent resetReminderIntent = new Intent(this, NotificationBroadcastReceiver.class);
+        Intent resetReminderIntent = new Intent(this, NotificationActionsBroadcastReceiver.class);
         resetReminderIntent.setAction(ACTION_RESET);
         resetReminderIntent.putExtra(EXTRA_REMINDER_ID, reminder.getReminder().getReminderId());
         return PendingIntent.getBroadcast(this, reminder.getReminder().getReminderId().intValue(), resetReminderIntent, 0);

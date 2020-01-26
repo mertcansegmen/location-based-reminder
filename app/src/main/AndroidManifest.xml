@@ -53,7 +53,17 @@
 
         <service android:name=".service.ReminderService" />
 
-        <receiver android:name=".service.NotificationBroadcastReceiver" />
+        <receiver android:name=".service.NotificationActionsBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="com.mertcansegmen.locationbasedreminder.ACTION_RESET"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".service.ServiceDestroyCheckBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="com.mertcansegmen.locationbasedreminder.REMINDER_SERVICE_DESTROYED"/>
+            </intent-filter>
+        </receiver>
 
         <receiver android:exported="true" android:name=".service.BootCompleteBroadcastReceiver">
             <intent-filter>
