@@ -41,6 +41,7 @@ public abstract class ListingFragment extends BaseFragment {
         fab = view.findViewById(R.id.fab);
 
         initViewModel();
+        initListObserver();
         configureRecyclerView();
         setSwipeRefreshListener();
     }
@@ -49,24 +50,25 @@ public abstract class ListingFragment extends BaseFragment {
 
     private void configureRecyclerView() {
         initAdapter();
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(getAdapter());
+
+        getAdapter().registerAdapterDataObserver(new AdapterDataObserver(recyclerView));
+        setRecyclerViewLayoutManager();
+        setItemTouchHelper();
+        setRecyclerViewScrollListener();
+    }
+
+    /**
+     * Sets recycler view's layout manager depending on shared preferences.
+     */
+    private void setRecyclerViewLayoutManager() {
         if(getLayoutPref() == GRID_LAYOUT) {
             recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         } else if(getLayoutPref() == LINEAR_LAYOUT) {
             recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         }
-
-        // Register the custom DataObserver
-        getAdapter().registerAdapterDataObserver(new AdapterDataObserver(recyclerView));
-
-        // Set ItemTouchHelper for swipe actions
-        setItemTouchHelper();
-
-        // Set ScrollListener
-        setRecyclerViewScrollListener();
-
-        initListObserver();
     }
 
     /**
@@ -75,9 +77,6 @@ public abstract class ListingFragment extends BaseFragment {
      */
     protected abstract void initAdapter();
 
-    /**
-     * @return recycler view adapter.
-     */
     protected abstract RecyclerView.Adapter getAdapter();
 
     protected abstract void initListObserver();
@@ -89,7 +88,7 @@ public abstract class ListingFragment extends BaseFragment {
     private void setRecyclerViewScrollListener() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx,int dy){
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy > 0) { // Scroll Down
@@ -139,7 +138,7 @@ public abstract class ListingFragment extends BaseFragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.listing_menu, menu);
 
-        configureLayoutMenuItemIcon(menu.getItem(1));
+        swapLayoutMenuIcon(menu.getItem(1));
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -154,9 +153,9 @@ public abstract class ListingFragment extends BaseFragment {
                 navigateSettings();
                 return true;
             case R.id.layout:
-                swapRecyclerViewLayout();
-                configureLayoutMenuItemIcon(item);
-                configureRecyclerView();
+                swapLayoutPref();
+                swapLayoutMenuIcon(item);
+                setRecyclerViewLayoutManager();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -173,12 +172,21 @@ public abstract class ListingFragment extends BaseFragment {
      */
     protected abstract void navigateSettings();
 
-    private void swapRecyclerViewLayout() {
-        DevicePrefs.setPrefs(requireContext(), PREF_KEY_LISTING_LAYOUT,
-                getLayoutPref() == GRID_LAYOUT ? LINEAR_LAYOUT : GRID_LAYOUT);
+    /**
+     * Swaps the shared preference value of layout manager type.
+     */
+    private void swapLayoutPref() {
+        if(getLayoutPref() == GRID_LAYOUT) {
+            setLayoutPref(LINEAR_LAYOUT);
+        } else if(getLayoutPref() == LINEAR_LAYOUT) {
+            setLayoutPref(GRID_LAYOUT);
+        }
     }
 
-    private void configureLayoutMenuItemIcon(MenuItem menuItem) {
+    /**
+     * Swaps the menu icon of layout manager type.
+     */
+    private void swapLayoutMenuIcon(MenuItem menuItem) {
         if(getLayoutPref() == GRID_LAYOUT) {
             menuItem.setIcon(R.drawable.ic_linear_layout);
         } else if(getLayoutPref() == LINEAR_LAYOUT) {
@@ -188,5 +196,9 @@ public abstract class ListingFragment extends BaseFragment {
 
     private int getLayoutPref() {
         return DevicePrefs.getPrefs(requireContext(), PREF_KEY_LISTING_LAYOUT, LINEAR_LAYOUT);
+    }
+
+    private void setLayoutPref(int layout) {
+        DevicePrefs.setPrefs(requireContext(), PREF_KEY_LISTING_LAYOUT, layout);
     }
 }
