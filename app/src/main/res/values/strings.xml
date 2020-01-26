@@ -25,7 +25,7 @@
     <string name="remind_me_here">Remind me here:</string>
     <string name="note_optional">Note(Optional)</string>
     <string name="title_optional">Title(Optional)</string>
-    <string name="msg_place_was_removed">The place or place group attached to this reminder was removed</string>
+    <string name="msg_place_was_removed">The place or place group linked to this reminder was removed</string>
     <string name="msg_place_group_does_not_contain_any_place">This place group does not contain any place</string>
     <string name="msg_delete_all_reminders">Are you sure you want to delete all of your reminders?</string>
     <string name="edit_reminder">Edit Reminder</string>
@@ -96,7 +96,7 @@
     <string name="feedback_subject">Location Based Reminder Feedback</string>
     <string name="email">Email</string>
     <string name="enter_valid_range">Please enter a value between 10 and 1000</string>
-    <string name="reminder_deactivated_place_removed">A reminder is deactivated because it\'s place or place group was removed</string>
-    <string name="reminder_deactivated_empty_place_group">A reminder is deactivated because it\'s place group does not contain any place</string>
+    <string name="reminder_deactivated_place_removed">A reminder was deactivated because the place or the place group linked to it was removed</string>
+    <string name="reminder_deactivated_empty_place_group">A reminder was deactivated because the place group linked to it does not contain any place</string>
 
 </resources>

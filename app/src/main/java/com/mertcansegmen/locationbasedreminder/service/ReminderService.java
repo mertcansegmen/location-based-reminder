@@ -37,6 +37,8 @@ public class ReminderService extends Service implements LocationListener {
 
     public static final String ACTION_RESET = "com.mertcansegmen.locationbasedreminder.ACTION_RESET";
     public static final String EXTRA_REMINDER_ID = "com.mertcansegmen.locationbasedreminder.EXTRA_REMINDER_ID";
+    private static final int REQUEST_CODE_MAIN_ACTIVITY = 999999;
+    private static final int NOTIFICATION_ID_FOREGROUND = 999999;
 
     private List<ReminderWithNotePlacePlaceGroup> reminders;
 
@@ -50,9 +52,9 @@ public class ReminderService extends Service implements LocationListener {
 
         repository = new ReminderRepository(getApplication());
 
-        startForeground(999999, createForegroundNotification());
+        startForeground(NOTIFICATION_ID_FOREGROUND, createForegroundNotification());
 
-        setObserver();
+        initObserver();
     }
 
     private Notification createForegroundNotification() {
@@ -66,7 +68,7 @@ public class ReminderService extends Service implements LocationListener {
                 .build();
     }
 
-    private void setObserver() {
+    private void initObserver() {
         repository.getActiveReminders().observeForever(reminders -> {
             // If there is no active reminder, stop service
             if (reminders == null || reminders.isEmpty()) {
@@ -118,7 +120,7 @@ public class ReminderService extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location currentLocation) {
-        testLocationUpdates();
+//        testLocationUpdates();
         if(reminders != null && !reminders.isEmpty()) {
             for(ReminderWithNotePlacePlaceGroup reminder : reminders) {
                 // If reminder has no place or place group, inform user and deactivate reminder
@@ -196,7 +198,7 @@ public class ReminderService extends Service implements LocationListener {
 
     private PendingIntent createMainActivityPendingIntent() {
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
-        return PendingIntent.getActivity(this,999999, mainActivityIntent, 0);
+        return PendingIntent.getActivity(this, REQUEST_CODE_MAIN_ACTIVITY, mainActivityIntent, 0);
     }
 
     /**
@@ -230,13 +232,13 @@ public class ReminderService extends Service implements LocationListener {
         return null;
     }
 
-    int i;
-    Toast t;
-
-    private void testLocationUpdates() {
-        if(t != null) t.cancel();
-        t = Toast.makeText(this, "" + i, Toast.LENGTH_SHORT);
-        t.show();
-        i++;
-    }
+//    int i;
+//    Toast t;
+//
+//    private void testLocationUpdates() {
+//        if(t != null) t.cancel();
+//        t = Toast.makeText(this, "" + i, Toast.LENGTH_SHORT);
+//        t.show();
+//        i++;
+//    }
 }
