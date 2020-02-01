@@ -19,7 +19,7 @@ public class AdapterDataObserver extends RecyclerView.AdapterDataObserver {
     public void onItemRangeInserted(int positionStart, int itemCount) {
         // Scroll only if inserted items position is 0, so it will only scroll to top when
         // a new item is inserted, not when item was deleted and re-inserted.
-        if(positionStart == 0) recyclerView.scrollToPosition(0);
+        if (positionStart == 0) recyclerView.scrollToPosition(0);
     }
 
 }

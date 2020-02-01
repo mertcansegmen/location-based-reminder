@@ -64,7 +64,7 @@ public class NamePlaceDialog extends DialogFragment {
     }
 
     private void retrievePlace() {
-        if(getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_PLACE) != null) {
+        if (getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_PLACE) != null) {
             currentPlace = getArguments().getParcelable(BUNDLE_KEY_PLACE);
             placeNameEditText.setText(currentPlace.getName());
         }
@@ -75,14 +75,14 @@ public class NamePlaceDialog extends DialogFragment {
             String placeName = placeNameEditText.getText().toString().trim();
 
             // Show error if place name field is empty
-            if(placeName.isEmpty()) {
+            if (placeName.isEmpty()) {
                 placeNameLayout.setError(getString(R.string.error_empty_place_name));
                 return;
             }
 
             currentPlace.setName(placeName);
 
-            if(!inEditMode()) viewModel.insert(currentPlace);
+            if (!inEditMode()) viewModel.insert(currentPlace);
             else viewModel.update(currentPlace);
 
             navController.popBackStack();
@@ -102,9 +102,12 @@ public class NamePlaceDialog extends DialogFragment {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 

@@ -16,5 +16,6 @@ data class Note(
 ) : Parcelable {
     @Ignore
     constructor(body: String) : this(null, "", body)
+
     constructor(title: String, body: String) : this(null, title, body)
 }

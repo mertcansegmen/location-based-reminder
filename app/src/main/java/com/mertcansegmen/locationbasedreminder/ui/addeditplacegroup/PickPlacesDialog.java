@@ -14,12 +14,11 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipGroup;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Place;
-import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.ui.views.ColorfulChip;
+import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditPlaceGroupFragmentViewModel;
 
 import java.util.ArrayList;
@@ -72,7 +71,7 @@ public class PickPlacesDialog extends DialogFragment {
     }
 
     private void retrievePlaces() {
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             selectedPlaces = getArguments().getParcelableArrayList(BUNDLE_KEY_SELECTED_PLACES);
         }
     }
@@ -86,10 +85,10 @@ public class PickPlacesDialog extends DialogFragment {
     private void loadPlaceChips(List<Place> places) {
         chipGroup.removeAllViews();
 
-        if(places.isEmpty()) {
+        if (places.isEmpty()) {
             showNoPlaceMessage();
         } else {
-            for(Place newPlace : places) {
+            for (Place newPlace : places) {
                 addChip(newPlace);
             }
         }
@@ -112,7 +111,7 @@ public class PickPlacesDialog extends DialogFragment {
     private void removeChip(ColorfulChip chip) {
         chipGroup.removeView(chip);
         Animator.fadeOut(chip);
-        if(chipGroup.getChildCount() == 0) {
+        if (chipGroup.getChildCount() == 0) {
             showNoPlaceMessage();
         }
     }

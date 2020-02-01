@@ -23,6 +23,7 @@
     <string name="place_group">Place Group</string>
     <string name="not_selected_place_yet">You haven\'t selected a place or a place group yet.</string>
     <string name="remind_me_here">Remind me here:</string>
+    <string name="reminder_deleted">Reminder deleted</string>
     <string name="note_optional">Note(Optional)</string>
     <string name="title_optional">Title(Optional)</string>
     <string name="msg_place_was_removed">The place or place group linked to this reminder was removed</string>

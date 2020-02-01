@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,16 +12,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
@@ -32,8 +26,8 @@ import com.mertcansegmen.locationbasedreminder.model.ReminderWithNotePlacePlaceG
 import com.mertcansegmen.locationbasedreminder.service.ReminderService;
 import com.mertcansegmen.locationbasedreminder.ui.AddEditFragment;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
-import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
+import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditReminderFragmentViewModel;
 
@@ -97,7 +91,7 @@ public class AddEditReminderFragment extends AddEditFragment {
 
     private void setObserver() {
         viewModel.getSelected().observe(this, selected -> {
-            if(selected == null) {
+            if (selected == null) {
                 noPlaceTextView.setVisibility(View.VISIBLE);
                 return;
             }
@@ -108,12 +102,12 @@ public class AddEditReminderFragment extends AddEditFragment {
     }
 
     private void retrieveReminder() {
-        if(getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_REMINDER) != null) {
+        if (getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_REMINDER) != null) {
             currentReminder = getArguments().getParcelable(BUNDLE_KEY_REMINDER);
             ((MainActivity) requireActivity()).getSupportActionBar().setTitle(R.string.edit_reminder);
             titleEditText.setText(currentReminder.getNote().getTitle());
             noteEditText.setText(currentReminder.getNote().getBody());
-            if(currentReminder.getPlace() != null) {
+            if (currentReminder.getPlace() != null) {
                 viewModel.select(currentReminder.getPlace());
             } else {
                 viewModel.select(currentReminder.getPlaceGroupWithPlaces());
@@ -122,19 +116,19 @@ public class AddEditReminderFragment extends AddEditFragment {
     }
 
     private void retrieveReminderExtras() {
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             boolean noteRetrieved = getArguments().getParcelable(BUNDLE_KEY_NOTE_RETRIEVED) != null;
             boolean placeRetrieved = getArguments().getParcelable(BUNDLE_KEY_PLACE_RETRIEVED) != null;
             boolean placeGroupRetrieved = getArguments().getParcelable(BUNDLE_KEY_PLACE_GROUP_RETRIEVED) != null;
 
-            if(noteRetrieved) {
+            if (noteRetrieved) {
                 Note note = getArguments().getParcelable(BUNDLE_KEY_NOTE_RETRIEVED);
                 titleEditText.setText(note.getTitle());
                 noteEditText.setText(note.getBody());
-            } else if(placeRetrieved) {
+            } else if (placeRetrieved) {
                 Place place = getArguments().getParcelable(BUNDLE_KEY_PLACE_RETRIEVED);
                 viewModel.select(place);
-            } else if(placeGroupRetrieved) {
+            } else if (placeGroupRetrieved) {
                 PlaceGroupWithPlaces placeGroup = getArguments().getParcelable(BUNDLE_KEY_PLACE_GROUP_RETRIEVED);
                 viewModel.select(placeGroup);
             }
@@ -143,7 +137,7 @@ public class AddEditReminderFragment extends AddEditFragment {
 
 
     private void addChip(Selectable selectable) {
-        if(selectable == null) return;
+        if (selectable == null) return;
 
         chipGroup.removeAllViews();
 
@@ -180,7 +174,7 @@ public class AddEditReminderFragment extends AddEditFragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        if(inEditMode()) {
+        if (inEditMode()) {
             inflater.inflate(R.menu.edit_reminder_menu, menu);
         } else {
             inflater.inflate(R.menu.add_menu, menu);
@@ -188,25 +182,30 @@ public class AddEditReminderFragment extends AddEditFragment {
     }
 
     @Override
-    protected void saveMenuItemClicked() { saveReminder(); }
+    protected void saveMenuItemClicked() {
+        saveReminder();
+    }
 
     @Override
-    protected void deleteItem() { deleteReminder(); }
+    protected void deleteItem() {
+        deleteReminder();
+    }
 
     @Override
-    protected void addToReminderMenuItemClicked() { } // ignore for reminders
+    protected void addToReminderMenuItemClicked() {
+    } // ignore for reminders
 
     private void saveReminder() {
         String noteTitle = titleEditText.getText().toString().trim();
         String noteBody = noteEditText.getText().toString().trim();
         Selectable selectable = viewModel.getSelected().getValue();
 
-        if(selectable == null) {
+        if (selectable == null) {
             Toast.makeText(requireContext(), R.string.provide_a_place, Toast.LENGTH_LONG).show();
             return;
         }
 
-        if(inEditMode()) updateCurrentReminder(noteTitle, noteBody, selectable);
+        if (inEditMode()) updateCurrentReminder(noteTitle, noteBody, selectable);
         else insertNewReminder(noteTitle, noteBody, selectable);
 
         startReminderService();

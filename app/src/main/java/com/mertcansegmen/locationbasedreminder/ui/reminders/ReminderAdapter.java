@@ -50,10 +50,10 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
             boolean sameTitle = oldItem.getNote().getTitle().equals(newItem.getNote().getTitle());
             boolean sameBody = oldItem.getNote().getBody().equals(newItem.getNote().getBody());
             boolean samePlace = false, samePlaceGroup = false;
-            if(!noPlaceAttached) {
-                if(oldItem.getPlace() != null || newItem.getPlace() != null) {
+            if (!noPlaceAttached) {
+                if (oldItem.getPlace() != null || newItem.getPlace() != null) {
                     samePlace = oldItem.getPlace().getName().equals(newItem.getPlace().getName());
-                } else if(oldItem.getPlaceGroupWithPlaces() != null || newItem.getPlaceGroupWithPlaces() != null){
+                } else if (oldItem.getPlaceGroupWithPlaces() != null || newItem.getPlaceGroupWithPlaces() != null) {
                     samePlaceGroup = oldItem.getPlaceGroupWithPlaces().getPlaceGroup().getName()
                             .equals(newItem.getPlaceGroupWithPlaces().getPlaceGroup().getName());
                 }
@@ -92,11 +92,11 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
         holder.placeRemovedTextView.setVisibility(View.GONE);
 
         Context context = holder.chipGroup.getContext();
-        if(currentReminder.getPlace() != null) {
+        if (currentReminder.getPlace() != null) {
             addPlaceChip(context, currentReminder, holder.chipGroup);
-        } else if(currentReminder.getPlaceGroupWithPlaces() != null) {
+        } else if (currentReminder.getPlaceGroupWithPlaces() != null) {
             addPlaceGroupChip(context, currentReminder, holder.chipGroup);
-            if(currentReminder.getPlaceGroupWithPlaces().getPlaces().isEmpty()) {
+            if (currentReminder.getPlaceGroupWithPlaces().getPlaces().isEmpty()) {
                 // If the place group attached to reminder does not contain any place
                 holder.placeGroupEmptyTextView.setVisibility(View.VISIBLE);
             }
@@ -149,7 +149,7 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
-                if(listener != null && position != RecyclerView.NO_POSITION) {
+                if (listener != null && position != RecyclerView.NO_POSITION) {
                     listener.onItemClicked(getItem(position));
                 }
             });
@@ -157,7 +157,7 @@ public class ReminderAdapter extends ListAdapter<ReminderWithNotePlacePlaceGroup
             switchMaterial.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 boolean isActive = getItem(getAdapterPosition()).getReminder().isActive();
 
-                if(isChecked && !isActive || !isChecked && isActive) {
+                if (isChecked && !isActive || !isChecked && isActive) {
                     viewModel.setActive(getItem(getAdapterPosition()), isChecked);
                     Intent serviceIntent = new Intent(buttonView.getContext(), ReminderService.class);
                     ContextCompat.startForegroundService(buttonView.getContext(), serviceIntent);

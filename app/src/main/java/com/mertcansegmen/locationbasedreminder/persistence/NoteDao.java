@@ -12,7 +12,7 @@ import com.mertcansegmen.locationbasedreminder.model.Note;
 import java.util.List;
 
 @Dao
-public interface NoteDao extends BaseDao<Note>{
+public interface NoteDao extends BaseDao<Note> {
 
     @Insert
     long insert(Note note);

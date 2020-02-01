@@ -20,7 +20,7 @@ public class ConfigUtils {
     }
 
     /**
-     *  @return true if dark mode is enabled on the phone, false otherwise.
+     * @return true if dark mode is enabled on the phone, false otherwise.
      */
     public static boolean isDarkModeEnabled(Context context) {
         int nightModeFlags = context.getResources().getConfiguration().uiMode &

@@ -69,7 +69,7 @@ public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
-                if(listener != null && position != RecyclerView.NO_POSITION) {
+                if (listener != null && position != RecyclerView.NO_POSITION) {
                     listener.onItemClicked(getItem(position));
                 }
             });

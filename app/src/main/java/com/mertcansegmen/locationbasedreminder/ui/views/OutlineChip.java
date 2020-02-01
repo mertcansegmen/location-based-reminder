@@ -28,7 +28,7 @@ public class OutlineChip extends Chip {
     }
 
     private void configureChip(Context context) {
-        if(ConfigUtils.isDarkModeEnabled(context))
+        if (ConfigUtils.isDarkModeEnabled(context))
             setLightChip(context);
         else
             setDarkChip(context);
@@ -51,7 +51,7 @@ public class OutlineChip extends Chip {
         setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, borderIconTextColor)));
         setChipIconTintResource(borderIconTextColor);
         setChipStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(context, borderIconTextColor)));
-        if(isCloseIconVisible()) {
+        if (isCloseIconVisible()) {
             setCloseIconTint(ColorStateList.valueOf(ContextCompat.getColor(context, borderIconTextColor)));
         }
 

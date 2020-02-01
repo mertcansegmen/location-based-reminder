@@ -1,24 +1,15 @@
 package com.mertcansegmen.locationbasedreminder.ui.addeditnote;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.mertcansegmen.locationbasedreminder.R;
 import com.mertcansegmen.locationbasedreminder.model.Note;
 import com.mertcansegmen.locationbasedreminder.ui.AddEditFragment;
@@ -62,7 +53,7 @@ public class AddEditNoteFragment extends AddEditFragment {
     }
 
     private void retrieveNote() {
-        if(getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_NOTE) != null) {
+        if (getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_NOTE) != null) {
             currentNote = getArguments().getParcelable(BUNDLE_KEY_NOTE);
             ((MainActivity) requireActivity()).getSupportActionBar().setTitle(getString(R.string.edit_note));
             titleEditText.setText(currentNote.getTitle());
@@ -71,21 +62,27 @@ public class AddEditNoteFragment extends AddEditFragment {
     }
 
     @Override
-    protected void saveMenuItemClicked() { saveNote(); }
+    protected void saveMenuItemClicked() {
+        saveNote();
+    }
 
     @Override
-    protected void addToReminderMenuItemClicked() { addToReminder(); }
+    protected void addToReminderMenuItemClicked() {
+        addToReminder();
+    }
 
     @Override
-    protected void deleteItem() { deleteCurrentNote(); }
+    protected void deleteItem() {
+        deleteCurrentNote();
+    }
 
     private void saveNote() {
         String noteTitle = titleEditText.getText().toString().trim();
         String noteBody = noteEditText.getText().toString().trim();
 
-        if(noteBody.isEmpty() && noteTitle.isEmpty()) return;
+        if (noteBody.isEmpty() && noteTitle.isEmpty()) return;
 
-        if(inEditMode()) updateCurrentNote(noteTitle, noteBody);
+        if (inEditMode()) updateCurrentNote(noteTitle, noteBody);
         else insertNewNote(noteTitle, noteBody);
 
         ConfigUtils.closeKeyboard(requireActivity());

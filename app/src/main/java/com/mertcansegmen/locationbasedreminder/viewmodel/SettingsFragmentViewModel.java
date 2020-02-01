@@ -30,9 +30,9 @@ public class SettingsFragmentViewModel extends AndroidViewModel {
      * @param newRange range value retrieved from default range edit text
      */
     public void rangeValueChanged(String newRange) {
-        if(isRangeValueValid(newRange)){
+        if (isRangeValueValid(newRange)) {
             // Range value is valid
-            if(getSavedRange() == Integer.parseInt(newRange)) {
+            if (getSavedRange() == Integer.parseInt(newRange)) {
                 // Range value is valid but it is the same as the saved one
                 settingsFormState.setValue(new SettingsFormState(false, true));
             } else {
@@ -51,7 +51,7 @@ public class SettingsFragmentViewModel extends AndroidViewModel {
      * @return true if valid, false otherwise
      */
     private boolean isRangeValueValid(String range) {
-        return  StringUtils.isNumeric(range) && range.length() < 5 &&
+        return StringUtils.isNumeric(range) && range.length() < 5 &&
                 Integer.parseInt(range) >= 10 && Integer.parseInt(range) <= 1000;
     }
 

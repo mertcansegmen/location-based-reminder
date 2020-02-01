@@ -22,10 +22,10 @@ public abstract class AddEditFragment extends BaseFragment {
         setHasOptionsMenu(true);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        if(inEditMode()) {
+        if (inEditMode()) {
             inflater.inflate(R.menu.edit_menu, menu);
         } else {
             inflater.inflate(R.menu.add_menu, menu);

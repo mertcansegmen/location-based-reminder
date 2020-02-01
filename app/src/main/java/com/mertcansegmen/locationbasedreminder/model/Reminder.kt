@@ -14,7 +14,7 @@ data class Reminder(
         var placeId: Long?,
         var placeGroupId: Long?,
         var isActive: Boolean
-) : Parcelable{
+) : Parcelable {
     constructor(noteId: Long, placeId: Long?, placeGroupId: Long?, isActive: Boolean) :
             this(null, noteId, placeId, placeGroupId, isActive)
 }

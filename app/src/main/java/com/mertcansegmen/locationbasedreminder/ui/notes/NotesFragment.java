@@ -54,7 +54,7 @@ public class NotesFragment extends ListingFragment {
 
     private void setAddButtonClickListener() {
         fab.setOnClickListener(v ->
-            navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment)
+                navController.navigate(R.id.action_notesFragment_to_addEditNoteFragment)
         );
     }
 

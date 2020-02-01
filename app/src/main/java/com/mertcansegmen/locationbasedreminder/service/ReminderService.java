@@ -110,7 +110,7 @@ public class ReminderService extends Service implements LocationListener {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(reminders != null && !reminders.isEmpty()) {
+            if (reminders != null && !reminders.isEmpty()) {
                 startLocationListener();
             }
         });
@@ -131,10 +131,10 @@ public class ReminderService extends Service implements LocationListener {
     @Override
     public void onLocationChanged(Location currentLocation) {
 //        testLocationUpdates();
-        if(reminders != null && !reminders.isEmpty()) {
-            for(ReminderWithNotePlacePlaceGroup reminder : reminders) {
+        if (reminders != null && !reminders.isEmpty()) {
+            for (ReminderWithNotePlacePlaceGroup reminder : reminders) {
                 // If reminder has no place or place group, inform user and deactivate reminder
-                if(reminder.getPlace() == null && reminder.getPlaceGroupWithPlaces() == null) {
+                if (reminder.getPlace() == null && reminder.getPlaceGroupWithPlaces() == null) {
                     Toast.makeText(this,
                             getString(R.string.reminder_deactivated_place_removed),
                             Toast.LENGTH_LONG).show();
@@ -143,13 +143,13 @@ public class ReminderService extends Service implements LocationListener {
                 }
 
                 // Reminder set to a place
-                if(reminder.getPlace() != null) {
+                if (reminder.getPlace() != null) {
                     showReminderNotificationIfArrived(reminder, reminder.getPlace(), currentLocation);
                 }
                 // Reminder set to a place group
-                if(reminder.getPlaceGroupWithPlaces() != null) {
+                if (reminder.getPlaceGroupWithPlaces() != null) {
                     // If place group doesn't contain any place, inform user and deactivate reminder
-                    if(reminder.getPlaceGroupWithPlaces().getPlaces().isEmpty()) {
+                    if (reminder.getPlaceGroupWithPlaces().getPlaces().isEmpty()) {
                         Toast.makeText(this,
                                 getString(R.string.reminder_deactivated_empty_place_group),
                                 Toast.LENGTH_LONG).show();
@@ -158,7 +158,7 @@ public class ReminderService extends Service implements LocationListener {
                     }
 
                     // Check for every place in place group
-                    for(Place place : reminder.getPlaceGroupWithPlaces().getPlaces()) {
+                    for (Place place : reminder.getPlaceGroupWithPlaces().getPlaces()) {
                         showReminderNotificationIfArrived(reminder, place, currentLocation);
                     }
                 }
@@ -175,7 +175,7 @@ public class ReminderService extends Service implements LocationListener {
         Location reminderLocation = placeToLocation(reminderPlace);
 
         // Check if current location is inside the radius of the reminders place
-        if(currentLocation.distanceTo(reminderLocation) < reminderPlace.getRadius()) {
+        if (currentLocation.distanceTo(reminderLocation) < reminderPlace.getRadius()) {
             String noteTitle = reminder.getNote().getTitle();
             String noteBody = reminder.getNote().getBody();
             String reminderTitle = getString(R.string.youve_arrived_to, reminderPlace.getName());

@@ -19,6 +19,7 @@
     <string name="edit">Düzenle</string>
     <string name="edit_note">Notu Düzenle</string>
     <string name="edit_reminder">Hatırlatıcıyı Düzenle</string>
+    <string name="reminder_deleted">Hatırlatıcı silindi</string>
     <string name="email">Eposta</string>
     <string name="enter_valid_range">Lütfen 10 ile 1000 arasında bir değer girin</string>
     <string name="error_empty_place_group_name">Mekan grubu adı boş bırakılamaz</string>

@@ -5,24 +5,16 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mertcansegmen.locationbasedreminder.R;
@@ -32,9 +24,9 @@ import com.mertcansegmen.locationbasedreminder.model.PlaceGroupWithPlaces;
 import com.mertcansegmen.locationbasedreminder.ui.AddEditFragment;
 import com.mertcansegmen.locationbasedreminder.ui.MainActivity;
 import com.mertcansegmen.locationbasedreminder.ui.addeditreminder.AddEditReminderFragment;
-import com.mertcansegmen.locationbasedreminder.util.Animator;
-import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
 import com.mertcansegmen.locationbasedreminder.ui.views.ColorfulChip;
+import com.mertcansegmen.locationbasedreminder.ui.views.OutlineChip;
+import com.mertcansegmen.locationbasedreminder.util.Animator;
 import com.mertcansegmen.locationbasedreminder.util.ConfigUtils;
 import com.mertcansegmen.locationbasedreminder.viewmodel.AddEditPlaceGroupFragmentViewModel;
 
@@ -95,7 +87,7 @@ public class AddEditPlaceGroupFragment extends AddEditFragment {
 
     private void setObserver() {
         viewModel.getSelectedPlace().observe(this, selectedPlace -> {
-            if(selectedPlace == null) return;
+            if (selectedPlace == null) return;
             addChip(selectedPlace);
         });
     }
@@ -114,9 +106,12 @@ public class AddEditPlaceGroupFragment extends AddEditFragment {
     private void setTextChangedListener() {
         placeGroupNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -126,7 +121,7 @@ public class AddEditPlaceGroupFragment extends AddEditFragment {
     }
 
     private void retrievePlaceGroup() {
-        if(getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_PLACE_GROUP) != null) {
+        if (getArguments() != null && getArguments().getParcelable(BUNDLE_KEY_PLACE_GROUP) != null) {
             currentPlaceGroup = getArguments().getParcelable(BUNDLE_KEY_PLACE_GROUP);
             ((MainActivity) requireActivity()).getSupportActionBar().setTitle(currentPlaceGroup.getPlaceGroup().getName());
             placeGroupNameEditText.setText(currentPlaceGroup.getPlaceGroup().getName());
@@ -135,7 +130,7 @@ public class AddEditPlaceGroupFragment extends AddEditFragment {
     }
 
     private void loadPlaceChips(List<Place> places) {
-        for(Place place : places) {
+        for (Place place : places) {
             addChip(place);
         }
     }
@@ -178,36 +173,42 @@ public class AddEditPlaceGroupFragment extends AddEditFragment {
 
     /**
      * @return all places from the chips that are currently on the screen except for the chip
-     *         which is for adding new place
+     * which is for adding new place
      */
     private List<Place> getPlacesFromChips() {
         ArrayList<Place> places = new ArrayList<>();
-        for(int i = 0; i < chipGroup.getChildCount(); i++) {
-            if(chipGroup.getChildAt(i) instanceof ColorfulChip)
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
+            if (chipGroup.getChildAt(i) instanceof ColorfulChip)
                 places.add(((ColorfulChip) chipGroup.getChildAt(i)).getPlace());
         }
         return places;
     }
 
     @Override
-    protected void saveMenuItemClicked() { savePlaceGroup(); }
+    protected void saveMenuItemClicked() {
+        savePlaceGroup();
+    }
 
     @Override
-    protected void addToReminderMenuItemClicked() { addToReminder(); }
+    protected void addToReminderMenuItemClicked() {
+        addToReminder();
+    }
 
     @Override
-    protected void deleteItem() { deletePlaceGroup(); }
+    protected void deleteItem() {
+        deletePlaceGroup();
+    }
 
     private void savePlaceGroup() {
         String placeGroupName = placeGroupNameEditText.getText().toString().trim();
         List<Place> places = getPlacesFromChips();
 
-        if(placeGroupName.isEmpty()) {
+        if (placeGroupName.isEmpty()) {
             placeGroupNameEditTextLayout.setError(getString(R.string.error_empty_place_group_name));
             return;
         }
 
-        if(inEditMode()) updateCurrentPlaceGroup(placeGroupName, places);
+        if (inEditMode()) updateCurrentPlaceGroup(placeGroupName, places);
         else insertNewPlaceGroup(placeGroupName, places);
 
         ConfigUtils.closeKeyboard(requireActivity());

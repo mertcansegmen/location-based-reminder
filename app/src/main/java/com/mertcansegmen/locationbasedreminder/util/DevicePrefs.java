@@ -6,7 +6,8 @@ import android.preference.PreferenceManager;
 
 public class DevicePrefs {
 
-    private DevicePrefs() {}
+    private DevicePrefs() {
+    }
 
     public static void setPrefs(Context context, String key, int value) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);

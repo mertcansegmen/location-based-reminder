@@ -50,7 +50,7 @@ public class SettingsFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initViews(view);
         initViewModel();
@@ -87,14 +87,14 @@ public class SettingsFragment extends BaseFragment {
 
     private void initValidationObserver() {
         viewModel.getSettingsFormState().observe(this, settingsFormState -> {
-            if(settingsFormState == null) return;
+            if (settingsFormState == null) return;
 
             saveButton.setEnabled(
                     settingsFormState.isDataValid() && settingsFormState.isDefaultRangeChanged());
 
             defaultRangeTextInputLayout.setErrorEnabled(settingsFormState.isDataValid());
 
-            if(settingsFormState.getDefaultRangeError() != null) {
+            if (settingsFormState.getDefaultRangeError() != null) {
                 defaultRangeEditText.setError(getString(settingsFormState.getDefaultRangeError()));
             }
         });
@@ -103,10 +103,12 @@ public class SettingsFragment extends BaseFragment {
     private void setDefaultRangeTextChangeListener() {
         defaultRangeEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -125,23 +127,23 @@ public class SettingsFragment extends BaseFragment {
 
     private void setRateUsButtonClickListener() {
         rateUsButton.setOnClickListener(v ->
-            goToUrl(PLAY_STORE_URL)
+                goToUrl(PLAY_STORE_URL)
         );
     }
 
     private void setSendFeedbackButtonClickListener() {
         sendFeedbackButton.setOnClickListener(v ->
-            sendEmail()
+                sendEmail()
         );
     }
 
     private void setSeeOnGithubButtonClickListener() {
         seeOnGithubButton.setOnClickListener(v ->
-            goToUrl(GITHUB_URL)
+                goToUrl(GITHUB_URL)
         );
     }
 
-    private void goToUrl (String url) {
+    private void goToUrl(String url) {
         Uri uriUrl = Uri.parse(url);
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
         startActivity(launchBrowser);

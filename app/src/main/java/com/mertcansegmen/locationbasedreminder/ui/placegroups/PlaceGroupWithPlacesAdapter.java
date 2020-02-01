@@ -54,7 +54,7 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
         holder.placeGroupTextView.setText(currentPlaceGroupWithPlaces.getPlaceGroup().getName());
 
         holder.chipGroup.removeAllViews();
-        for(final Place place : currentPlaceGroupWithPlaces.getPlaces()) {
+        for (final Place place : currentPlaceGroupWithPlaces.getPlaces()) {
             ColorfulChip chip = new ColorfulChip(holder.placeGroupTextView.getContext());
             chip.setPlace(place);
             chip.setText(place.getName());
@@ -63,7 +63,7 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
             holder.chipGroup.addView(chip);
         }
 
-        if(holder.chipGroup.getChildCount() < 1) {
+        if (holder.chipGroup.getChildCount() < 1) {
             TextView noPlaceTextView = new TextView(holder.chipGroup.getContext());
             noPlaceTextView.setText(R.string.msg_empty_place_group);
             holder.chipGroup.addView(noPlaceTextView);
@@ -86,7 +86,7 @@ public class PlaceGroupWithPlacesAdapter extends ListAdapter<PlaceGroupWithPlace
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
-                if(listener != null && position != RecyclerView.NO_POSITION) {
+                if (listener != null && position != RecyclerView.NO_POSITION) {
                     listener.onItemClicked(getItem(position));
                 }
             });

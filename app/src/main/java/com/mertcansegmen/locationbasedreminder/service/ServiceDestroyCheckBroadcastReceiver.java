@@ -28,13 +28,14 @@ public class ServiceDestroyCheckBroadcastReceiver extends BroadcastReceiver {
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             // Wait 3 seconds for asynchronous database operations
-            try { TimeUnit.SECONDS.sleep(3);
+            try {
+                TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
             // Restart service if active reminders found
-            if(repository.getActiveReminderCount() > 0) {
+            if (repository.getActiveReminderCount() > 0) {
                 Intent serviceIntent = new Intent(context, ReminderService.class);
                 ContextCompat.startForegroundService(context, serviceIntent);
             }

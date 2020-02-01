@@ -2,15 +2,8 @@ package com.mertcansegmen.locationbasedreminder.repository;
 
 import android.app.Application;
 
-import androidx.lifecycle.LiveData;
-
-import com.mertcansegmen.locationbasedreminder.persistence.AppDatabase;
-import com.mertcansegmen.locationbasedreminder.persistence.NoteDao;
 import com.mertcansegmen.locationbasedreminder.model.Note;
-
-import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import com.mertcansegmen.locationbasedreminder.persistence.AppDatabase;
 
 public class NoteRepository extends BaseRepository<Note>{
 

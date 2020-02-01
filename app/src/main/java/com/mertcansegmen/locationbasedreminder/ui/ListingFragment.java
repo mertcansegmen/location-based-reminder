@@ -64,9 +64,9 @@ public abstract class ListingFragment extends BaseFragment {
      * Sets recycler view's layout manager depending on shared preferences.
      */
     private void setRecyclerViewLayoutManager() {
-        if(getLayoutPref() == GRID_LAYOUT) {
+        if (getLayoutPref() == GRID_LAYOUT) {
             recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        } else if(getLayoutPref() == LINEAR_LAYOUT) {
+        } else if (getLayoutPref() == LINEAR_LAYOUT) {
             recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         }
     }
@@ -77,7 +77,7 @@ public abstract class ListingFragment extends BaseFragment {
      */
     protected abstract void initAdapter();
 
-    protected abstract RecyclerView.Adapter getAdapter();
+    protected abstract <T extends RecyclerView.Adapter> T getAdapter();
 
     protected abstract void initListObserver();
 
@@ -88,7 +88,7 @@ public abstract class ListingFragment extends BaseFragment {
     private void setRecyclerViewScrollListener() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy > 0) { // Scroll Down
@@ -176,9 +176,9 @@ public abstract class ListingFragment extends BaseFragment {
      * Swaps the shared preference value of layout manager type.
      */
     private void swapLayoutPref() {
-        if(getLayoutPref() == GRID_LAYOUT) {
+        if (getLayoutPref() == GRID_LAYOUT) {
             setLayoutPref(LINEAR_LAYOUT);
-        } else if(getLayoutPref() == LINEAR_LAYOUT) {
+        } else if (getLayoutPref() == LINEAR_LAYOUT) {
             setLayoutPref(GRID_LAYOUT);
         }
     }
@@ -187,9 +187,9 @@ public abstract class ListingFragment extends BaseFragment {
      * Swaps the menu icon of layout manager type.
      */
     private void swapLayoutMenuIcon(MenuItem menuItem) {
-        if(getLayoutPref() == GRID_LAYOUT) {
+        if (getLayoutPref() == GRID_LAYOUT) {
             menuItem.setIcon(R.drawable.ic_linear_layout);
-        } else if(getLayoutPref() == LINEAR_LAYOUT) {
+        } else if (getLayoutPref() == LINEAR_LAYOUT) {
             menuItem.setIcon(R.drawable.ic_grid_layout);
         }
     }

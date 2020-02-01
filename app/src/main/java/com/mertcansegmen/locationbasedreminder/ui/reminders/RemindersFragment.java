@@ -85,7 +85,7 @@ public class RemindersFragment extends ListingFragment {
 
         viewModel.delete(adapter.getReminderAt(viewHolder.getAdapterPosition()));
 
-        Snackbar.make(viewHolder.itemView, getString(R.string.note_deleted), Snackbar.LENGTH_LONG)
+        Snackbar.make(viewHolder.itemView, getString(R.string.reminder_deleted), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.undo), v -> viewModel.insert(deletedReminder))
                 .setAnchorView(fab)
                 .show();
