@@ -1,6 +1,6 @@
 # Location Based Reminder
 
-Location Based Reminder is a material-designed reminder app aimed to have a simple interface while keeping smart behavior.
+Location Based Reminder is a material-designed reminder app.
 
 <br>
 
